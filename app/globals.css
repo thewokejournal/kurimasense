@@ -290,10 +290,53 @@ p {
 
 /* ---------- Card variants (use spacing tokens) ---------- */
 .stat-card {
-  padding: var(--card-padding-stat);
+  padding: 24px 20px;
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-color: rgba(255, 255, 255, 0.04) !important;
+  min-height: 140px;
+  justify-content: space-between;
+}
+
+/* Instrument-style metric value (large, dominant) */
+.stat-value {
+  font-size: clamp(32px, 4.5vw + 8px, 48px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  color: var(--text-primary);
+}
+
+/* Contextual delta (small change indicator) */
+.stat-delta {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  opacity: 0.65;
+  display: inline-flex;
   align-items: center;
-  gap: var(--card-gap);
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.stat-delta.positive {
+  color: #34d399;
+}
+
+.stat-delta.negative {
+  color: #fbbf24;
+}
+
+/* Quiet data source label */
+.stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.7;
+  margin-top: auto;
 }
 
 .insight-card {

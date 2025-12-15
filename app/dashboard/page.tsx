@@ -65,7 +65,7 @@ export default function DashboardPage() {
             <span className="meta-text uppercase tracking-wider">Key metrics</span>
           </div>
           <h2 id="stats-heading" className="sr-only">Key metrics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
@@ -74,12 +74,10 @@ export default function DashboardPage() {
                 transition={{ delay: i * 0.06 }}
               >
                 <Card className="stat-card">
-                  <div className="flex items-start gap-4">
-                    <s.icon className="stat-icon" />
-                    <div>
-                      <div className="tabular-nums value-text leading-tight">{s.value}</div>
-                      <div className="meta-text mt-1 uppercase tracking-wider">{s.label}</div>
-                    </div>
+                  <div className="stat-value tabular-nums">{s.value}</div>
+                  <div>
+                    <div className="stat-delta positive">+2.4% vs last week</div>
+                    <div className="stat-label">{s.label}</div>
                   </div>
                 </Card>
               </motion.div>
