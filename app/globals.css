@@ -25,8 +25,11 @@ body {
 :root {
   --radius-xl: 20px;
   --radius-card: 14px;
-  --card-padding: 12px; /* compact but readable */
-  --card-gap: 12px;
+  /* Normalized card spacing */
+  --card-padding: 18px; /* standard card padding */
+  --card-padding-stat: 20px; /* slightly more for stat cards */
+  --card-gap: 14px;
+  --section-spacing: 32px; /* vertical spacing between dashboard sections */
   /* Micro-interaction tokens */
   --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   --card-shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.12);
@@ -132,6 +135,15 @@ p {
   color: var(--text-primary);
 }
 
+/* Dashboard section spacing */
+.dashboard-section {
+  margin-bottom: var(--section-spacing);
+}
+
+.dashboard-section-tight {
+  margin-bottom: calc(var(--section-spacing) * 0.75);
+}
+
 /* ---------- Dashboard Rhythm ---------- */
 .dashboard-content {
   padding: 32px;
@@ -196,10 +208,10 @@ p {
 
 /* ---------- Card variants (use spacing tokens) ---------- */
 .stat-card {
-  padding: calc(var(--card-padding) + 6px);
+  padding: var(--card-padding-stat);
   display: flex;
   align-items: center;
-  gap: 16px; /* extra breathing room for numeric values */
+  gap: var(--card-gap);
 }
 
 .insight-card {

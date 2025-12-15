@@ -16,22 +16,22 @@ const stats = [
 export default function DashboardPage() {
   return (
     <main className="dashboard-shell">
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-6 space-y-6">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-8">
 
         {/* Header */}
-        <header className="dashboard-header">
+        <header className="dashboard-header dashboard-section-tight">
           <span className="meta-text uppercase tracking-wider">Overview</span>
           <h1 className="page-title">Dashboard</h1>
           <p className="meta-text mt-1">Satellite-powered crop intelligence</p>
         </header>
 
         {/* Stats Section */}
-        <section aria-labelledby="stats-heading" className="">
+        <section aria-labelledby="stats-heading" className="dashboard-section">
           <div className="mb-2">
             <span className="meta-text uppercase tracking-wider">Key metrics</span>
           </div>
           <h2 id="stats-heading" className="sr-only">Key metrics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
@@ -54,7 +54,7 @@ export default function DashboardPage() {
         </section>
 
         {/* NDVI Section */}
-        <section aria-labelledby="ndvi-heading" className="space-y-4">
+        <section aria-labelledby="ndvi-heading" className="dashboard-section">
           <div className="flex items-center justify-between">
             <div>
               <span className="meta-text uppercase tracking-wider">Maps</span>
@@ -62,11 +62,13 @@ export default function DashboardPage() {
             </div>
             <p className="meta-text">Overview & metrics</p>
           </div>
-          <NdviMapPanel />
+          <div className="mt-3">
+            <NdviMapPanel />
+          </div>
         </section>
 
         {/* Insight */}
-        <section>
+        <section className="dashboard-section-tight">
           <div className="mb-2">
             <span className="meta-text uppercase tracking-wider">Insights</span>
           </div>
@@ -83,12 +85,14 @@ export default function DashboardPage() {
         </section>
 
         {/* Fields Table */}
-        <section aria-labelledby="fields-heading" className="space-y-4">
+        <section aria-labelledby="fields-heading" className="dashboard-section">
           <div className="flex items-center justify-between">
             <h2 id="fields-heading" className="section-heading">My Fields</h2>
             <p className="meta-text">Recent updates</p>
           </div>
-          <FieldsTable />
+          <div className="mt-3">
+            <FieldsTable />
+          </div>
         </section>
 
       </div>
