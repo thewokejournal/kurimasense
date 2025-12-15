@@ -1,5 +1,6 @@
-'use client'
+"use client"
 
+import Hero from '@/components/hero'
 import { Card } from '@/components/ui/card'
 import { Leaf, Map, AlertTriangle } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -12,7 +13,9 @@ const stats = [
 
 export default function Dashboard() {
   return (
-    <main className="max-w-7xl mx-auto px-6 md:px-12 py-12 bg-gradient-to-br from-[#0b1f17] via-[#0f2f23] to-[#0b1f17] min-h-screen">
+    <div>
+      <Hero />
+      <main className="max-w-7xl mx-auto px-6 md:px-12 py-12 bg-gradient-to-br from-[#0b1f17] via-[#0f2f23] to-[#0b1f17] min-h-screen">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,6 +56,7 @@ export default function Dashboard() {
           </p>
         </Card>
       </motion.div>
-    </main>
+      </main>
+    </div>
   )
 }
