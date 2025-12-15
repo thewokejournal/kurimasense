@@ -25,6 +25,13 @@ body {
   --radius-xl: 20px;
 }
 
+/* Design tokens for card spacing and radius */
+:root {
+  --card-padding: 16px;
+  --card-radius: 14px;
+  --card-vertical-gap: 12px;
+}
+
 html {
   font-family: var(--font-sans, Inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
@@ -150,15 +157,16 @@ p {
 }
 
 /* ---------- Cards ---------- */
+.app-card,
 .card {
   background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(26px);
-  border-radius: var(--radius-xl);
-  padding: 24px;
+  backdrop-filter: blur(18px);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
   box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.08),
+    0 8px 20px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 /* ---------- Sidebar Icons ---------- */
 .sidebar-icon {
@@ -357,7 +365,18 @@ p {
 }
 
 .card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
+}
+
+/* Specific card variants to enforce consistent spacing */
+.stat-card {
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
+}
+
+.insight-card {
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
 }
 /* ---------- Sidebar Press Feedback ---------- */
 .rail-icon:active {

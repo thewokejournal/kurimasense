@@ -39,7 +39,7 @@ export default function DashboardPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
               >
-                <Card className="stat-card p-4">
+                <Card className="stat-card">
                   <div className="flex items-start gap-4">
                     <s.icon className="stat-icon" />
                     <div>
@@ -75,7 +75,7 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="insight-card mt-2 p-4">
+            <Card className="insight-card mt-2">
               <h3 className="text-sm font-semibold mb-1 text-slate-100">Latest Insight</h3>
               <p className="text-sm text-slate-200">NDVI decline detected in Field 3 during flowering stage. Potential moisture stress observed.</p>
             </Card>
