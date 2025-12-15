@@ -52,6 +52,7 @@ h1 {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
+  opacity: var(--tone-primary);
 }
 
 h2 {
@@ -60,6 +61,7 @@ h2 {
   letter-spacing: -0.025em;
   color: #f1f5f9;
   margin-bottom: 12px;
+  opacity: var(--tone-primary);
 }
 
 h3 {
@@ -68,12 +70,14 @@ h3 {
   letter-spacing: -0.018em;
   color: var(--text-primary);
   margin-bottom: 10px;
+  opacity: var(--tone-primary);
 }
 
 p {
   font-size: 14px;
   line-height: 1.6;
   color: var(--text-secondary);
+  opacity: var(--tone-secondary);
 }
 :root {
   /* Typographic scale (non-linear): keep meta/label compact, allow values/headings to grow */
@@ -91,6 +95,10 @@ p {
   --type-label-line-height: 1.18;
   --type-value-line-height: 1.02;
   --role-spacing: 8px; /* breathing room between roles */
+  /* Typographic tonality (opacity for hierarchy) */
+  --tone-primary: 1; /* headings and values */
+  --tone-secondary: 0.92; /* labels and body text */
+  --tone-tertiary: 0.72; /* metadata and captions */
 }
 
 .meta-text {
@@ -98,6 +106,7 @@ p {
   color: var(--type-meta-color);
   font-weight: var(--type-meta-weight);
   line-height: var(--type-meta-line-height);
+  opacity: var(--tone-tertiary);
 }
 
 .label-text {
@@ -105,6 +114,7 @@ p {
   color: var(--type-label-color);
   font-weight: var(--type-label-weight);
   line-height: var(--type-label-line-height);
+  opacity: var(--tone-secondary);
 }
 
 .value-text {
@@ -113,6 +123,7 @@ p {
   font-weight: var(--type-value-weight);
   line-height: var(--type-value-line-height);
   letter-spacing: -0.028em; /* tighter for visual dominance */
+  opacity: var(--tone-primary);
   margin-bottom: var(--role-spacing);
 }
 
@@ -126,6 +137,7 @@ p {
   font-size: clamp(28px, 3.8vw + 6px, 44px);
   font-weight: var(--type-value-weight);
   color: var(--type-value-color);
+  opacity: var(--tone-primary);
 }
 
 /* Section heading utility for dashboard sections */
@@ -134,6 +146,7 @@ p {
   letter-spacing: -0.022em;
   margin-bottom: 14px;
   color: var(--text-primary);
+  opacity: var(--tone-primary);
 }
 
 /* Dashboard section spacing */
