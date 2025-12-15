@@ -641,18 +641,22 @@ p {
    ========================================================= */
 
 .ndvi-shell {
-  margin-top: 28px;
+  margin-top: 22px;
   display: grid;
-  grid-template-columns: 1.4fr 0.6fr;
+  grid-template-columns: 1.45fr 0.55fr;
   gap: 18px;
-  height: 320px;
+  align-items: start;
 }
 
 /* Map */
 
+.ndvi-map-wrap {
+  width: 100%;
+}
+
 .ndvi-map {
   position: relative;
-  border-radius: 22px;
+  border-radius: 18px;
   background:
     radial-gradient(circle at 30% 40%, #1e293b, #020617),
     repeating-linear-gradient(
@@ -664,6 +668,10 @@ p {
     );
   box-shadow: 0 20px 40px rgba(0,0,0,0.45);
   overflow: hidden;
+  /* Lock to a realistic map aspect ratio and cap height */
+  aspect-ratio: 16 / 9;
+  max-height: 360px;
+  min-height: 200px;
 }
 
 /* NDVI Overlay */
@@ -680,6 +688,34 @@ p {
     );
   mix-blend-mode: screen;
   opacity: 0.65;
+}
+
+/* Legend */
+.ndvi-legend {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: stretch;
+  pointer-events: none;
+}
+
+.ndvi-legend .legend-bar {
+  height: 8px;
+  width: 140px;
+  border-radius: 99px;
+  background: linear-gradient(90deg,#10b981,#f59e0b,#ef4444);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  opacity: 0.95;
+}
+
+.ndvi-legend .legend-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255,255,255,0.85);
 }
 
 /* Panel */
@@ -700,8 +736,21 @@ p {
 
 .ndvi-panel h3 {
   font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #f8fafc;
+}
+
+.ndvi-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.ndvi-meta {
+  color: #94a3b8;
 }
 
 .ndvi-metric {
@@ -709,10 +758,16 @@ p {
   justify-content: space-between;
   margin-bottom: 10px;
   font-size: 14px;
+  color: #e6eef8;
 }
 
 .ndvi-metric strong {
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
 }
 
 .ndvi-metric .good {

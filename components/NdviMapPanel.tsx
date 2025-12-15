@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Card } from '@/components/ui/card'
 
 export default function NdviMapPanel() {
   return (
@@ -10,26 +11,42 @@ export default function NdviMapPanel() {
       transition={{ duration: 0.4 }}
       className="ndvi-shell"
     >
-      <div className="ndvi-map">
-        {/* Fake satellite texture */}
-        <div className="ndvi-overlay" />
+      <div className="ndvi-map-wrap">
+        <div className="ndvi-map" role="img" aria-label="NDVI map preview">
+          {/* Fake satellite texture */}
+          <div className="ndvi-overlay" />
+
+          {/* NDVI legend (subtle, non-interactive) */}
+          <div className="ndvi-legend" aria-hidden>
+            <div className="legend-bar" />
+            <div className="legend-labels">
+              <span>Low</span>
+              <span>High</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="ndvi-panel">
-        <h3>NDVI Overview</h3>
-
-        <div className="ndvi-metric">
-          <span>Avg NDVI</span>
-          <strong>0.72</strong>
+        <div className="ndvi-panel-head">
+          <div>
+            <h3>NDVI Overview</h3>
+            <p className="ndvi-meta text-sm text-slate-400">Apr 21 • 10m / pixel</p>
+          </div>
         </div>
 
         <div className="ndvi-metric">
-          <span>Vegetation Health</span>
+          <span className="text-sm text-slate-300">Avg NDVI</span>
+          <strong className="tabular-nums">0.72</strong>
+        </div>
+
+        <div className="ndvi-metric">
+          <span className="text-sm text-slate-300">Vegetation Health</span>
           <strong className="good">Optimal</strong>
         </div>
 
         <div className="ndvi-metric">
-          <span>Change (7d)</span>
+          <span className="text-sm text-slate-300">Change (7d)</span>
           <strong className="warn">−0.04</strong>
         </div>
       </div>
