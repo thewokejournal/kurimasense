@@ -1,21 +1,34 @@
-import Sidebar from "@/components/layout/sidebar";
-import Topbar from "@/components/layout/topbar";
+'use client'
+
+import { LayoutGrid, Map, Bell } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  return (
-    <div className="dashboard-shell">
-      <Sidebar />
+  const pathname = usePathname()
 
-      <div className="dashboard-main">
-        <Topbar />
-        <main className="dashboard-content">
-          {children}
-        </main>
-      </div>
+  return (
+    <div className="app-shell">
+      <aside className="sidebar space-y-4">
+        <div className="sidebar-icon active">
+          <LayoutGrid size={20} />
+        </div>
+
+        <div className="sidebar-icon">
+          <Map size={20} />
+        </div>
+
+        <div className="sidebar-icon">
+          <Bell size={20} />
+        </div>
+      </aside>
+
+      <main className="dashboard-main">
+        {children}
+      </main>
     </div>
-  );
+  )
 }

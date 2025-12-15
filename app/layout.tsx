@@ -1,17 +1,20 @@
-import "./globals.css";
+import './globals.css'
+
+export const metadata = {
+  title: 'KurimaSense',
+  description: 'Satellite-powered farming intelligence',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
       <body>
-        <div className="app-shell">
-          {children}
-        </div>
+        {children}
       </body>
     </html>
-  );
+  )
 }
