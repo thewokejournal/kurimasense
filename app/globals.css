@@ -18,8 +18,9 @@ body {
     #e6f2ff 40%,
     #f7fbff 100%
   );
-  color: #0f172a;
+  color: var(--text-secondary);
   -webkit-font-smoothing: antialiased;
+}
 /* ---------- Design tokens ---------- */
 :root {
   --radius-xl: 20px;
@@ -32,6 +33,10 @@ body {
   --card-translate-y: -4px;
   --card-transition-duration: 180ms;
   --card-transition-easing: cubic-bezier(.2,.8,.2,1);
+  /* UI text color ramp (restrained, non-pure-white) */
+  --text-primary: #e6eef8; /* Off-white for primary attention */
+  --text-secondary: #cbd5e1; /* Mid-gray for body/supporting content */
+  --text-muted: #94a3b8; /* Muted gray for metadata */
 }
 
 html {
@@ -40,14 +45,14 @@ html {
 
 /* Headings get slightly higher contrast in the dark theme */
 h1 {
-  font-size: 34px;
-  font-weight: 600;
+  font-size: clamp(32px, 5.5vw + 6px, 56px);
+  font-weight: 700;
   letter-spacing: -0.02em;
-  color: #f8fafc;
+  color: var(--text-primary);
 }
 
 h2 {
-  font-size: 22px;
+  font-size: clamp(20px, 3.6vw + 4px, 36px);
   font-weight: 600;
   letter-spacing: -0.015em;
   color: #f1f5f9;
@@ -56,41 +61,46 @@ h2 {
 p {
   font-size: 14px;
   line-height: 1.6;
-  color: rgb(100 116 139);
+  color: var(--text-secondary);
 }
-
-/* ---------- Typographic roles (dashboard-focused) ---------- */
 :root {
-  --type-meta-size: 12px;
-  --type-label-size: 14px;
-  --type-value-size: 20px;
-  --type-meta-color: #94a3b8; /* slate-400 */
-  --type-label-color: #cbd5e1; /* slate-200 */
-  --type-value-color: #f8fafc; /* slate-50 */
+  /* Typographic scale (non-linear): keep meta/label compact, allow values/headings to grow */
+  --type-meta-size: 11px; /* compact */
+  --type-label-size: 15px; /* slightly larger for readability */
+  /* Value sizes scale non-linearly with viewport, clamped for stability */
+  --type-value-size: clamp(20px, 3.2vw + 6px, 36px);
+  --type-meta-color: var(--text-muted);
+  --type-label-color: var(--text-secondary);
+  --type-value-color: var(--text-primary);
   --type-meta-weight: 500;
   --type-label-weight: 600;
   --type-value-weight: 700;
+  --type-meta-line-height: 1.1;
+  --type-label-line-height: 1.18;
+  --type-value-line-height: 1.02;
+  --role-spacing: 8px; /* breathing room between roles */
 }
 
 .meta-text {
   font-size: var(--type-meta-size);
   color: var(--type-meta-color);
   font-weight: var(--type-meta-weight);
-  line-height: 1.2;
+  line-height: var(--type-meta-line-height);
 }
 
 .label-text {
   font-size: var(--type-label-size);
   color: var(--type-label-color);
   font-weight: var(--type-label-weight);
-  line-height: 1.25;
+  line-height: var(--type-label-line-height);
 }
 
 .value-text {
   font-size: var(--type-value-size);
   color: var(--type-value-color);
   font-weight: var(--type-value-weight);
-  line-height: 1.05;
+  line-height: var(--type-value-line-height);
+  margin-bottom: var(--role-spacing);
 }
 
 /* Keep tabular numbers available for values */
@@ -100,7 +110,7 @@ p {
 
 /* Page-level title for dashboard */
 .page-title {
-  font-size: 28px;
+  font-size: clamp(28px, 3.8vw + 6px, 44px);
   font-weight: var(--type-value-weight);
   color: var(--type-value-color);
 }
@@ -110,9 +120,6 @@ p {
   padding: 32px;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-
 }
 
 .card {
@@ -158,6 +165,7 @@ p {
   font-size: var(--type-value-size);
   font-weight: var(--type-value-weight);
   color: var(--type-value-color);
+  line-height: var(--type-value-line-height);
 }
 
 .kpi-label {
@@ -165,6 +173,7 @@ p {
   font-size: var(--type-label-size);
   color: var(--type-meta-color);
   margin-top: 6px;
+  line-height: var(--type-label-line-height);
 }
 
 
@@ -173,7 +182,7 @@ p {
   padding: calc(var(--card-padding) + 6px);
   display: flex;
   align-items: center;
-  gap: var(--card-gap);
+  gap: 16px; /* extra breathing room for numeric values */
 }
 
 .insight-card {
@@ -697,7 +706,7 @@ p {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 6px;
-  color: #f8fafc;
+  color: var(--text-primary);
 }
 
 .insight-card p {

@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="app-root bg-[#020617] text-slate-100">{children}</body>
+      <body className="app-root bg-[#020617]">{children}</body>
     </html>
   )
 }

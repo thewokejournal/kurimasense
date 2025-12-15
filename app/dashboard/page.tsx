@@ -28,7 +28,7 @@ export default function DashboardPage() {
         {/* Stats Section */}
         <section aria-labelledby="stats-heading" className="">
           <div className="mb-2">
-            <span className="text-xs uppercase tracking-wider text-slate-400">Key metrics</span>
+            <span className="meta-text uppercase tracking-wider">Key metrics</span>
           </div>
           <h2 id="stats-heading" className="sr-only">Key metrics</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -68,7 +68,7 @@ export default function DashboardPage() {
         {/* Insight */}
         <section>
           <div className="mb-2">
-            <span className="text-xs uppercase tracking-wider text-slate-400">Insights</span>
+            <span className="meta-text uppercase tracking-wider">Insights</span>
           </div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
