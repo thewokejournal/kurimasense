@@ -20,16 +20,12 @@ body {
   );
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
-/* ---------- Typography ---------- */
+/* ---------- Design tokens ---------- */
 :root {
   --radius-xl: 20px;
-}
-
-/* Design tokens for card spacing and radius */
-:root {
-  --card-padding: 16px;
-  --card-radius: 14px;
-  --card-vertical-gap: 12px;
+  --radius-card: 14px;
+  --card-padding: 12px; /* compact but readable */
+  --card-gap: 12px;
 }
 
 html {
@@ -87,6 +83,27 @@ p {
   color: #64748b;
   margin-top: 6px;
 }
+
+/* ---------- Card variants (use spacing tokens) ---------- */
+.stat-card {
+  padding: calc(var(--card-padding) + 6px);
+  display: flex;
+  align-items: center;
+  gap: var(--card-gap);
+}
+
+.insight-card {
+  padding: var(--card-padding);
+}
+
+/* Ensure tables / panels use consistent card radius */
+.table-shell,
+.ndvi-panel,
+.dashboard-main,
+.hero-header {
+  border-radius: var(--radius-card);
+}
+
 
 /* ---------- Tables ---------- */
 .table-shell {
@@ -157,16 +174,22 @@ p {
 }
 
 /* ---------- Cards ---------- */
-.app-card,
 .card {
   background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(18px);
-  border-radius: var(--card-radius);
+  backdrop-filter: blur(26px);
+  border-radius: var(--radius-card);
   padding: var(--card-padding);
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 /* ---------- Sidebar Icons ---------- */
 .sidebar-icon {
@@ -358,26 +381,7 @@ p {
   background: rgba(239, 68, 68, 0.18);
   color: #7f1d1d;
 }
-.card {
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-}
-
-/* Specific card variants to enforce consistent spacing */
-.stat-card {
-  padding: var(--card-padding);
-  border-radius: var(--card-radius);
-}
-
-.insight-card {
-  padding: var(--card-padding);
-  border-radius: var(--card-radius);
-}
+/* Card hover/transition handled above to keep spacing consistent */
 /* ---------- Sidebar Press Feedback ---------- */
 .rail-icon:active {
   transform: scale(0.94);
