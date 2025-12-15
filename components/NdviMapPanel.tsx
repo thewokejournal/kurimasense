@@ -9,7 +9,7 @@ export default function NdviMapPanel() {
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
-      className="ndvi-shell"
+      className="ndvi-shell primary-card"
     >
       <div className="ndvi-map-wrap">
         <div className="ndvi-map" role="img" aria-label="NDVI map preview">

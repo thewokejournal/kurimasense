@@ -31,8 +31,8 @@ body {
   --card-gap: 14px;
   --section-spacing: 32px; /* vertical spacing between dashboard sections */
   /* Optical elevation (soft shadows for depth, no borders) */
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
-  --card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.08);
+  --card-shadow: 0 1px 6px rgba(0, 0, 0, 0.04), 0 6px 20px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 3px 12px rgba(0, 0, 0, 0.05), 0 10px 28px rgba(0, 0, 0, 0.07);
   --card-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   --card-translate-y: -4px;
   --card-transition-duration: 180ms;
@@ -157,6 +157,16 @@ p {
 
 .dashboard-section-tight {
   margin-bottom: calc(var(--section-spacing) * 0.75);
+}
+
+/* Primary surface (hero card with enhanced prominence) */
+.primary-card {
+  padding: calc(var(--card-padding) + 6px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05), 0 12px 32px rgba(0, 0, 0, 0.08), var(--card-inner-highlight);
+}
+
+.primary-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07), 0 16px 48px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 /* ---------- Dashboard Rhythm ---------- */
