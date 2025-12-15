@@ -31,23 +31,23 @@ export default function NdviMapPanel() {
         <div className="ndvi-panel-head">
           <div>
             <h3>NDVI Overview</h3>
-            <p className="ndvi-meta text-sm text-slate-400">Apr 21 • 10m / pixel</p>
+            <p className="ndvi-meta">Apr 21 • 10m / pixel</p>
           </div>
         </div>
 
         <div className="ndvi-metric">
-          <span className="text-sm text-slate-300">Avg NDVI</span>
-          <strong className="tabular-nums">0.72</strong>
+          <span className="label-text">Avg NDVI</span>
+          <strong className="value-text tabular-nums">0.72</strong>
         </div>
 
         <div className="ndvi-metric">
-          <span className="text-sm text-slate-300">Vegetation Health</span>
-          <strong className="good">Optimal</strong>
+          <span className="label-text">Vegetation Health</span>
+          <strong className="value-text good">Optimal</strong>
         </div>
 
         <div className="ndvi-metric">
-          <span className="text-sm text-slate-300">Change (7d)</span>
-          <strong className="warn">−0.04</strong>
+          <span className="label-text">Change (7d)</span>
+          <strong className="value-text warn">−0.04</strong>
         </div>
       </div>
     </motion.div>

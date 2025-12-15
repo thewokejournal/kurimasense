@@ -59,6 +59,52 @@ p {
   color: rgb(100 116 139);
 }
 
+/* ---------- Typographic roles (dashboard-focused) ---------- */
+:root {
+  --type-meta-size: 12px;
+  --type-label-size: 14px;
+  --type-value-size: 20px;
+  --type-meta-color: #94a3b8; /* slate-400 */
+  --type-label-color: #cbd5e1; /* slate-200 */
+  --type-value-color: #f8fafc; /* slate-50 */
+  --type-meta-weight: 500;
+  --type-label-weight: 600;
+  --type-value-weight: 700;
+}
+
+.meta-text {
+  font-size: var(--type-meta-size);
+  color: var(--type-meta-color);
+  font-weight: var(--type-meta-weight);
+  line-height: 1.2;
+}
+
+.label-text {
+  font-size: var(--type-label-size);
+  color: var(--type-label-color);
+  font-weight: var(--type-label-weight);
+  line-height: 1.25;
+}
+
+.value-text {
+  font-size: var(--type-value-size);
+  color: var(--type-value-color);
+  font-weight: var(--type-value-weight);
+  line-height: 1.05;
+}
+
+/* Keep tabular numbers available for values */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Page-level title for dashboard */
+.page-title {
+  font-size: 28px;
+  font-weight: var(--type-value-weight);
+  color: var(--type-value-color);
+}
+
 /* ---------- Dashboard Rhythm ---------- */
 .dashboard-content {
   padding: 32px;
@@ -108,17 +154,19 @@ p {
 
 /* ---------- KPI Cards ---------- */
 .kpi-value {
-  font-size: 32px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #020617;
+  /* Primary numeric value */
+  font-size: var(--type-value-size);
+  font-weight: var(--type-value-weight);
+  color: var(--type-value-color);
 }
 
 .kpi-label {
-  font-size: 13px;
-  color: #64748b;
+  /* Supporting label / meta */
+  font-size: var(--type-label-size);
+  color: var(--type-meta-color);
   margin-top: 6px;
 }
+
 
 /* ---------- Card variants (use spacing tokens) ---------- */
 .stat-card {
@@ -276,8 +324,8 @@ p {
   display: grid;
   grid-template-columns: 36px 1.8fr 0.8fr 0.8fr 1.2fr 0.6fr;
   padding: 14px 20px;
-  font-size: 12px;
-  color: #64748b;
+  font-size: var(--type-meta-size);
+  color: var(--type-meta-color);
   background: rgba(255, 255, 255, 0.35);
 }
 
@@ -287,6 +335,8 @@ p {
   padding: 14px 20px;
   align-items: center;
   transition: background 0.2s ease;
+  font-size: var(--type-label-size);
+  color: var(--type-label-color);
 }
 
 .table-row:hover {
@@ -714,6 +764,8 @@ p {
   width: 100%;
 }
 
+
+
 .ndvi-map {
   position: relative;
   border-radius: 18px;
@@ -795,10 +847,10 @@ p {
 }
 
 .ndvi-panel h3 {
-  font-size: 15px;
-  font-weight: 700;
   margin-bottom: 6px;
-  color: #f8fafc;
+  color: var(--type-value-color);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
 }
 
 .ndvi-panel-head {
@@ -810,19 +862,29 @@ p {
 }
 
 .ndvi-meta {
-  color: #94a3b8;
+  font-size: var(--type-meta-size);
+  color: var(--type-meta-color);
+  font-weight: var(--type-meta-weight);
 }
 
 .ndvi-metric {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
   margin-bottom: 10px;
-  font-size: 14px;
-  color: #e6eef8;
+}
+
+.ndvi-metric span {
+  font-size: var(--type-label-size);
+  color: var(--type-label-color);
+  font-weight: var(--type-label-weight);
 }
 
 .ndvi-metric strong {
-  font-weight: 700;
+  font-size: var(--type-value-size);
+  color: var(--type-value-color);
+  font-weight: var(--type-value-weight);
+  font-variant-numeric: tabular-nums;
 }
 
 .tabular-nums {

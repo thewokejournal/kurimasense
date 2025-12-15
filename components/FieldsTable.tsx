@@ -34,7 +34,7 @@ export default function FieldsTable() {
       transition={{ duration: 0.3, ease: 'easeOut' }}
       className="table-shell"
     >
-      <table className="w-full text-sm">
+      <table className="w-full label-text">
         <thead>
           <tr className="text-left text-slate-500">
             <th className="px-6 py-3 font-medium">Field</th>

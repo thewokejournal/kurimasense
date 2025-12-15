@@ -31,8 +31,8 @@ test.describe('Visual: hover and focus states', () => {
   });
 
   test('ndvi panel default / hover / focus', async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}/dashboard`);
-    await page.waitForSelector('.ndvi-panel');
+    await page.goto(`${baseURL}/dashboard`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.ndvi-panel', { timeout: 20000 });
     const panel = page.locator('.ndvi-panel').first();
     await panel.screenshot({ path: `${outDir}/ndvi-default.png` });
 

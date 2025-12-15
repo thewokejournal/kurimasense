@@ -20,9 +20,9 @@ export default function DashboardPage() {
 
         {/* Header */}
         <header className="dashboard-header">
-          <span className="text-xs uppercase tracking-wider text-slate-400">Overview</span>
-          <h1 className="text-2xl md:text-3xl font-semibold text-slate-50">Dashboard</h1>
-          <p className="text-sm text-slate-400 mt-1">Satellite-powered crop intelligence</p>
+          <span className="meta-text uppercase tracking-wider">Overview</span>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="meta-text mt-1">Satellite-powered crop intelligence</p>
         </header>
 
         {/* Stats Section */}
@@ -43,8 +43,8 @@ export default function DashboardPage() {
                   <div className="flex items-start gap-4">
                     <s.icon className="stat-icon" />
                     <div>
-                      <div className="tabular-nums text-2xl md:text-3xl font-semibold text-white leading-tight">{s.value}</div>
-                      <div className="text-xs text-slate-400 mt-1 uppercase tracking-wider">{s.label}</div>
+                      <div className="tabular-nums value-text leading-tight">{s.value}</div>
+                      <div className="meta-text mt-1 uppercase tracking-wider">{s.label}</div>
                     </div>
                   </div>
                 </Card>
@@ -57,10 +57,10 @@ export default function DashboardPage() {
         <section aria-labelledby="ndvi-heading" className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xs uppercase tracking-wider text-slate-400">Maps</span>
-              <h2 id="ndvi-heading" className="text-lg font-medium text-slate-100">NDVI Map</h2>
+              <span className="meta-text uppercase tracking-wider">Maps</span>
+              <h2 id="ndvi-heading" className="label-text font-medium">NDVI Map</h2>
             </div>
-            <p className="text-sm text-slate-400">Overview & metrics</p>
+            <p className="meta-text">Overview & metrics</p>
           </div>
           <NdviMapPanel />
         </section>
@@ -76,8 +76,8 @@ export default function DashboardPage() {
             transition={{ delay: 0.2 }}
           >
             <Card className="insight-card mt-2">
-              <h3 className="text-sm font-semibold mb-1 text-slate-100">Latest Insight</h3>
-              <p className="text-sm text-slate-200">NDVI decline detected in Field 3 during flowering stage. Potential moisture stress observed.</p>
+              <h3 className="label-text font-semibold mb-1">Latest Insight</h3>
+              <p className="label-text">NDVI decline detected in Field 3 during flowering stage. Potential moisture stress observed.</p>
             </Card>
           </motion.div>
         </section>
@@ -85,8 +85,8 @@ export default function DashboardPage() {
         {/* Fields Table */}
         <section aria-labelledby="fields-heading" className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 id="fields-heading" className="text-lg font-medium">My Fields</h2>
-            <p className="text-sm text-slate-400">Recent updates</p>
+            <h2 id="fields-heading" className="label-text font-medium">My Fields</h2>
+            <p className="meta-text">Recent updates</p>
           </div>
           <FieldsTable />
         </section>
