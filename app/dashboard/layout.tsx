@@ -19,7 +19,7 @@ export default function DashboardLayout({
   const pathname = usePathname()
 
   return (
-    <div className="flex min-h-screen bg-[#0b1f17]">
+    <div className="flex min-h-screen bg-transparent">
       {/* ---------- Sidebar Rail ---------- */}
       <aside className="glass-rail">
         <div className="rail-inner">

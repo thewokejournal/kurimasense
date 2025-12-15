@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={manrope.variable}>
-      <body className="app-root">{children}</body>
+      <body className="app-root bg-[#020617] text-slate-100">{children}</body>
     </html>
   )
 }

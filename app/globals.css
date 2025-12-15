@@ -719,3 +719,15 @@ p {
 .ndvi-metric .warn {
   color: #fbbf24;
 }
+
+/* =========================================================
+   Background System Lock
+   ========================================================= */
+
+html, body {
+  background-color: #020617;
+}
+
+.app-root {
+  background-color: #020617;
+}
