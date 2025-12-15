@@ -37,10 +37,10 @@ body {
   --card-translate-y: -4px;
   --card-transition-duration: 180ms;
   --card-transition-easing: cubic-bezier(.2,.8,.2,1);
-  /* UI text color ramp (restrained, non-pure-white) */
-  --text-primary: #e6eef8; /* Off-white for primary attention */
-  --text-secondary: #cbd5e1; /* Mid-gray for body/supporting content */
-  --text-muted: #94a3b8; /* Muted gray for metadata */
+  /* UI text color ramp (improved contrast for readability) */
+  --text-primary: #f1f7fd; /* Brighter off-white for strong primary contrast */
+  --text-secondary: #d4dce6; /* Improved mid-gray for better secondary readability */
+  --text-muted: #a0aebd; /* Subtle but readable muted gray for metadata */
 }
 
 html {
@@ -98,8 +98,8 @@ p {
   --role-spacing: 8px; /* breathing room between roles */
   /* Typographic tonality (opacity for hierarchy) */
   --tone-primary: 1; /* headings and values */
-  --tone-secondary: 0.92; /* labels and body text */
-  --tone-tertiary: 0.72; /* metadata and captions */
+  --tone-secondary: 0.95; /* labels and body text - improved readability */
+  --tone-tertiary: 0.78; /* metadata and captions - subtle but readable */
 }
 
 .meta-text {
@@ -177,7 +177,7 @@ p {
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(28px);
   border-radius: var(--radius-card);
   padding: var(--card-padding);
