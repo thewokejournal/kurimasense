@@ -4,23 +4,23 @@ import { motion } from 'framer-motion'
 
 const fields = [
   {
-    name: 'North Field',
-    crop: 'Maize',
-    health: 'Good',
+    name: 'North Parcel',
+    crop: 'Zea mays (Maize)',
+    health: 'Vigorous',
     ndvi: 0.82,
     updated: '2h ago',
   },
   {
-    name: 'East Plot',
-    crop: 'Soybean',
-    health: 'Moderate',
+    name: 'East Parcel',
+    crop: 'Glycine max (Soybean)',
+    health: 'Moderate Vigor',
     ndvi: 0.71,
     updated: '5h ago',
   },
   {
-    name: 'South Block',
-    crop: 'Wheat',
-    health: 'At Risk',
+    name: 'South Parcel',
+    crop: 'Triticum aestivum (Wheat)',
+    health: 'Stress Detected',
     ndvi: 0.58,
     updated: '1d ago',
   },
@@ -37,11 +37,11 @@ export default function FieldsTable() {
       <table className="w-full label-text">
         <thead>
           <tr className="text-left text-slate-500">
-            <th className="px-6 py-3 font-medium">Field</th>
-            <th className="px-6 py-3 font-medium">Crop</th>
-            <th className="px-6 py-3 font-medium">Health</th>
+            <th className="px-6 py-3 font-medium">Parcel</th>
+            <th className="px-6 py-3 font-medium">Cultivar</th>
+            <th className="px-6 py-3 font-medium">Vigor Status</th>
             <th className="px-6 py-3 font-medium">NDVI</th>
-            <th className="px-6 py-3 font-medium">Updated</th>
+            <th className="px-6 py-3 font-medium">Last Acquired</th>
           </tr>
         </thead>
 
@@ -62,9 +62,9 @@ export default function FieldsTable() {
               <td className="px-6 py-4">
                 <span
                   className={`status ${
-                    field.health === 'Good'
+                    field.health === 'Vigorous'
                       ? 'good'
-                      : field.health === 'Moderate'
+                      : field.health === 'Moderate Vigor'
                       ? 'moderate'
                       : 'risk'
                   }`}

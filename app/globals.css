@@ -33,11 +33,11 @@ body {
   --section-spacing: 32px; /* vertical spacing between dashboard sections */
   /* Optical elevation (dark theme shadows with stronger depth) */
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
-  --card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.35);
   --card-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  --card-translate-y: -4px;
-  --card-transition-duration: 180ms;
-  --card-transition-easing: cubic-bezier(.2,.8,.2,1);
+  --card-translate-y: -6px;
+  --card-transition-duration: 120ms;
+  --card-transition-easing: cubic-bezier(.2,.8,.4,1);
   /* Dark theme text: high luminance contrast, neutral tones */
   --text-primary: #f0f4f8; /* Near-white for primary attention */
   --text-secondary: #b8c5d0; /* Clear mid-gray for body content */
@@ -50,52 +50,52 @@ html {
 
 /* Headings get slightly higher contrast in the dark theme */
 h1 {
-  font-size: clamp(32px, 5.5vw + 6px, 56px);
+  font-size: clamp(32px, 5vw + 8px, 52px);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
   opacity: var(--tone-primary);
 }
 
 h2 {
-  font-size: clamp(20px, 3.6vw + 4px, 36px);
+  font-size: clamp(18px, 2.5vw + 4px, 28px);
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
   margin-bottom: 12px;
   opacity: var(--tone-primary);
 }
 
 h3 {
-  font-size: clamp(16px, 2.4vw + 2px, 24px);
+  font-size: 16px;
   font-weight: 650;
-  letter-spacing: -0.018em;
+  letter-spacing: -0.025em;
   color: var(--text-primary);
   margin-bottom: 10px;
   opacity: var(--tone-primary);
 }
 
 p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text-secondary);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--type-body-color);
   opacity: var(--tone-secondary);
 }
 :root {
-  /* Typographic scale (non-linear): keep meta/label compact, allow values/headings to grow */
-  --type-meta-size: 11px; /* compact */
-  --type-label-size: 15px; /* slightly larger for readability */
-  /* Value sizes scale non-linearly with viewport, clamped for stability */
-  --type-value-size: clamp(20px, 3.2vw + 6px, 36px);
+  /* Typographic scale (three tiers only): meta, body, metric */
+  --type-meta-size: 11px; /* small metadata */
+  --type-body-size: 14px; /* body text (was label-size) */
+  /* Metric sizes: visually dominant, strong scale */
+  --type-metric-size: clamp(36px, 5vw + 10px, 56px);
   --type-meta-color: var(--text-muted);
-  --type-label-color: var(--text-secondary);
-  --type-value-color: var(--text-primary);
+  --type-body-color: var(--text-secondary);
+  --type-metric-color: var(--text-primary);
   --type-meta-weight: 500;
-  --type-label-weight: 600;
-  --type-value-weight: 800; /* increased for hierarchy dominance */
+  --type-body-weight: 500;
+  --type-metric-weight: 850; /* visually dominant */
   --type-meta-line-height: 1.1;
-  --type-label-line-height: 1.18;
-  --type-value-line-height: 1.02;
+  --type-body-line-height: 1.55;
+  --type-metric-line-height: 0.95;
   --role-spacing: 8px; /* breathing room between roles */
   /* Typographic tonality (opacity for hierarchy) */
   --tone-primary: 1; /* headings and values */
@@ -112,19 +112,19 @@ p {
 }
 
 .label-text {
-  font-size: var(--type-label-size);
-  color: var(--type-label-color);
-  font-weight: var(--type-label-weight);
-  line-height: var(--type-label-line-height);
+  font-size: var(--type-body-size);
+  color: var(--type-body-color);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-line-height);
   opacity: var(--tone-secondary);
 }
 
 .value-text {
-  font-size: var(--type-value-size);
-  color: var(--type-value-color);
-  font-weight: var(--type-value-weight);
-  line-height: var(--type-value-line-height);
-  letter-spacing: -0.028em; /* tighter for visual dominance */
+  font-size: var(--type-metric-size);
+  color: var(--type-metric-color);
+  font-weight: var(--type-metric-weight);
+  line-height: var(--type-metric-line-height);
+  letter-spacing: -0.04em; /* very tight for dominance */
   opacity: var(--tone-primary);
   margin-bottom: var(--role-spacing);
 }
@@ -136,16 +136,17 @@ p {
 
 /* Page-level title for dashboard */
 .page-title {
-  font-size: clamp(28px, 3.8vw + 6px, 44px);
-  font-weight: var(--type-value-weight);
-  color: var(--type-value-color);
+  font-size: clamp(28px, 4vw + 6px, 42px);
+  font-weight: var(--type-metric-weight);
+  color: var(--type-metric-color);
+  letter-spacing: -0.035em;
   opacity: var(--tone-primary);
 }
 
 /* Section heading utility for dashboard sections */
 .section-heading {
   font-weight: 700;
-  letter-spacing: -0.022em;
+  letter-spacing: -0.03em;
   margin-bottom: 14px;
   color: var(--text-primary);
   opacity: var(--tone-primary);
@@ -183,7 +184,7 @@ p {
   font-size: 13px;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 140ms cubic-bezier(.2,.8,.2,1);
+  transition: all 120ms cubic-bezier(.2,.8,.4,1);
   min-width: 160px;
   display: flex;
   align-items: center;
@@ -191,9 +192,14 @@ p {
 }
 
 .command-control:hover {
-  background: rgba(22, 30, 40, 0.75);
+  background: rgba(25, 32, 42, 0.8);
   border-color: rgba(255, 255, 255, 0.14);
   color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.command-control:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .command-control-active {
@@ -237,7 +243,9 @@ p {
   padding: var(--card-padding);
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: var(--card-shadow), var(--card-inner-highlight);
-  transition: transform var(--card-transition-duration) var(--card-transition-easing), box-shadow var(--card-transition-duration) var(--card-transition-easing);
+  transition: transform var(--card-transition-duration) var(--card-transition-easing), 
+              box-shadow var(--card-transition-duration) var(--card-transition-easing),
+              border-color var(--card-transition-duration) var(--card-transition-easing);
   will-change: transform, box-shadow;
 }
 
@@ -249,8 +257,8 @@ p {
 .ndvi-panel:hover,
 .ndvi-map:hover {
   transform: translateY(var(--card-translate-y));
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Slightly more restrained transform for the map surface to avoid layout shift */
@@ -301,11 +309,11 @@ p {
 
 /* Instrument-style metric value (large, dominant) */
 .stat-value {
-  font-size: clamp(32px, 4.5vw + 8px, 48px);
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-  color: var(--text-primary);
+  font-size: var(--type-metric-size);
+  font-weight: var(--type-metric-weight);
+  letter-spacing: -0.04em;
+  line-height: var(--type-metric-line-height);
+  color: var(--type-metric-color);
 }
 
 /* Contextual delta (small change indicator) */
@@ -337,6 +345,59 @@ p {
   color: var(--text-muted);
   opacity: 0.7;
   margin-top: auto;
+}
+
+/* Data confidence indicators */
+.confidence-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  opacity: 0.65;
+  letter-spacing: 0.01em;
+  margin-top: 6px;
+}
+
+.confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: all 100ms cubic-bezier(.2,.8,.4,1);
+}
+
+.confidence-badge:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.confidence-badge.high {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.15);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.confidence-badge.medium {
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.15);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.confidence-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.8;
 }
 
 .insight-card {
@@ -749,14 +810,14 @@ p {
   place-items: center;
   color: rgba(255,255,255,0.55);
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.15s ease;
+    background 120ms cubic-bezier(.2,.8,.4,1),
+    color 120ms cubic-bezier(.2,.8,.4,1),
+    transform 100ms cubic-bezier(.2,.8,.4,1);
 }
 
 .rail-icon:hover {
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.95);
 }
 
 .rail-icon:active {
@@ -978,7 +1039,7 @@ p {
   flex-direction: column;
   gap: 8px;
   align-items: stretch;
-  pointer-events: none;
+  pointer-events: auto;
   /* Floating UI styling */
   background: rgba(18, 24, 31, 0.85);
   backdrop-filter: blur(20px);
@@ -986,6 +1047,16 @@ p {
   border-radius: 12px;
   padding: 12px 14px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 100ms cubic-bezier(.2,.8,.4,1), 
+              border-color 100ms cubic-bezier(.2,.8,.4,1),
+              box-shadow 100ms cubic-bezier(.2,.8,.4,1);
+  cursor: pointer;
+}
+
+.ndvi-legend:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .ndvi-legend .legend-bar {
