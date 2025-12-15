@@ -2,15 +2,15 @@ import './globals.css'
 
 
 export const metadata = {
-title: 'AgriSense Dashboard',
-description: 'Precision agriculture intelligence platform',
+title: 'KurimaSense',
+description: 'Satellite-powered farming intelligence',
 }
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 return (
 <html lang="en">
-<body className="bg-slate-50 text-slate-900">
+<body className="bg-gradient-to-br from-[#0b1f17] via-[#0f2f23] to-[#0b1f17] text-slate-100">
 {children}
 </body>
 </html>

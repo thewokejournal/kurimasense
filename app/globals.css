@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 
+:root {
+--radius: 1.5rem;
+}
+
+
 body {
-font-family: system-ui, sans-serif;
+font-family: 'Inter', system-ui, sans-serif;
 }
