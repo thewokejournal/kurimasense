@@ -595,27 +595,28 @@ p {
 
 .insight-card {
   margin-top: 26px;
-  padding: 26px;
-  border-radius: 22px;
+  padding: calc(var(--card-padding) + 4px);
+  border-radius: var(--radius-card);
   background: linear-gradient(
     to bottom right,
-    rgba(16,185,129,0.18),
-    rgba(16,185,129,0.08)
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.03)
   );
-  border: 1px solid rgba(16,185,129,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
   box-shadow:
-    0 12px 36px rgba(0,0,0,0.4);
+    0 10px 30px rgba(0,0,0,0.45);
 }
 
 .insight-card h2 {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 6px;
+  color: #f8fafc;
 }
 
 .insight-card p {
   font-size: 14px;
-  color: rgba(255,255,255,0.85);
+  color: #e6eef8;
   line-height: 1.45;
 }
 /* =========================================================
