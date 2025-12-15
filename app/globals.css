@@ -160,6 +160,56 @@ p {
   margin-bottom: calc(var(--section-spacing) * 0.75);
 }
 
+/* Command bar (prominent control surface) */
+.command-bar {
+  background: rgba(28, 36, 46, 0.95);
+  backdrop-filter: blur(40px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.command-control {
+  background: rgba(18, 24, 31, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 140ms cubic-bezier(.2,.8,.2,1);
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.command-control:hover {
+  background: rgba(22, 30, 40, 0.75);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: var(--text-primary);
+}
+
+.command-control-active {
+  background: rgba(30, 40, 52, 0.8);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.command-separator {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 0 4px;
+}
+
 /* Primary surface (hero card with enhanced prominence) */
 .primary-card {
   padding: calc(var(--card-padding) + 6px);

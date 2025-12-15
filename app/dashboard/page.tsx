@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Map, Leaf, AlertTriangle } from 'lucide-react'
+import { Map, Leaf, AlertTriangle, ChevronDown, Calendar } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import NdviMapPanel from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
@@ -24,6 +24,40 @@ export default function DashboardPage() {
           <h1 className="page-title">Dashboard</h1>
           <p className="meta-text mt-1">Satellite-powered crop intelligence</p>
         </header>
+
+        {/* Command Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="command-bar"
+        >
+          <div className="command-control command-control-active">
+            <Map className="w-4 h-4" />
+            <span>Field 3 - Corn</span>
+            <ChevronDown className="w-3.5 h-3.5 ml-auto opacity-60" />
+          </div>
+
+          <div className="command-control">
+            <Calendar className="w-4 h-4" />
+            <span>Last 30 days</span>
+            <ChevronDown className="w-3.5 h-3.5 ml-auto opacity-60" />
+          </div>
+
+          <div className="command-separator" />
+
+          <div className="flex gap-2">
+            <button className="command-control command-control-active" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
+              NDVI
+            </button>
+            <button className="command-control" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
+              Rainfall
+            </button>
+            <button className="command-control" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
+              Stress
+            </button>
+          </div>
+        </motion.div>
 
         {/* Stats Section */}
         <section aria-labelledby="stats-heading" className="dashboard-section">
