@@ -86,7 +86,7 @@ p {
   --type-value-color: var(--text-primary);
   --type-meta-weight: 500;
   --type-label-weight: 600;
-  --type-value-weight: 700;
+  --type-value-weight: 800; /* increased for hierarchy dominance */
   --type-meta-line-height: 1.1;
   --type-label-line-height: 1.18;
   --type-value-line-height: 1.02;
@@ -112,6 +112,7 @@ p {
   color: var(--type-value-color);
   font-weight: var(--type-value-weight);
   line-height: var(--type-value-line-height);
+  letter-spacing: -0.028em; /* tighter for visual dominance */
   margin-bottom: var(--role-spacing);
 }
 
@@ -195,6 +196,7 @@ p {
   font-weight: var(--type-value-weight);
   color: var(--type-value-color);
   line-height: var(--type-value-line-height);
+  letter-spacing: -0.028em;
 }
 
 .kpi-label {
