@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Map, Leaf, AlertTriangle } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import NdviMapPanel from '@/components/NdviMapPanel'
+import FieldsTable from '@/components/FieldsTable'
 
 
 const stats = [
@@ -15,16 +16,20 @@ const stats = [
 export default function DashboardPage() {
   return (
     <main className="dashboard-shell">
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-8 space-y-8">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-6 space-y-6">
 
         {/* Header */}
         <header className="dashboard-header">
-          <h1 className="text-2xl md:text-3xl font-semibold">Dashboard</h1>
+          <span className="text-xs uppercase tracking-wider text-slate-400">Overview</span>
+          <h1 className="text-2xl md:text-3xl font-semibold text-slate-50">Dashboard</h1>
           <p className="text-sm text-slate-400 mt-1">Satellite-powered crop intelligence</p>
         </header>
 
         {/* Stats Section */}
         <section aria-labelledby="stats-heading" className="">
+          <div className="mb-2">
+            <span className="text-xs uppercase tracking-wider text-slate-400">Key metrics</span>
+          </div>
           <h2 id="stats-heading" className="sr-only">Key metrics</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {stats.map((s, i) => (
@@ -38,7 +43,7 @@ export default function DashboardPage() {
                   <div className="flex items-start gap-4">
                     <s.icon className="stat-icon" />
                     <div>
-                      <div className="text-xl md:text-2xl font-semibold text-slate-100">{s.value}</div>
+                      <div className="tabular-nums text-2xl md:text-3xl font-semibold text-white leading-tight">{s.value}</div>
                       <div className="text-xs text-slate-400 mt-1 uppercase tracking-wider">{s.label}</div>
                     </div>
                   </div>
@@ -51,7 +56,10 @@ export default function DashboardPage() {
         {/* NDVI Section */}
         <section aria-labelledby="ndvi-heading" className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 id="ndvi-heading" className="text-lg font-medium">NDVI Map</h2>
+            <div>
+              <span className="text-xs uppercase tracking-wider text-slate-400">Maps</span>
+              <h2 id="ndvi-heading" className="text-lg font-medium text-slate-100">NDVI Map</h2>
+            </div>
             <p className="text-sm text-slate-400">Overview & metrics</p>
           </div>
           <NdviMapPanel />
@@ -59,16 +67,28 @@ export default function DashboardPage() {
 
         {/* Insight */}
         <section>
+          <div className="mb-2">
+            <span className="text-xs uppercase tracking-wider text-slate-400">Insights</span>
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
             <Card className="insight-card mt-2 p-4">
-              <h3 className="text-sm font-semibold mb-1">Latest Insight</h3>
+              <h3 className="text-sm font-semibold mb-1 text-slate-100">Latest Insight</h3>
               <p className="text-sm text-slate-200">NDVI decline detected in Field 3 during flowering stage. Potential moisture stress observed.</p>
             </Card>
           </motion.div>
+        </section>
+
+        {/* Fields Table */}
+        <section aria-labelledby="fields-heading" className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 id="fields-heading" className="text-lg font-medium">My Fields</h2>
+            <p className="text-sm text-slate-400">Recent updates</p>
+          </div>
+          <FieldsTable />
         </section>
 
       </div>
