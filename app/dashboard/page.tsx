@@ -1,16 +1,28 @@
 'use client'
 
+/**
+ * CROP HEALTH REPORTING CONTRACT
+ * 
+ * This dashboard follows the Crop Health Reporting Contract:
+ * - Crop health is the primary output of all systems
+ * - All UI components must support health reporting and decision-making
+ * - Backend responses must conform to this contract (health-first data structure)
+ * 
+ * Internal documentation for developers only - not visible in UI
+ */
+
 import { motion } from 'framer-motion'
 import { Map, Leaf, AlertTriangle, ChevronDown, Calendar, Clock } from 'lucide-react'
 import { Card } from '@/components/ui/card'
+import CropHealthSummary from '@/components/CropHealthSummary'
 import NdviMapPanel from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
 
 
 const stats = [
-  { label: 'Active Parcels', value: '12', icon: Map },
-  { label: 'Canopy Vigor Index', value: '82%', icon: Leaf },
-  { label: 'Field Advisories', value: '2', icon: AlertTriangle },
+  { label: 'Active Parcels', value: '12', delta: '+1 vs last scan', timeContext: 'Last 24 hours', icon: Map },
+  { label: 'Canopy Vigor Index', value: '82%', delta: '+2.4% from previous period', timeContext: 'Last 7 days', icon: Leaf },
+  { label: 'Field Advisories', value: '2', delta: '−1 resolved', timeContext: 'Last 48 hours', icon: AlertTriangle },
 ]
 
 export default function DashboardPage() {
@@ -20,9 +32,9 @@ export default function DashboardPage() {
 
         {/* Header */}
         <header className="dashboard-header dashboard-section-tight">
-          <span className="meta-text uppercase tracking-wider">Field Operations</span>
-          <h1 className="page-title">Monitoring Console</h1>
-          <p className="meta-text mt-1">Remote sensing analysis for precision agriculture</p>
+          <span className="meta-text uppercase tracking-wider">Crop Health Report</span>
+          <h1 className="page-title">Field Dashboard</h1>
+          <p className="meta-text mt-1">Satellite monitoring for your crops</p>
         </header>
 
         {/* Command Bar */}
@@ -48,24 +60,32 @@ export default function DashboardPage() {
 
           <div className="flex gap-2">
             <button className="command-control command-control-active" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
-              NDVI
+              Crop Vigor
             </button>
             <button className="command-control" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
               Rainfall
             </button>
             <button className="command-control" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
-              Stress
+              Water Stress
             </button>
           </div>
         </motion.div>
 
+        {/* Dominant Crop Health Summary */}
+        <CropHealthSummary
+          status="Stable"
+          trend="Improving"
+          confidence="High"
+          detectedAt="April 18, 2025 (4 days ago)"
+        />
+
         {/* Stats Section */}
         <section aria-labelledby="stats-heading" className="dashboard-section">
           <div className="mb-2">
-            <span className="meta-text uppercase tracking-wider">Summary Statistics</span>
+            <span className="meta-text uppercase tracking-wider" style={{ opacity: 0.5, fontSize: '10px' }}>Supporting Metrics</span>
           </div>
-          <h2 id="stats-heading" className="sr-only">Summary Statistics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10" style={{ marginTop: '24px', marginBottom: '16px' }}>
+          <h2 id="stats-heading" className="sr-only">Supporting Metrics</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10" style={{ marginTop: '20px', marginBottom: '16px' }}>
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
@@ -76,11 +96,11 @@ export default function DashboardPage() {
                 <Card className="stat-card">
                   <div className="stat-value tabular-nums">{s.value}</div>
                   <div>
-                    <div className="stat-delta positive">+2.4% from previous period</div>
+                    <div className="stat-delta positive">{s.delta}</div>
                     <div className="stat-label">{s.label}</div>
-                    <div className="confidence-indicator">
+                    <div className="confidence-indicator" style={{ opacity: 0.45, fontSize: '9px' }}>
                       <span className="confidence-dot" />
-                      <span>Acquired 2h ago</span>
+                      <span>{s.timeContext}</span>
                     </div>
                   </div>
                 </Card>
@@ -89,14 +109,14 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* NDVI Section */}
-        <section aria-labelledby="ndvi-heading" className="dashboard-section">
+        {/* Health Map Section */}
+        <section aria-labelledby="health-map-heading" className="dashboard-section">
           <div className="flex items-center justify-between">
             <div>
-              <span className="meta-text uppercase tracking-wider">Spectral Analysis</span>
-              <h2 id="ndvi-heading" className="section-heading">NDVI Distribution</h2>
+              <span className="meta-text uppercase tracking-wider">Crop Health Map</span>
+              <h2 id="health-map-heading" className="section-heading">Field Overview</h2>
             </div>
-            <p className="meta-text">Vegetation index composite</p>
+            <p className="meta-text">Last updated: 2h ago</p>
           </div>
           <div className="mt-3">
             <NdviMapPanel />
@@ -114,8 +134,12 @@ export default function DashboardPage() {
             transition={{ delay: 0.2 }}
           >
             <Card className="insight-card mt-2">
-              <h3 className="font-bold tracking-tight mb-2">Recent Analysis</h3>
-              <p className="label-text">NDVI decline detected in Parcel 3 during reproductive stage. Moisture deficit indicators present in southeast quadrant.</p>
+              <h3 className="font-bold tracking-tight mb-2">Recent Observation</h3>
+              <p className="label-text">Crop vigor declining in Parcel 3 during reproductive stage. Dry conditions observed in southeast area since mid-April.</p>
+              <div className="confidence-indicator" style={{ marginTop: '10px', fontSize: '9px', opacity: 0.45 }}>
+                <span className="confidence-dot" />
+                <span>Reported Apr 21, 2025 at 14:32 UTC</span>
+              </div>
             </Card>
           </motion.div>
         </section>
@@ -123,8 +147,8 @@ export default function DashboardPage() {
         {/* Fields Table */}
         <section aria-labelledby="fields-heading" className="dashboard-section">
           <div className="flex items-center justify-between">
-            <h2 id="fields-heading" className="section-heading">Parcel Registry</h2>
-            <p className="meta-text">Latest acquisition times</p>
+            <h2 id="fields-heading" className="section-heading">Your Fields</h2>
+            <p className="meta-text">Last checked</p>
           </div>
           <div className="mt-3">
             <FieldsTable />

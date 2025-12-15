@@ -1,5 +1,16 @@
 'use client'
 
+/**
+ * CROP HEALTH REPORTING CONTRACT
+ * 
+ * This dashboard follows the Crop Health Reporting Contract:
+ * - Crop health is the primary output of all systems
+ * - All UI components must support health reporting and decision-making
+ * - Backend responses must conform to this contract (health-first data structure)
+ * 
+ * Internal documentation for developers only - not visible in UI
+ */
+
 import { Home, Map, Layers, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
