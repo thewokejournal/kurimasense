@@ -229,6 +229,77 @@ p {
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 20px 56px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+/* Crop Health Summary - Dominant Hero Component */
+.crop-health-summary {
+  width: 100%;
+  margin-bottom: calc(var(--section-spacing) * 1.25);
+}
+
+.health-summary-container {
+  background: rgba(28, 36, 46, 0.95);
+  backdrop-filter: blur(40px) saturate(140%);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px 48px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4), 
+    0 24px 64px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 120ms cubic-bezier(.2,.8,.4,1);
+}
+
+.health-summary-container:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.45), 
+    0 32px 80px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.health-status-primary {
+  margin-bottom: 32px;
+}
+
+.health-status-value {
+  font-size: clamp(48px, 7vw + 12px, 84px);
+  font-weight: 850;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  opacity: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.health-metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+}
+
+.health-metadata-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.health-metadata-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.health-metadata-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
 /* ---------- Dashboard Rhythm ---------- */
 .dashboard-content {
   padding: 32px;
@@ -298,54 +369,67 @@ p {
 
 /* ---------- Card variants (use spacing tokens) ---------- */
 .stat-card {
-  padding: 24px 20px;
+  padding: 20px 18px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-color: rgba(255, 255, 255, 0.04) !important;
+  /* Subordinate styling: neutral, lower contrast */
+  background: rgba(18, 24, 31, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.03) !important;
   min-height: 140px;
   justify-content: space-between;
   max-width: 340px;
   margin: 0 auto;
+  opacity: 0.92;
 }
 
-/* Instrument-style metric value (large, dominant) */
+.stat-card:hover {
+  opacity: 1;
+  background: rgba(20, 26, 34, 0.7) !important;
+  transform: translateY(-2px);
+}
+
+/* Subordinate metric value (reduced from dominant sizing) */
 .stat-value {
-  font-size: var(--type-metric-size);
-  font-weight: var(--type-metric-weight);
-  letter-spacing: -0.04em;
-  line-height: var(--type-metric-line-height);
-  color: var(--type-metric-color);
+  font-size: clamp(28px, 3.5vw + 8px, 42px);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  color: var(--text-secondary);
+  opacity: 0.95;
 }
 
 /* Contextual delta (small change indicator) */
 .stat-delta {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 500;
   letter-spacing: 0.01em;
-  opacity: 0.65;
+  opacity: 0.5;
   display: inline-flex;
   align-items: center;
   gap: 3px;
   margin-top: 4px;
+  color: var(--text-muted);
 }
 
 .stat-delta.positive {
   color: #10b981;
+  opacity: 0.6;
 }
 
 .stat-delta.negative {
   color: #f59e0b;
+  opacity: 0.6;
 }
 
 /* Quiet data source label */
 .stat-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
-  opacity: 0.7;
+  opacity: 0.55;
   margin-top: auto;
 }
 
@@ -394,6 +478,12 @@ p {
   background: rgba(245, 158, 11, 0.08);
 }
 
+.confidence-badge.low {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.08);
+}
+
 .confidence-dot {
   width: 4px;
   height: 4px;
@@ -421,6 +511,50 @@ p {
   backdrop-filter: blur(28px);
   border-radius: var(--radius-xl);
   overflow: hidden;
+}
+
+/* Triage List (Health-focused table) */
+.triage-shell {
+  background: rgba(25, 32, 41, 0.7);
+  backdrop-filter: blur(28px);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.triage-attention {
+  background: rgba(239, 68, 68, 0.03) !important;
+  border-left: 3px solid rgba(239, 68, 68, 0.4);
+}
+
+.triage-attention:hover {
+  background: rgba(239, 68, 68, 0.06) !important;
+}
+
+.priority-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid;
+  transition: all 100ms cubic-bezier(.2,.8,.4,1);
+}
+
+.trend-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 
@@ -1077,6 +1211,143 @@ p {
   font-weight: 500;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
+}
+
+/* Diagnostic Map Enhancements */
+
+.diagnostic-map {
+  /* Darker base to emphasize highlighted areas */
+  background:
+    radial-gradient(circle at 65% 55%, #1a1f28, #0a0e14),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.004),
+      rgba(255,255,255,0.004) 2px,
+      transparent 2px,
+      transparent 8px
+    );
+}
+
+/* Highlighted Zone (auto-focused problem area) */
+.diagnostic-zone-highlight {
+  position: absolute;
+  top: 45%;
+  right: 22%;
+  width: 180px;
+  height: 140px;
+  border: 2px solid rgba(245, 158, 11, 0.7);
+  border-radius: 12px;
+  pointer-events: none;
+  box-shadow: 
+    0 0 20px rgba(245, 158, 11, 0.4),
+    inset 0 0 30px rgba(245, 158, 11, 0.15);
+}
+
+.zone-pulse {
+  position: absolute;
+  inset: -4px;
+  border: 2px solid rgba(245, 158, 11, 0.5);
+  border-radius: 14px;
+  animation: zonePulse 3s ease-in-out infinite;
+}
+
+@keyframes zonePulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.03);
+  }
+}
+
+/* Diagnostic Overlay (plain language explanation) */
+.diagnostic-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-width: 380px;
+  background: rgba(12, 16, 22, 0.92);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 
+    0 8px 28px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.diagnostic-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.diagnostic-title {
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.diagnostic-explanation {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+.diagnostic-location {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.diagnostic-coords,
+.diagnostic-area {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* Minimal Legend (no manual controls) */
+.ndvi-legend-minimal {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  background: rgba(18, 24, 31, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.legend-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.legend-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.legend-indicator.warn {
+  background: #f59e0b;
+  color: #f59e0b;
 }
 
 /* Panel */
