@@ -65,7 +65,7 @@ export default function DashboardPage() {
             <span className="meta-text uppercase tracking-wider">Summary Statistics</span>
           </div>
           <h2 id="stats-heading" className="sr-only">Summary Statistics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10" style={{ marginTop: '24px', marginBottom: '16px' }}>
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}

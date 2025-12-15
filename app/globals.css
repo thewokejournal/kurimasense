@@ -32,8 +32,8 @@ body {
   --card-gap: 14px;
   --section-spacing: 32px; /* vertical spacing between dashboard sections */
   /* Optical elevation (dark theme shadows with stronger depth) */
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
-  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.35);
+  --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.18), 0 6px 16px rgba(0, 0, 0, 0.14);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.22), 0 12px 28px rgba(0, 0, 0, 0.18);
   --card-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   --card-translate-y: -6px;
   --card-transition-duration: 120ms;
@@ -305,6 +305,8 @@ p {
   border-color: rgba(255, 255, 255, 0.04) !important;
   min-height: 140px;
   justify-content: space-between;
+  max-width: 340px;
+  margin: 0 auto;
 }
 
 /* Instrument-style metric value (large, dominant) */
