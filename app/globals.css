@@ -26,6 +26,12 @@ body {
   --radius-card: 14px;
   --card-padding: 12px; /* compact but readable */
   --card-gap: 12px;
+  /* Micro-interaction tokens */
+  --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  --card-shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.12);
+  --card-translate-y: -4px;
+  --card-transition-duration: 180ms;
+  --card-transition-easing: cubic-bezier(.2,.8,.2,1);
 }
 
 html {
@@ -63,11 +69,41 @@ p {
 
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+.card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(26px);
+  border-radius: var(--radius-card);
+  padding: var(--card-padding);
+  box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform var(--card-transition-duration) var(--card-transition-easing), box-shadow var(--card-transition-duration) var(--card-transition-easing);
+  will-change: transform, box-shadow;
+}
+
+/* Subtle hover / focus elevation for cards and panels */
+.card:hover,
+.card:focus-visible,
+.stat-card:hover,
+.insight-card:hover,
+.ndvi-panel:hover,
+.ndvi-map:hover {
+  transform: translateY(var(--card-translate-y));
+  box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* Slightly more restrained transform for the map surface to avoid layout shift */
+.ndvi-map:hover {
+  transform: translateY(calc(var(--card-translate-y) / 2)) scale(1.01);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .stat-card,
+  .insight-card,
+  .ndvi-panel,
+  .ndvi-map {
+    transition: none !important;
+    transform: none !important;
+  }
 }
 
 /* ---------- KPI Cards ---------- */
