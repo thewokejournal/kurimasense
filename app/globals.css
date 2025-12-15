@@ -53,9 +53,18 @@ h1 {
 
 h2 {
   font-size: clamp(20px, 3.6vw + 4px, 36px);
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   color: #f1f5f9;
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: clamp(16px, 2.4vw + 2px, 24px);
+  font-weight: 650;
+  letter-spacing: -0.018em;
+  color: var(--text-primary);
+  margin-bottom: 10px;
 }
 
 p {
@@ -113,6 +122,14 @@ p {
   font-size: clamp(28px, 3.8vw + 6px, 44px);
   font-weight: var(--type-value-weight);
   color: var(--type-value-color);
+}
+
+/* Section heading utility for dashboard sections */
+.section-heading {
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  margin-bottom: 14px;
+  color: var(--text-primary);
 }
 
 /* ---------- Dashboard Rhythm ---------- */

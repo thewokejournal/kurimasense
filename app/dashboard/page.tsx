@@ -58,7 +58,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <span className="meta-text uppercase tracking-wider">Maps</span>
-              <h2 id="ndvi-heading" className="label-text font-medium">NDVI Map</h2>
+              <h2 id="ndvi-heading" className="section-heading">NDVI Map</h2>
             </div>
             <p className="meta-text">Overview & metrics</p>
           </div>
@@ -76,7 +76,7 @@ export default function DashboardPage() {
             transition={{ delay: 0.2 }}
           >
             <Card className="insight-card mt-2">
-              <h3 className="label-text font-semibold mb-1">Latest Insight</h3>
+              <h3 className="font-bold tracking-tight mb-2">Latest Insight</h3>
               <p className="label-text">NDVI decline detected in Field 3 during flowering stage. Potential moisture stress observed.</p>
             </Card>
           </motion.div>
@@ -85,7 +85,7 @@ export default function DashboardPage() {
         {/* Fields Table */}
         <section aria-labelledby="fields-heading" className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 id="fields-heading" className="label-text font-medium">My Fields</h2>
+            <h2 id="fields-heading" className="section-heading">My Fields</h2>
             <p className="meta-text">Recent updates</p>
           </div>
           <FieldsTable />
