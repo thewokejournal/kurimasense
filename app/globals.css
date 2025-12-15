@@ -1,20 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
+/* -----------------------------
+Design Tokens (LOCKED)
+-------------------------------- */
+
+
 :root {
-	--radius: 1.5rem;
+--radius-sm: 0.5rem;
+--radius-md: 0.75rem;
+--radius-lg: 1rem;
+--radius-xl: 1.25rem;
+
+
+--border-default: #e2e8f0;
 }
+
+
+/* -----------------------------
+Base Reset & Typography
+-------------------------------- */
+
+
+html,
+body {
+height: 100%;
+}
+
 
 body {
-	font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #1f2937;
+  font-feature-settings: "liga" 1, "kern" 1;
 }
 
-/* Small helpers */
-.container {
-	max-width: 90rem;
-	margin-left: auto;
-	margin-right: auto;
+
+h1, h2, h3, h4 {
+  letter-spacing: -0.02em;
 }
+
+
+p {
+  line-height: 1.6;
+}
+
+
+/* -----------------------------
+Cards
+-------------------------------- */
+
+
+.card {
+  border-radius: var(--radius-xl);
+  background-color: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(226,232,240,0.6);
+  box-shadow: 0 4px 8px rgba(2,6,23,0.06);
+}
+
+
+/* -----------------------------
+Motion Defaults
+-------------------------------- */
+
+
+.motion-default {
+transition: all 0.25s ease-out;
+}
+
+
+/* -----------------------------
+Scrollbars (Subtle)
+-------------------------------- */
+
+
+/* end */

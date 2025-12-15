@@ -1,24 +1,28 @@
-import React from 'react'
-import { cn } from '@/lib/utils'
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  className?: string
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg'
 }
 
-export function Button({ className, type = 'button', size = 'md', ...props }: ButtonProps) {
-  const sizeClass =
-    size === 'sm' ? 'px-3 py-1 text-sm' : size === 'lg' ? 'px-7 py-3 text-lg' : 'px-5 py-2'
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, size = 'md', ...props }, ref) => {
+    const sizeClass = size === 'sm' ? 'px-3 py-1 text-sm' : size === 'lg' ? 'px-6 py-3 text-lg' : 'px-4 py-2 text-sm'
 
-  return (
-    <button
-      type={type}
-      className={cn(
-        'bg-emerald-600 text-white hover:bg-emerald-700 transition',
-        sizeClass,
-        className
-      )}
-      {...props}
-    />
-  )
-}
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          `inline-flex items-center justify-center rounded-xl font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-50 ${sizeClass}`,
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+)
+
+Button.displayName = "Button"
+
+export { Button }
