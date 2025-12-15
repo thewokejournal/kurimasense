@@ -321,11 +321,11 @@ p {
 }
 
 .stat-delta.positive {
-  color: #34d399;
+  color: #10b981;
 }
 
 .stat-delta.negative {
-  color: #fbbf24;
+  color: #f59e0b;
 }
 
 /* Quiet data source label */
@@ -933,11 +933,11 @@ p {
   position: relative;
   border-radius: 20px;
   background:
-    radial-gradient(circle at 30% 40%, #1e293b, #020617),
+    radial-gradient(circle at 30% 40%, #1a1f28, #0f1318),
     repeating-linear-gradient(
       45deg,
-      rgba(255,255,255,0.01),
-      rgba(255,255,255,0.01) 2px,
+      rgba(255,255,255,0.008),
+      rgba(255,255,255,0.008) 2px,
       transparent 2px,
       transparent 8px
     );
@@ -954,20 +954,19 @@ p {
   min-height: 280px;
 }
 
-/* NDVI Overlay */
+/* NDVI Overlay (neutral, non-decorative) */
 
 .ndvi-overlay {
   position: absolute;
   inset: 0;
   background:
     linear-gradient(
-      120deg,
-      rgba(16,185,129,0.25),
-      rgba(234,179,8,0.12),
-      rgba(239,68,68,0.14)
+      135deg,
+      rgba(255,255,255,0.03),
+      rgba(255,255,255,0.01)
     );
-  mix-blend-mode: screen;
-  opacity: 0.5;
+  mix-blend-mode: overlay;
+  opacity: 0.4;
 }
 
 /* Legend */
@@ -993,8 +992,9 @@ p {
   height: 6px;
   width: 120px;
   border-radius: 99px;
-  background: linear-gradient(90deg,#10b981,#f59e0b,#ef4444);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  background: #10b981;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.4);
+  opacity: 0.85;
 }
 
 .ndvi-legend .legend-labels {
@@ -1011,14 +1011,9 @@ p {
 .ndvi-panel {
   padding: 22px;
   border-radius: 22px;
-  background:
-    linear-gradient(
-      to bottom right,
-      rgba(255,255,255,0.06),
-      rgba(255,255,255,0.02)
-    );
+  background: rgba(25, 32, 41, 0.7);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
   box-shadow: 0 14px 34px rgba(0,0,0,0.45);
 }
 
@@ -1069,11 +1064,11 @@ p {
 }
 
 .ndvi-metric .good {
-  color: #34d399;
+  color: #10b981;
 }
 
 .ndvi-metric .warn {
-  color: #fbbf24;
+  color: #f59e0b;
 }
 
 /* =========================================================
