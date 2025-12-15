@@ -1,38 +1,60 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { Map, Leaf, AlertTriangle } from 'lucide-react'
+import { Card } from '@/components/ui/card'
+import NdviMapPanel from '@/components/NdviMapPanel'
+
+
+const stats = [
+  { label: 'Fields Monitored', value: '12', icon: Map },
+  { label: 'Avg Crop Health', value: '82%', icon: Leaf },
+  { label: 'Active Alerts', value: '2', icon: AlertTriangle },
+]
+
 export default function DashboardPage() {
   return (
-    <>
-      <div className="hero-header">
+    <main className="dashboard-shell">
+      {/* Header */}
+      <div className="dashboard-header">
         <h1>Dashboard</h1>
+        <p>Satellite-powered crop intelligence</p>
       </div>
 
-      <div className="dashboard-content space-y-6">
-        <div className="grid grid-cols-3 gap-6">
-          <div className="surface-card">
-            <div className="text-sm text-slate-500">Fields Monitored</div>
-            <div className="text-2xl font-semibold">12</div>
-          </div>
+      {/* Stats */}
+      <div className="dashboard-stats">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.08 }}
+          >
+            <Card className="stat-card">
+              <s.icon className="stat-icon" />
+              <div className="stat-value">{s.value}</div>
+              <div className="stat-label">{s.label}</div>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+      <NdviMapPanel />
 
-          <div className="surface-card">
-            <div className="text-sm text-slate-500">Avg Crop Health</div>
-            <div className="text-2xl font-semibold">82%</div>
-          </div>
 
-          <div className="surface-card">
-            <div className="text-sm text-slate-500">Active Alerts</div>
-            <div className="text-2xl font-semibold">2</div>
-          </div>
-        </div>
-
-        <div className="surface-card">
-          <div className="text-sm text-slate-500 mb-2">Latest Insight</div>
+      {/* Insight */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+      >
+        <Card className="insight-card">
+          <h2>Latest Insight</h2>
           <p>
             NDVI decline detected in Field 3 during flowering stage.
-            Possible moisture stress.
+            Potential moisture stress observed.
           </p>
-        </div>
-      </div>
-    </>
+        </Card>
+      </motion.div>
+    </main>
   )
 }

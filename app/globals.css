@@ -20,15 +20,72 @@ body {
   );
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
+/* ---------- Typography ---------- */
+:root {
+  --radius-xl: 20px;
 }
 
-/* ---------- Typography ---------- */
-h1,
-h2,
-h3 {
-  letter-spacing: -0.02em;
-  font-weight: 600;
+html {
+  font-family: var(--font-inter);
 }
+
+h1 {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgb(100 116 139);
+}
+
+/* ---------- Dashboard Rhythm ---------- */
+.dashboard-content {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* ---------- KPI Cards ---------- */
+.kpi-value {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #020617;
+}
+
+.kpi-label {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+/* ---------- Tables ---------- */
+.table-shell {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(28px);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
 
 /* ---------- App Shell ---------- */
 .app-shell {
@@ -90,14 +147,15 @@ h3 {
 }
 
 /* ---------- Cards ---------- */
-.surface-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(18px);
-  border-radius: 16px;
-  padding: 16px;
+.card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(26px);
+  border-radius: var(--radius-xl);
+  padding: 24px;
   box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 12px 24px rgba(0, 0, 0, 0.06);
+    0 10px 25px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 /* ---------- Sidebar Icons ---------- */
 .sidebar-icon {
@@ -187,4 +245,477 @@ h3 {
 .status-approved {
   background: rgba(167, 243, 208, 0.7);
   color: #065f46;
+}
+/* ---------- Glass Sidebar Rail ---------- */
+
+.glass-rail {
+  width: 84px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(32px);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: center;
+}
+
+.rail-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-top: 32px;
+}
+
+.rail-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  transition: all 0.25s ease;
+}
+
+.rail-icon:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.rail-icon.active {
+  background: linear-gradient(
+    135deg,
+    rgba(22, 163, 74, 0.18),
+    rgba(34, 197, 94, 0.12)
+  );
+  color: #065f46;
+  box-shadow:
+    inset 0 0 0 1px rgba(22, 163, 74, 0.25),
+    0 6px 18px rgba(22, 163, 74, 0.25);
+}
+/* ---------- Map Controls ---------- */
+
+.map-chip {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(22, 163, 74, 0.15);
+  color: #065f46;
+  font-weight: 500;
+}
+
+.map-chip.inactive {
+  background: rgba(0, 0, 0, 0.06);
+  color: #475569;
+}
+
+.map-control {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #020617;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.map-control:hover {
+  transform: translateY(-1px);
+}
+/* ---------- Status Pills ---------- */
+
+.status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status.good {
+  background: rgba(34, 197, 94, 0.15);
+  color: #065f46;
+}
+
+.status.moderate {
+  background: rgba(234, 179, 8, 0.18);
+  color: #854d0e;
+}
+
+.status.risk {
+  background: rgba(239, 68, 68, 0.18);
+  color: #7f1d1d;
+}
+.card {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+/* ---------- Sidebar Press Feedback ---------- */
+.rail-icon:active {
+  transform: scale(0.94);
+}
+/* ---------- Sidebar Logo Lockup ---------- */
+
+.rail-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 18px 14px;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #1d4ed8, #0f172a);
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 6px 18px rgba(0,0,0,0.25);
+}
+
+.logo-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e5e7eb;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+/* ---------- Divider ---------- */
+
+.rail-divider {
+  height: 1px;
+  margin: 10px 16px 14px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.12),
+    transparent
+  );
+}
+/* =========================================================
+   Glass Rail (Sidebar)
+   ========================================================= */
+
+.glass-rail {
+  width: 72px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.04),
+    rgba(255,255,255,0.02)
+  );
+  backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.rail-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 18px;
+  gap: 10px;
+}
+
+/* ---------- Logo ---------- */
+
+.rail-logo {
+  margin-bottom: 6px;
+}
+
+.logo-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #1d4ed8, #0f172a);
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* ---------- Divider ---------- */
+
+.rail-divider {
+  width: 32px;
+  height: 1px;
+  margin: 6px 0 10px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.18),
+    transparent
+  );
+}
+
+/* ---------- Nav Icons ---------- */
+
+.rail-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: rgba(255,255,255,0.55);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.rail-icon:hover {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.9);
+}
+
+.rail-icon:active {
+  transform: scale(0.94);
+}
+
+/* ---------- Active State ---------- */
+
+.rail-icon.active {
+  background: linear-gradient(
+    to bottom right,
+    rgba(16,185,129,0.35),
+    rgba(16,185,129,0.15)
+  );
+  color: #ecfdf5;
+  box-shadow:
+    inset 0 0 0 1px rgba(16,185,129,0.45),
+    0 6px 18px rgba(0,0,0,0.25);
+}
+/* =========================================================
+   Dashboard Layout
+   ========================================================= */
+
+.dashboard-shell {
+  max-width: 1200px;
+  padding: 42px 48px;
+}
+
+.dashboard-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.dashboard-header p {
+  margin-top: 4px;
+  color: rgba(255,255,255,0.55);
+  font-size: 14px;
+}
+
+/* ---------- Stats ---------- */
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 26px;
+}
+
+.stat-card {
+  padding: 22px;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      to bottom right,
+      rgba(255,255,255,0.06),
+      rgba(255,255,255,0.02)
+    );
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.stat-icon {
+  width: 22px;
+  height: 22px;
+  color: rgba(16,185,129,0.9);
+  margin-bottom: 12px;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  margin-top: 2px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+}
+
+/* ---------- Insight ---------- */
+
+.insight-card {
+  margin-top: 26px;
+  padding: 26px;
+  border-radius: 22px;
+  background: linear-gradient(
+    to bottom right,
+    rgba(16,185,129,0.18),
+    rgba(16,185,129,0.08)
+  );
+  border: 1px solid rgba(16,185,129,0.25);
+  box-shadow:
+    0 12px 36px rgba(0,0,0,0.4);
+}
+
+.insight-card h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.insight-card p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.45;
+}
+/* =========================================================
+   Typography System
+   ========================================================= */
+
+.app-root {
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings */
+
+h1 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+/* Body */
+
+p {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Numbers */
+
+.stat-value,
+.metric-value {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+* {
+  text-shadow: 0 0 0 rgba(0,0,0,0);
+}
+/* =========================================================
+   NDVI Map Panel
+   ========================================================= */
+
+.ndvi-shell {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  gap: 18px;
+  height: 320px;
+}
+
+/* Map */
+
+.ndvi-map {
+  position: relative;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 30% 40%, #1e293b, #020617),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.02),
+      rgba(255,255,255,0.02) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+  overflow: hidden;
+}
+
+/* NDVI Overlay */
+
+.ndvi-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(16,185,129,0.35),
+      rgba(234,179,8,0.15),
+      rgba(239,68,68,0.18)
+    );
+  mix-blend-mode: screen;
+  opacity: 0.65;
+}
+
+/* Panel */
+
+.ndvi-panel {
+  padding: 22px;
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      to bottom right,
+      rgba(255,255,255,0.06),
+      rgba(255,255,255,0.02)
+    );
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+}
+
+.ndvi-panel h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.ndvi-metric {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.ndvi-metric strong {
+  font-weight: 600;
+}
+
+.ndvi-metric .good {
+  color: #34d399;
+}
+
+.ndvi-metric .warn {
+  color: #fbbf24;
 }
