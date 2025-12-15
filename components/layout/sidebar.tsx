@@ -1,3 +1,6 @@
+import Link from 'next/link'
+import { FileText } from 'lucide-react'
+
 export default function Sidebar() {
   return (
     <aside className="sidebar">
@@ -8,7 +11,13 @@ export default function Sidebar() {
         <button className="nav-item" />
         <button className="nav-item" />
         <button className="nav-item" />
+
+        <Link href="/dashboard/reports">
+          <div className="sidebar-icon">
+            <FileText size={20} />
+          </div>
+        </Link>
       </nav>
     </aside>
-  );
+  )
 }
