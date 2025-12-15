@@ -30,9 +30,10 @@ body {
   --card-padding-stat: 20px; /* slightly more for stat cards */
   --card-gap: 14px;
   --section-spacing: 32px; /* vertical spacing between dashboard sections */
-  /* Micro-interaction tokens */
-  --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  --card-shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.12);
+  /* Optical elevation (soft shadows for depth, no borders) */
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.08);
+  --card-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   --card-translate-y: -4px;
   --card-transition-duration: 180ms;
   --card-transition-easing: cubic-bezier(.2,.8,.2,1);
@@ -166,11 +167,11 @@ p {
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(26px);
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(28px);
   border-radius: var(--radius-card);
   padding: var(--card-padding);
-  box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: var(--card-shadow), var(--card-inner-highlight);
   transition: transform var(--card-transition-duration) var(--card-transition-easing), box-shadow var(--card-transition-duration) var(--card-transition-easing);
   will-change: transform, box-shadow;
 }
@@ -183,7 +184,7 @@ p {
 .ndvi-panel:hover,
 .ndvi-map:hover {
   transform: translateY(var(--card-translate-y));
-  box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 /* Slightly more restrained transform for the map surface to avoid layout shift */
