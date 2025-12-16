@@ -71,13 +71,15 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
+        {/* Dominant Crop Health Summary */}
+        <CropHealthSummary
+          score={82}
+          status="Healthy"
+          trend="Improving over last 14 days"
+        />
+
         {/* Stats Section */}
         <section aria-labelledby="stats-heading" className="dashboard-section">
-          <CropHealthSummary
-            score={82}
-            status="Healthy crops detected"
-            trend="Improving over last 14 days"
-          />
           <div className="mb-2">
             <span className="meta-text uppercase tracking-wider" style={{ opacity: 0.5, fontSize: '10px' }}>Supporting Metrics</span>
           </div>
