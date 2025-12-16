@@ -26,11 +26,11 @@ export default function CropHealthSummary({
   }
 
   return (
-    <div className="bg-white border-2 border-gray-200 rounded-lg p-8 shadow-sm">
-      <div className="flex items-baseline justify-between mb-6">
+    <div className="bg-white border-2 border-gray-200 rounded-lg p-10 shadow-sm">
+      <div className="flex items-baseline justify-between mb-8">
         <div>
-          <h2 className="text-5xl font-bold text-gray-900 mb-2">{status}</h2>
-          <div className="text-2xl font-semibold text-gray-600 tabular-nums">
+          <h2 className="text-6xl font-extrabold text-gray-900 mb-3">{status}</h2>
+          <div className="text-2xl font-bold text-gray-600 tabular-nums">
             {score}/100
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function CropHealthSummary({
           {trendSymbol[trend]}
         </div>
       </div>
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-gray-600 border-t border-gray-100 pt-4">
         {trendLabel}
       </div>
     </div>

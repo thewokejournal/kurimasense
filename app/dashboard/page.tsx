@@ -87,7 +87,7 @@ export default function DashboardPage() {
             <span className="text-xs uppercase tracking-wider text-gray-500">Supporting Metrics</span>
           </div>
           <h2 id="stats-heading" className="sr-only">Supporting Metrics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
