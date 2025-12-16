@@ -71,21 +71,23 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
-        {/* Tier-1: Crop Health Summary */}
-        <CropHealthSummary
-          status="Healthy"
-          score={82}
-          trend="up"
-          trendLabel="Improving over last 14 days"
-        />
+        {/* Tier-1: Crop Health Summary - Primary focus */}
+        <div className="w-full mb-16">
+          <CropHealthSummary
+            status="Healthy"
+            score={82}
+            trend="up"
+            trendLabel="Improving over last 14 days"
+          />
+        </div>
 
-        {/* Stats Section */}
-        <section aria-labelledby="stats-heading" className="dashboard-section">
-          <div className="mb-2">
-            <span className="meta-text uppercase tracking-wider" style={{ opacity: 0.5, fontSize: '10px' }}>Supporting Metrics</span>
+        {/* Tier-2: Supporting Metrics - Reduced prominence */}
+        <section aria-labelledby="stats-heading" className="mb-12">
+          <div className="mb-4">
+            <span className="text-xs uppercase tracking-wider text-gray-500">Supporting Metrics</span>
           </div>
           <h2 id="stats-heading" className="sr-only">Supporting Metrics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10" style={{ marginTop: '20px', marginBottom: '16px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
@@ -93,7 +95,7 @@ export default function DashboardPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
               >
-                <Card className="stat-card">
+                <Card className="stat-card opacity-90">
                   <div className="stat-value tabular-nums">{s.value}</div>
                   <div>
                     <div className="stat-delta positive">{s.delta}</div>
