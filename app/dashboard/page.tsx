@@ -28,7 +28,7 @@ const stats = [
 export default function DashboardPage() {
   return (
     <main className="dashboard-shell">
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-8">
+      <div className="dashboard-container">
 
         {/* Header */}
         <header className="dashboard-header dashboard-section-tight">
