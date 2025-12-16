@@ -14,7 +14,7 @@
 import { motion } from 'framer-motion'
 import { Map, Leaf, AlertTriangle, ChevronDown, Calendar, Clock } from 'lucide-react'
 import { Card } from '@/components/ui/card'
-import CropHealthSummary from '@/components/dashboard/CropHealthSummary'
+import CropHealthSummary from '@/components/CropHealthSummary'
 import NdviMapPanel from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
 
@@ -73,9 +73,10 @@ export default function DashboardPage() {
 
         {/* Dominant Crop Health Summary */}
         <CropHealthSummary
-          score={82}
-          status="Healthy"
-          trend="Improving over last 14 days"
+          status="Stable"
+          trend="Improving"
+          confidence="High"
+          detectedAt="April 18, 2025 (4 days ago)"
         />
 
         {/* Stats Section */}
