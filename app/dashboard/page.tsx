@@ -17,6 +17,7 @@ import { Card } from '@/components/ui/card'
 import CropHealthSummary from '@/components/CropHealthSummary'
 import NdviMapPanel from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
+import DashboardCommandBar from '@/components/DashboardCommandBar'
 
 
 const stats = [
@@ -28,6 +29,8 @@ const stats = [
 export default function DashboardPage() {
   return (
     <main className="dashboard-shell">
+      <DashboardCommandBar />
+      
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-8">
 
         {/* ===== HEADER SECTION ===== */}
