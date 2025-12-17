@@ -35,8 +35,9 @@ export default function DashboardCommandBar() {
             focus:outline-none
             font-sans
             text-[15px]
-            text-neutral-200
+            text-white
             placeholder:text-neutral-500
+            caret-white
           "
         />
       </div>
