@@ -33,18 +33,20 @@ export default function DashboardPage() {
         {/* ===== HEADER SECTION ===== */}
         {/* Purpose: Dashboard title, subtitle, and contextual labels */}
         {/* Safe to add: Breadcrumbs, filters, user context */}
-        <div className="dashboard-section dashboard-section-header">
-          <header className="dashboard-header dashboard-section-tight">
-            <span className="meta-text uppercase tracking-wider">Crop Health Report</span>
-            <h1 className="page-title">Field Dashboard</h1>
-            <p className="meta-text mt-1">Satellite monitoring for your crops</p>
-          </header>
+        <div className="dashboard-section dashboard-section-header mb-12">
+          <div className="max-w-3xl">
+            <header className="dashboard-header dashboard-section-tight">
+              <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Crop Health Report</span>
+              <h1 className="page-title mb-6" style={{ lineHeight: '1.1', letterSpacing: '-0.04em' }}>Field Dashboard</h1>
+              <p className="meta-text mt-1">Satellite monitoring for your crops</p>
+            </header>
+          </div>
         </div>
 
         {/* ===== COMMAND BAR SECTION ===== */}
         {/* Purpose: Primary controls for field selection, date range, and data layer toggles */}
         {/* Safe to add: Additional filter buttons, export actions, view toggles */}
-        <div className="dashboard-section dashboard-section-controls">
+        <div className="dashboard-section dashboard-section-controls mb-10">
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -83,26 +85,28 @@ export default function DashboardPage() {
         {/* Purpose: Dominant crop health summary - the single most important metric */}
         {/* Safe to add: Supplementary callout cards, quick action buttons */}
         {/* WARNING: This section must remain visually dominant - do not add competing elements */}
-        <div className="dashboard-section dashboard-section-primary-summary">
-          <CropHealthSummary
-            status="Stable"
-            trend="Improving"
-            confidence="High"
-            detectedAt="April 18, 2025 (4 days ago)"
-          />
+        <div className="dashboard-section dashboard-section-primary-summary mb-16">
+          <div className="bg-muted/30 rounded-xl shadow-sm p-8 border border-border/50">
+            <CropHealthSummary
+              status="Stable"
+              trend="Improving"
+              confidence="High"
+              detectedAt="April 18, 2025 (4 days ago)"
+            />
+          </div>
         </div>
 
         {/* ===== SUPPORTING METRICS SECTION ===== */}
         {/* Purpose: Secondary KPIs that support crop health narrative */}
         {/* Safe to add: Additional stat cards (max 3-4 per row), comparison indicators */}
         {/* Grid system: 1 col mobile, 3 cols desktop - maintain responsive structure */}
-        <div className="dashboard-section dashboard-section-metrics">
+        <div className="dashboard-section dashboard-section-metrics mb-14">
           <section aria-labelledby="stats-heading" className="dashboard-section">
             <div className="mb-2">
               <span className="meta-text uppercase tracking-wider" style={{ opacity: 0.5, fontSize: '10px' }}>Supporting Metrics</span>
             </div>
             <h2 id="stats-heading" className="sr-only">Supporting Metrics</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10" style={{ marginTop: '20px', marginBottom: '16px' }}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ marginTop: '20px', marginBottom: '16px' }}>
               {stats.map((s, i) => (
                 <motion.div
                   key={s.label}
@@ -131,12 +135,12 @@ export default function DashboardPage() {
         {/* Purpose: Spatial view of crop health via NDVI map */}
         {/* Safe to add: Map controls, layer toggles, legend, zoom controls */}
         {/* Maintain fixed aspect ratio for map container */}
-        <div className="dashboard-section dashboard-section-map">
+        <div className="dashboard-section dashboard-section-map mb-14">
           <section aria-labelledby="health-map-heading" className="dashboard-section">
             <div className="flex items-center justify-between">
               <div>
-                <span className="meta-text uppercase tracking-wider">Crop Health Map</span>
-                <h2 id="health-map-heading" className="section-heading">Field Overview</h2>
+                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Crop Health Map</span>
+                <h2 id="health-map-heading" className="section-heading text-lg font-semibold">Field Overview</h2>
               </div>
               <p className="meta-text">Last updated: 2h ago</p>
             </div>
@@ -150,10 +154,10 @@ export default function DashboardPage() {
         {/* Purpose: Contextual narrative and expert observations */}
         {/* Safe to add: Multiple insight cards, recommendations, alerts */}
         {/* Keep prose-style formatting for readability */}
-        <div className="dashboard-section dashboard-section-insights">
+        <div className="dashboard-section dashboard-section-insights mb-14">
           <section className="dashboard-section-tight">
             <div className="mb-2">
-              <span className="meta-text uppercase tracking-wider">Field Observations</span>
+              <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Field Observations</span>
             </div>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -161,7 +165,7 @@ export default function DashboardPage() {
               transition={{ delay: 0.2 }}
             >
               <Card className="insight-card mt-2">
-                <h3 className="font-bold tracking-tight mb-2">Recent Observation</h3>
+                <h3 className="font-semibold tracking-tight mb-2 text-base">Recent Observation</h3>
                 <p className="label-text">Crop vigor declining in Parcel 3 during reproductive stage. Dry conditions observed in southeast area since mid-April.</p>
                 <div className="confidence-indicator" style={{ marginTop: '10px', fontSize: '9px', opacity: 0.45 }}>
                   <span className="confidence-dot" />
@@ -176,10 +180,10 @@ export default function DashboardPage() {
         {/* Purpose: Detailed field-by-field tabular data */}
         {/* Safe to add: Table filters, pagination, export button, column toggles */}
         {/* Maintain table responsiveness for mobile */}
-        <div className="dashboard-section dashboard-section-table">
+        <div className="dashboard-section dashboard-section-table mb-14">
           <section aria-labelledby="fields-heading" className="dashboard-section">
             <div className="flex items-center justify-between">
-              <h2 id="fields-heading" className="section-heading">Your Fields</h2>
+              <h2 id="fields-heading" className="section-heading text-lg font-semibold" style={{ letterSpacing: '0.01em' }}>Your Fields</h2>
               <p className="meta-text">Last checked</p>
             </div>
             <div className="mt-3">
