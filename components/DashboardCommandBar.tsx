@@ -18,29 +18,33 @@ export default function DashboardCommandBar() {
   return (
     <div
       className={`
-        w-full
-        sticky
-        top-0
+        fixed
+        top-4
+        left-1/2
+        -translate-x-1/2
         z-40
-        bg-transparent
-        backdrop-blur-md
-        px-4
         flex
         items-center
-        justify-between
+        gap-4
+        bg-neutral-900/70
+        backdrop-blur-xl
+        border border-neutral-800/40
+        rounded-full
+        px-3
+        shadow-2xl shadow-black/40
         transition-all
         duration-300
-        ${isScrolled ? 'py-2' : 'py-3'}
+        ${isScrolled ? 'py-2 scale-[0.96]' : 'py-2.5 scale-100'}
       `}
     >
       {/* Left side: Search */}
       <div className={`
-        flex items-center gap-3 w-full max-w-sm 
-        bg-neutral-900/60 border border-neutral-800/30 
-        rounded-full px-5 py-3 min-h-[48px] 
-        focus-within:border-neutral-700 focus-within:bg-neutral-900/80 
+        flex items-center gap-3 w-full max-w-md
+        bg-neutral-950/50 border border-neutral-800/30 
+        rounded-full px-5 py-2.5 min-h-[44px] 
+        focus-within:border-neutral-700 focus-within:bg-neutral-950/70 
         transition-all duration-300
-        ${isScrolled ? 'shadow-xl shadow-black/30 scale-[0.98]' : 'shadow-md shadow-black/20'}
+        ${isScrolled ? 'shadow-lg shadow-black/20' : 'shadow-md shadow-black/15'}
       `}>
         <Search className="h-4 w-4 text-neutral-500" />
         <input
