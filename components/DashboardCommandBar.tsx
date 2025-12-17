@@ -20,25 +20,23 @@ export default function DashboardCommandBar() {
       "
     >
       {/* Left side: Search */}
-      <div className="flex items-center gap-3 w-full max-w-sm">
-        <Search className="h-4 w-4 text-neutral-400" />
+      <div className="flex items-center gap-3 w-full max-w-sm bg-neutral-900/60 border border-neutral-800/30 rounded-full shadow-md shadow-black/20 px-5 py-3 min-h-[48px]">
+        <Search className="h-4 w-4 text-neutral-500" />
         <input
           type="text"
           placeholder="Search fields…"
           className="
             w-full
-            bg-neutral-900/50
-            border border-neutral-800/60
-            rounded-lg
-            px-3
-            py-1.5
+            bg-transparent
             outline-none
             ring-0
+            border-0
+            focus:ring-0
+            focus:outline-none
             font-sans
-            text-[13px]
+            text-[15px]
             text-neutral-200
             placeholder:text-neutral-500
-            tracking-tight
           "
         />
       </div>
