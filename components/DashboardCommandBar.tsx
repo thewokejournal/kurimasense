@@ -10,9 +10,8 @@ export default function DashboardCommandBar() {
         sticky
         top-0
         z-40
-        bg-neutral-900/60
+        bg-transparent
         backdrop-blur-md
-        border-b border-neutral-700/40
         px-4
         py-3
         flex
@@ -28,11 +27,18 @@ export default function DashboardCommandBar() {
           placeholder="Search fields…"
           className="
             w-full
-            bg-transparent
+            bg-neutral-900/50
+            border border-neutral-800/60
+            rounded-lg
+            px-3
+            py-1.5
             outline-none
-            text-sm
-            text-slate-100
+            ring-0
+            font-sans
+            text-[13px]
+            text-neutral-200
             placeholder:text-neutral-500
+            tracking-tight
           "
         />
       </div>
@@ -40,15 +46,16 @@ export default function DashboardCommandBar() {
       {/* Right side: Button */}
       <button
         className="
-          bg-emerald-500
-          text-slate-900
-          text-sm
-          px-4
+          bg-neutral-900/70
+          border border-neutral-800
+          text-neutral-200
+          font-sans
+          text-[13px]
+          tracking-tight
+          px-3
           py-1.5
-          rounded-xl
-          font-semibold
-          hover:bg-emerald-400
-          active:bg-emerald-600
+          rounded-lg
+          hover:bg-neutral-900/90
           transition
         "
       >
