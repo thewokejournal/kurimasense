@@ -86,7 +86,7 @@ export default function DashboardPage() {
         {/* Safe to add: Supplementary callout cards, quick action buttons */}
         {/* WARNING: This section must remain visually dominant - do not add competing elements */}
         <div className="dashboard-section dashboard-section-primary-summary mb-16">
-          <div className="bg-muted/30 rounded-xl shadow-sm p-8 border border-border/50">
+          <div className="bg-card rounded-xl shadow-sm p-6">
             <CropHealthSummary
               status="Stable"
               trend="Improving"
