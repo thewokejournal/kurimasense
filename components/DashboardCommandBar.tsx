@@ -1,84 +1,95 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Search, Plus } from "lucide-react";
 
 export default function DashboardCommandBar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div
-      className="
-        fixed
-        top-5
-        left-1/2
-        -translate-x-1/2
-        z-50
+      className={`
         w-full
-        max-w-4xl
+        sticky
+        top-0
+        z-40
+        bg-transparent
+        backdrop-blur-md
         px-4
-      "
+        flex
+        items-center
+        justify-between
+        transition-all
+        duration-300
+        ${isScrolled ? 'py-2' : 'py-3'}
+      `}
     >
-      <div
-        className="
-          rounded-full
-          backdrop-blur-md
-          bg-white/10
-          shadow-lg
-          px-4
-          py-3
+      {/* Left side: Search */}
+      <div className={`
+        flex items-center gap-3 w-full max-w-sm 
+        bg-neutral-900/60 border border-neutral-800/30 
+        rounded-full px-5 py-3 min-h-[48px] 
+        focus-within:border-neutral-700 focus-within:bg-neutral-900/80 
+        transition-all duration-300
+        ${isScrolled ? 'shadow-xl shadow-black/30 scale-[0.98]' : 'shadow-md shadow-black/20'}
+      `}>
+        <Search className="h-4 w-4 text-neutral-500" />
+        <input
+          type="text"
+          placeholder="Search fields…"
+          className="
+            w-full
+            bg-transparent
+            border-none
+            outline-none
+            ring-0
+            focus:ring-0
+            focus:outline-none
+            font-sans
+            text-[15px]
+            text-white
+            placeholder:text-neutral-500
+            caret-white
+          "
+        />
+      </div>
+
+      {/* Right side: Button */}
+      <button
+        className={`
           flex
           items-center
-          justify-between
-          gap-4
-        "
+          gap-2
+          bg-gradient-to-br from-emerald-500 to-emerald-600
+          text-white
+          font-sans
+          font-medium
+          text-[14px]
+          px-5
+          py-2.5
+          rounded-full
+          hover:from-emerald-400 hover:to-emerald-500
+          active:scale-95
+          transition-all
+          duration-300
+          ${isScrolled 
+            ? 'shadow-xl shadow-emerald-500/35 scale-[0.98]' 
+            : 'shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40'
+          }
+        `}
       >
-        {/* Left side: Search */}
-        <div className="flex items-center gap-3 w-full max-w-sm bg-neutral-900/60 border border-neutral-800/30 rounded-full shadow-md shadow-black/20 px-5 py-3 min-h-[48px] focus-within:border-neutral-700 focus-within:bg-neutral-900/80 transition-all">
-          <Search className="h-4 w-4 text-neutral-500" />
-          <input
-            type="text"
-            placeholder="Search fields…"
-            className="
-              w-full
-              bg-transparent
-              border-none
-              outline-none
-              ring-0
-              focus:ring-0
-              focus:outline-none
-              font-sans
-              text-[15px]
-              text-white
-              placeholder:text-neutral-500
-              caret-white
-            "
-          />
-        </div>
-
-        {/* Right side: Button */}
-        <button
-          className="
-            flex
-            items-center
-            gap-2
-            bg-gradient-to-br from-emerald-500 to-emerald-600
-            text-white
-            font-sans
-            font-medium
-            text-[14px]
-            px-5
-            py-2.5
-            rounded-full
-            shadow-lg shadow-emerald-500/25
-            hover:shadow-xl hover:shadow-emerald-500/40
-            hover:from-emerald-400 hover:to-emerald-500
-            active:scale-95
-            transition-all
-            duration-200
-          "
-        >
-          <Plus className="h-4 w-4" />
-          Add Field
-        </button>
-      </div>
+        <Plus className="h-4 w-4" />
+        Add Field
+      </button>
     </div>
   );
 }
