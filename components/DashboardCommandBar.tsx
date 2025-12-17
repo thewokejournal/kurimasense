@@ -18,33 +18,37 @@ export default function DashboardCommandBar() {
   return (
     <div
       className={`
-        fixed
-        top-4
-        left-1/2
-        -translate-x-1/2
+        w-full
+        sticky
+        top-0
         z-40
+        px-4
         flex
         items-center
-        gap-4
-        bg-neutral-900/70
-        backdrop-blur-xl
-        border border-neutral-800/40
-        rounded-full
-        px-3
-        shadow-2xl shadow-black/40
+        justify-between
         transition-all
         duration-300
-        ${isScrolled ? 'py-2 scale-[0.96]' : 'py-2.5 scale-100'}
+        ${isScrolled 
+          ? 'py-2 bg-neutral-950/40 backdrop-blur-xl border-b border-neutral-800/50' 
+          : 'py-3 bg-transparent backdrop-blur-md'
+        }
       `}
     >
       {/* Left side: Search */}
       <div className={`
-        flex items-center gap-3 w-full max-w-md
-        bg-neutral-950/50 border border-neutral-800/30 
-        rounded-full px-5 py-2.5 min-h-[44px] 
-        focus-within:border-neutral-700 focus-within:bg-neutral-950/70 
+        flex items-center gap-3 w-full max-w-sm 
+        bg-gradient-to-br from-neutral-900/70 to-neutral-900/50
+        backdrop-blur-lg
+        border border-neutral-700/40 
+        rounded-full px-5 py-3 min-h-[48px] 
+        focus-within:border-neutral-600/60 
+        focus-within:bg-gradient-to-br focus-within:from-neutral-900/90 focus-within:to-neutral-900/70
+        focus-within:shadow-lg focus-within:shadow-neutral-950/40
         transition-all duration-300
-        ${isScrolled ? 'shadow-lg shadow-black/20' : 'shadow-md shadow-black/15'}
+        ${isScrolled 
+          ? 'shadow-2xl shadow-black/40 scale-[0.98] border-neutral-600/50' 
+          : 'shadow-lg shadow-black/25'
+        }
       `}>
         <Search className="h-4 w-4 text-neutral-500" />
         <input
