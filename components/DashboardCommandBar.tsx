@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 
 export default function DashboardCommandBar() {
   return (
@@ -20,7 +20,7 @@ export default function DashboardCommandBar() {
       "
     >
       {/* Left side: Search */}
-      <div className="flex items-center gap-3 w-full max-w-sm bg-neutral-900/60 border border-neutral-800/30 rounded-full shadow-md shadow-black/20 px-5 py-3 min-h-[48px]">
+      <div className="flex items-center gap-3 w-full max-w-sm bg-neutral-900/60 border border-neutral-800/30 rounded-full shadow-md shadow-black/20 px-5 py-3 min-h-[48px] focus-within:border-neutral-700 focus-within:bg-neutral-900/80 transition-all">
         <Search className="h-4 w-4 text-neutral-500" />
         <input
           type="text"
@@ -28,9 +28,9 @@ export default function DashboardCommandBar() {
           className="
             w-full
             bg-transparent
+            border-none
             outline-none
             ring-0
-            border-0
             focus:ring-0
             focus:outline-none
             font-sans
@@ -45,19 +45,26 @@ export default function DashboardCommandBar() {
       {/* Right side: Button */}
       <button
         className="
-          bg-neutral-900/70
-          border border-neutral-800
-          text-neutral-200
+          flex
+          items-center
+          gap-2
+          bg-gradient-to-br from-emerald-500 to-emerald-600
+          text-white
           font-sans
-          text-[13px]
-          tracking-tight
-          px-3
-          py-1.5
-          rounded-lg
-          hover:bg-neutral-900/90
-          transition
+          font-medium
+          text-[14px]
+          px-5
+          py-2.5
+          rounded-full
+          shadow-lg shadow-emerald-500/25
+          hover:shadow-xl hover:shadow-emerald-500/40
+          hover:from-emerald-400 hover:to-emerald-500
+          active:scale-95
+          transition-all
+          duration-200
         "
       >
+        <Plus className="h-4 w-4" />
         Add Field
       </button>
     </div>
