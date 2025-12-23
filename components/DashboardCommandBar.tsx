@@ -6,6 +6,7 @@ import { Search, Plus } from "lucide-react";
 export default function DashboardCommandBar() {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [query, setQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   const searchNotEmpty = query.length > 0;
 
@@ -18,8 +19,8 @@ export default function DashboardCommandBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Visibility logic: collapse when scrolled and search is empty
-  const shouldShowFullSearch = !hasScrolled || searchNotEmpty;
+  // Visibility logic: expand on mobile (sm), collapse on md+ when scrolled and search is empty (unless focused)
+  const shouldShowFullSearch = !hasScrolled || searchNotEmpty || isFocused;
 
   return (
     <div
@@ -35,7 +36,7 @@ export default function DashboardCommandBar() {
         transition-all
         duration-300
         ${hasScrolled 
-          ? 'py-2 bg-neutral-950/40 backdrop-blur-xl border-b border-neutral-800/50' 
+          ? 'py-2 bg-neutral-950/40 backdrop-blur-xl border-b border-neutral-800/50 shadow-md' 
           : 'py-3 bg-transparent backdrop-blur-md'
         }
       `}
@@ -60,7 +61,8 @@ export default function DashboardCommandBar() {
           className={`
             h-4 w-4 text-neutral-500 
             transition-all duration-300 ease-out
-            ${shouldShowFullSearch ? 'opacity-100' : 'opacity-100'}
+            cursor-pointer
+            ${!shouldShowFullSearch ? 'hover:text-neutral-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' : ''}
           `} 
         />
         <input
@@ -68,6 +70,8 @@ export default function DashboardCommandBar() {
           placeholder="Search fields…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           className={`
             w-full
             bg-transparent
@@ -82,9 +86,10 @@ export default function DashboardCommandBar() {
             placeholder:text-neutral-500
             caret-white
             transition-all duration-300 ease-out
+            sm:opacity-100 sm:max-w-[16rem]
             ${shouldShowFullSearch 
-              ? 'opacity-100 max-w-[16rem]' 
-              : 'opacity-0 max-w-0 pointer-events-none'
+              ? 'md:opacity-100 md:max-w-[16rem]' 
+              : 'md:opacity-0 md:max-w-0 md:pointer-events-none'
             }
           `}
         />
