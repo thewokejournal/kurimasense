@@ -4,16 +4,22 @@ import { useState, useEffect } from "react";
 import { Search, Plus } from "lucide-react";
 
 export default function DashboardCommandBar() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const searchNotEmpty = query.length > 0;
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setHasScrolled(window.scrollY > 120);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Visibility logic: collapse when scrolled and search is empty
+  const shouldShowFullSearch = !hasScrolled || searchNotEmpty;
 
   return (
     <div
@@ -28,7 +34,7 @@ export default function DashboardCommandBar() {
         justify-between
         transition-all
         duration-300
-        ${isScrolled 
+        ${hasScrolled 
           ? 'py-2 bg-neutral-950/40 backdrop-blur-xl border-b border-neutral-800/50' 
           : 'py-3 bg-transparent backdrop-blur-md'
         }
@@ -44,17 +50,25 @@ export default function DashboardCommandBar() {
         focus-within:border-neutral-600/60 
         focus-within:bg-gradient-to-br focus-within:from-neutral-900/90 focus-within:to-neutral-900/70
         focus-within:shadow-lg focus-within:shadow-neutral-950/40
-        transition-all duration-300
-        ${isScrolled 
+        transition-all duration-300 ease-out
+        ${hasScrolled 
           ? 'shadow-2xl shadow-black/40 scale-[0.98] border-neutral-600/50' 
           : 'shadow-lg shadow-black/25'
         }
       `}>
-        <Search className="h-4 w-4 text-neutral-500" />
+        <Search 
+          className={`
+            h-4 w-4 text-neutral-500 
+            transition-all duration-300 ease-out
+            ${shouldShowFullSearch ? 'opacity-100' : 'opacity-100'}
+          `} 
+        />
         <input
           type="text"
           placeholder="Search fields…"
-          className="
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className={`
             w-full
             bg-transparent
             border-none
@@ -67,7 +81,12 @@ export default function DashboardCommandBar() {
             text-white
             placeholder:text-neutral-500
             caret-white
-          "
+            transition-all duration-300 ease-out
+            ${shouldShowFullSearch 
+              ? 'opacity-100' 
+              : 'opacity-0 pointer-events-none'
+            }
+          `}
         />
       </div>
 
@@ -89,7 +108,8 @@ export default function DashboardCommandBar() {
           active:scale-95
           transition-all
           duration-300
-          ${isScrolled 
+          ease-out
+          ${hasScrolled 
             ? 'shadow-xl shadow-emerald-500/35 scale-[0.98]' 
             : 'shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40'
           }
