@@ -83,8 +83,8 @@ export default function DashboardCommandBar() {
             caret-white
             transition-all duration-300 ease-out
             ${shouldShowFullSearch 
-              ? 'opacity-100' 
-              : 'opacity-0 pointer-events-none'
+              ? 'opacity-100 max-w-[16rem]' 
+              : 'opacity-0 max-w-0 pointer-events-none'
             }
           `}
         />
