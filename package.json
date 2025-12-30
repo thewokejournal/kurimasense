@@ -23,7 +23,8 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-leaflet": "^5.0.0",
-    "react-leaflet-draw": "^0.21.0"
+    "react-leaflet-draw": "^0.21.0",
+    "uuid": "^11.0.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
@@ -31,6 +32,7 @@
     "@types/leaflet": "^1.9.21",
     "@types/node": "^25.0.2",
     "@types/react": "^19.2.7",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "^10.4.23",
     "playwright": "^1.41.0",
     "postcss": "^8.5.6",
