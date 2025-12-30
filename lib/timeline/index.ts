@@ -13,3 +13,10 @@ export {
   createFieldTimeline,
   appendInsightToTimeline,
 } from './append'
+export {
+  calculateTrendDirection,
+  getMostSevereEntry,
+  getMostRecentEntry,
+  countEntriesBySeverity,
+  getEntriesInRange,
+} from './trend'
