@@ -20,3 +20,11 @@ export {
   countEntriesBySeverity,
   getEntriesInRange,
 } from './trend'
+export type { StabilityScore, StabilityMetrics } from './stability'
+export {
+  calculateStability,
+  calculateStabilityScore,
+  hasRecentFluctuations,
+  calculateChangeFrequency,
+  getLongestStablePeriod,
+} from './stability'
