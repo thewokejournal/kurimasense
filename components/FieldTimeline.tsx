@@ -21,14 +21,14 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
 
   if (entries.length === 0) {
     return (
-      <div className="text-center py-6" style={{ color: 'rgba(230, 238, 248, 0.5)', fontSize: '13px' }}>
+      <div className="text-center py-6 meta-text" style={{ opacity: 0.5 }}>
         No timeline entries available
       </div>
     )
   }
 
   return (
-    <div className="max-h-80 overflow-y-auto space-y-2.5">
+    <div className="space-y-6">
       {sortedEntries.map((entry) => (
         <TimelineEntryItem 
           key={entry.insightId} 
@@ -51,32 +51,49 @@ function TimelineEntryItem({ entry, onHover, onSelect }: TimelineEntryItemProps)
   const relativeTime = getRelativeTime(entry.timestamp)
   const severityColor = getSeverityColor(entry.severity)
   const confidenceColor = getConfidenceColor(entry.confidence)
+  const formattedDate = formatDate(entry.timestamp)
 
   return (
     <div 
-      className="flex gap-2.5 py-2 border-b last:border-0" 
-      style={{ borderColor: 'rgba(255, 255, 255, 0.06)' }}
+      className="pb-6 border-b last:border-0" 
+      style={{ borderColor: 'rgba(255, 255, 255, 0.04)' }}
       onMouseEnter={() => onHover?.(entry.insightId)}
       onMouseLeave={() => onHover?.(null)}
       onClick={() => onSelect?.(entry.insightId)}
     >
-      {/* Severity indicator */}
-      <div className="flex-shrink-0 mt-0.5">
-        <div
-          className="w-1.5 h-1.5 rounded-full"
-          style={{ backgroundColor: severityColor }}
-          aria-label={`Severity: ${entry.severity}`}
-        />
+      {/* Date label */}
+      <div className="meta-text uppercase tracking-wider mb-2" style={{ opacity: 0.4 }}>
+        {formattedDate}
       </div>
 
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="label-text" style={{ marginBottom: '4px' }}>
-          {entry.insightType}
+      {/* Content group */}
+      <div className="flex gap-3">
+        {/* Severity indicator */}
+        <div className="flex-shrink-0 mt-1">
+          <div
+            className="w-2 h-2 rounded-full"
+            style={{ backgroundColor: severityColor, opacity: 0.8 }}
+            aria-label={`Severity: ${entry.severity}`}
+          />
         </div>
-        <div className="confidence-indicator" style={{ fontSize: '9px', opacity: 0.45 }}>
-          <span className="confidence-dot" style={{ backgroundColor: confidenceColor }} />
-          <span>{relativeTime} · {entry.severity}</span>
+
+        {/* Text content */}
+        <div className="flex-1 min-w-0">
+          {/* Health event title */}
+          <div className="font-semibold tracking-tight mb-1" style={{ fontSize: '14px' }}>
+            {entry.insightType}
+          </div>
+          
+          {/* Description */}
+          <div className="label-text mb-2" style={{ opacity: 0.6, lineHeight: '1.5' }}>
+            {getEventDescription(entry.severity, entry.insightType)}
+          </div>
+
+          {/* Confidence indicator */}
+          <div className="confidence-indicator">
+            <span className="confidence-dot" style={{ backgroundColor: confidenceColor }} />
+            <span>{entry.confidence} confidence · {relativeTime}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -110,6 +127,41 @@ function getRelativeTime(timestamp: string): string {
   
   const months = Math.floor(diffDays / 30)
   return months === 1 ? '1mo ago' : `${months}mo ago`
+}
+
+/**
+ * Format date for timeline entry header
+ */
+function formatDate(timestamp: string): string {
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+
+  if (diffDays === 0) return 'Today'
+  if (diffDays === 1) return 'Yesterday'
+  
+  const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }
+  return date.toLocaleDateString('en-US', options)
+}
+
+/**
+ * Get descriptive text for event
+ */
+function getEventDescription(severity: string, insightType: string): string {
+  // Generate a contextual description based on severity and type
+  const severityLower = severity.toLowerCase()
+  
+  if (severityLower === 'critical' || severityLower === 'high') {
+    return 'Immediate attention recommended to prevent crop stress or yield loss.'
+  }
+  if (severityLower === 'medium') {
+    return 'Monitor closely over the next few days for any changes in conditions.'
+  }
+  if (severityLower === 'low') {
+    return 'Minor variation detected, no immediate action required.'
+  }
+  return 'Field conditions within expected range.'
 }
 
 /**
