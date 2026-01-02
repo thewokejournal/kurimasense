@@ -92,34 +92,47 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
       <div className="relative">
         {/* Timeline Event Anchors */}
         <div className="absolute inset-0 pointer-events-none">
-          {events.map((event, index) => (
-            <div
-              key={index}
-              className="absolute flex flex-col items-center group pointer-events-auto"
-              style={{
-                left: `${(index / (events.length - 1)) * 100}%`,
-                bottom: 0,
-              }}
-            >
-              {/* Vertical tick */}
-              <div className="w-px h-6 bg-white/20" />
+          {events.map((event, index) => {
+            // Calculate position percentage
+            const positionPercent = (index / (events.length - 1)) * 100
+            
+            // Determine tooltip alignment based on position
+            let tooltipPositionClass = '-translate-x-1/2' // center by default
+            if (positionPercent < 20) {
+              tooltipPositionClass = 'left-0' // align left for left-side markers
+            } else if (positionPercent > 80) {
+              tooltipPositionClass = 'right-0' // align right for right-side markers
+            }
+            
+            return (
+              <div
+                key={index}
+                className="absolute flex flex-col items-center group pointer-events-auto"
+                style={{
+                  left: `${positionPercent}%`,
+                  bottom: 0,
+                }}
+              >
+                {/* Vertical tick */}
+                <div className="w-px h-6 bg-white/20" />
 
-              {/* Anchor dot */}
-              <div className={`w-2 h-2 rounded-full mt-1 ${getEventColor(event.type)}`} />
+                {/* Anchor dot */}
+                <div className={`w-2 h-2 rounded-full mt-1 ${getEventColor(event.type)}`} />
 
-              {/* Tooltip */}
-              <div className="absolute bottom-10 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-150 pointer-events-none z-50">
-                <div className="bg-[#0f172a] border border-white/10 rounded-lg px-3 py-2 text-xs max-w-[240px] shadow-sm">
-                  <div className="font-medium text-white">
-                    {event.title}
-                  </div>
-                  <div className="text-white/60 mt-1 leading-snug">
-                    {event.description}
+                {/* Tooltip */}
+                <div className={`absolute bottom-10 ${tooltipPositionClass} opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-150 pointer-events-none z-50`}>
+                  <div className="bg-[#0f172a] border border-white/10 rounded-lg px-3 py-2 text-xs max-w-[240px] shadow-sm">
+                    <div className="font-medium text-white">
+                      {event.title}
+                    </div>
+                    <div className="text-white/60 mt-1 leading-snug">
+                      {event.description}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         {/* Vertical connecting line */}
