@@ -76,6 +76,22 @@ const getTrendArrowColor = (trend: Trend) => {
   }
 }
 
+const getWatchGuidance = (status: HealthStatus, trend: Trend): string => {
+  if (status === 'Critical' || status === 'Stressed') {
+    return 'Monitoring southeast parcels and soil moisture levels'
+  }
+  if (status === 'Under Observation') {
+    return 'Watching for changes in canopy vigor and water stress indicators'
+  }
+  if (trend === 'Declining') {
+    return 'Tracking NDVI trends and weather patterns over next 3–5 days'
+  }
+  if (trend === 'Improving') {
+    return 'Observing recovery patterns in previously stressed areas'
+  }
+  return 'Maintaining routine field monitoring across all parcels'
+}
+
 export default function CropHealthSummary({
   status,
   trend,
@@ -149,6 +165,13 @@ export default function CropHealthSummary({
               <span style={{ opacity: 0.85 }}>{detectedAt}</span>
             </div>
           </div>
+        </div>
+
+        {/* What to watch */}
+        <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.04)' }}>
+          <p className="meta-text" style={{ opacity: 0.5, fontSize: '12px', lineHeight: '1.5' }}>
+            {getWatchGuidance(status, trend)}
+          </p>
         </div>
       </div>
     </motion.div>
