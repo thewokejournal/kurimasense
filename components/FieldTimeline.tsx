@@ -9,6 +9,28 @@
 import { motion } from 'framer-motion'
 import { TimelineEntry } from '@/lib/timeline'
 
+// TODO: Remove hardcoded events - temporary scaffolding for Phase 4
+const events = [
+  {
+    date: '2025-04-10',
+    type: 'observation',
+    title: 'NDVI Decline Detected',
+    description: 'Vegetation index dropped compared to last week.',
+  },
+  {
+    date: '2025-04-13',
+    type: 'environmental',
+    title: 'Rainfall Event',
+    description: 'Moderate rainfall recorded across the field.',
+  },
+  {
+    date: '2025-04-16',
+    type: 'advisory',
+    title: 'Monitor Irrigation',
+    description: 'Dry conditions may persist.',
+  },
+]
+
 interface FieldTimelineProps {
   entries: TimelineEntry[]
   // TODO: Phase 4 - Wire these callbacks to UI state management
@@ -54,6 +76,26 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
 
       {/* Timeline entries */}
       <div className="relative">
+        {/* Timeline Event Anchors */}
+        <div className="absolute inset-0 pointer-events-none">
+          {events.map((event, index) => (
+            <div
+              key={index}
+              className="absolute flex flex-col items-center"
+              style={{
+                left: `${(index / (events.length - 1)) * 100}%`,
+                bottom: 0,
+              }}
+            >
+              {/* Vertical tick */}
+              <div className="w-px h-6 bg-white/20" />
+
+              {/* Anchor dot */}
+              <div className="w-2 h-2 rounded-full bg-white/40 mt-1" />
+            </div>
+          ))}
+        </div>
+
         {/* Vertical connecting line */}
         <div 
           className="absolute left-[7px] top-4 bottom-4"
