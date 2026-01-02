@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { TrendingUp, TrendingDown, Minus, Activity } from 'lucide-react'
+import { TrendingUp, TrendingDown, Minus, Activity, ArrowUp, ArrowRight, ArrowDown } from 'lucide-react'
 import { TrendIndicator } from './TrendIndicator'
 
 type HealthStatus = 'Healthy' | 'Stable' | 'Under Observation' | 'Stressed' | 'Critical'
@@ -54,6 +54,28 @@ const getTrendColor = (trend: Trend) => {
   }
 }
 
+const getTrendArrowIcon = (trend: Trend) => {
+  switch (trend) {
+    case 'Improving':
+      return ArrowUp
+    case 'Declining':
+      return ArrowDown
+    case 'Stable':
+      return ArrowRight
+  }
+}
+
+const getTrendArrowColor = (trend: Trend) => {
+  switch (trend) {
+    case 'Improving':
+      return 'text-green-400'
+    case 'Declining':
+      return 'text-amber-400'
+    case 'Stable':
+      return 'text-slate-400'
+  }
+}
+
 export default function CropHealthSummary({
   status,
   trend,
@@ -65,6 +87,8 @@ export default function CropHealthSummary({
   const TrendIcon = getTrendIcon(trend)
   const statusColor = getStatusColor(status)
   const trendColor = getTrendColor(trend)
+  const TrendArrowIcon = getTrendArrowIcon(trend)
+  const trendArrowColorClass = getTrendArrowColor(trend)
 
   // Fallback for trend direction if not provided
   const normalizedTrendDirection = trendDirection || trend.toLowerCase() as 'improving' | 'stable' | 'declining'
@@ -98,7 +122,10 @@ export default function CropHealthSummary({
             <span className="health-metadata-label">Trend (14-day window)</span>
             <div className="health-metadata-value" style={{ color: trendColor }}>
               <TrendIcon className="w-5 h-5" />
-              <span>{trend}</span>
+              <span className="inline-flex items-center gap-1">
+                <TrendArrowIcon className={`${trendArrowColorClass}`} size={14} />
+                <span>{trend}</span>
+              </span>
               <TrendIndicator 
                 direction={normalizedTrendDirection} 
                 stability={normalizedStability} 
