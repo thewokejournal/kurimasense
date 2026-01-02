@@ -120,7 +120,7 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
                 <div className={`w-2 h-2 rounded-full mt-1 ${getEventColor(event.type)}`} />
 
                 {/* Tooltip */}
-                <div className={`absolute bottom-10 ${tooltipPositionClass} opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-150 pointer-events-none z-50`}>
+                <div className={`absolute bottom-10 ${tooltipPositionClass} opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-50`}>
                   <div className="bg-[#0f172a] border border-white/10 rounded-lg px-3 py-2 text-xs max-w-[240px] shadow-sm">
                     <div className="font-medium text-white">
                       {event.title}
