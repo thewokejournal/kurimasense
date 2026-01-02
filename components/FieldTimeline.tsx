@@ -16,18 +16,30 @@ const events = [
     type: 'observation',
     title: 'NDVI Decline Detected',
     description: 'Vegetation index dropped compared to last week.',
+    isPredictive: false,
   },
   {
     date: '2025-04-13',
     type: 'environmental',
     title: 'Rainfall Event',
     description: 'Moderate rainfall recorded across the field.',
+    isPredictive: false,
   },
   {
     date: '2025-04-16',
     type: 'advisory',
     title: 'Monitor Irrigation',
     description: 'Dry conditions may persist.',
+    isPredictive: true,
+    confidence: 'high' as const,
+  },
+  {
+    date: '2025-04-19',
+    type: 'recommendation',
+    title: 'Predicted Stress Period',
+    description: 'Model suggests elevated crop stress likely in 3-5 days.',
+    isPredictive: true,
+    confidence: 'medium' as const,
   },
 ]
 
@@ -43,6 +55,27 @@ const eventTypeColors: Record<string, string> = {
 
 const getEventColor = (type: string): string => {
   return eventTypeColors[type] || 'bg-white/40'
+}
+
+// Get marker opacity based on prediction confidence
+const getMarkerOpacity = (isPredictive: boolean, confidence?: 'high' | 'medium' | 'low'): string => {
+  if (!isPredictive) return 'opacity-100'
+  
+  switch (confidence) {
+    case 'high':
+      return 'opacity-90'
+    case 'medium':
+      return 'opacity-70'
+    case 'low':
+      return 'opacity-50'
+    default:
+      return 'opacity-70'
+  }
+}
+
+// Get marker border style for predictive events
+const getMarkerBorder = (isPredictive: boolean): string => {
+  return isPredictive ? 'border border-white/30' : ''
 }
 
 interface FieldTimelineProps {
@@ -117,7 +150,7 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
                 <div className="w-px h-6 bg-white/20" />
 
                 {/* Anchor dot */}
-                <div className={`w-2 h-2 rounded-full mt-1 ${getEventColor(event.type)}`} />
+                <div className={`w-2 h-2 rounded-full mt-1 ${getEventColor(event.type)} ${getMarkerOpacity(event.isPredictive, event.confidence)} ${getMarkerBorder(event.isPredictive)}`} />
 
                 {/* Tooltip */}
                 <div className={`absolute bottom-10 ${tooltipPositionClass} opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-50`}>
