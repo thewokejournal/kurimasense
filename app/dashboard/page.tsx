@@ -18,12 +18,46 @@ import CropHealthSummary from '@/components/CropHealthSummary'
 import NdviMapPanel from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
 import DashboardCommandBar from '@/components/DashboardCommandBar'
+import { FieldTimeline } from '@/components/FieldTimeline'
+import type { TimelineEntry } from '@/lib/timeline'
 
 
 const stats = [
   { label: 'Active Parcels', value: '12', delta: '+1 vs last scan', timeContext: 'Last 24 hours', icon: Map },
   { label: 'Canopy Vigor Index', value: '82%', delta: '+2.4% from previous period', timeContext: 'Last 7 days', icon: Leaf },
   { label: 'Field Advisories', value: '2', delta: '−1 resolved', timeContext: 'Last 48 hours', icon: AlertTriangle },
+]
+
+// Mock timeline data for demonstration
+const mockTimelineEntries: TimelineEntry[] = [
+  {
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+    insightId: 'insight-1',
+    insightType: 'NDVI approaching upper limit',
+    severity: 'medium',
+    confidence: 'high',
+  },
+  {
+    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Yesterday
+    insightId: 'insight-2',
+    insightType: 'Temperature elevated',
+    severity: 'high',
+    confidence: 'medium',
+  },
+  {
+    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
+    insightId: 'insight-3',
+    insightType: 'Soil moisture optimal',
+    severity: 'low',
+    confidence: 'high',
+  },
+  {
+    timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week ago
+    insightId: 'insight-4',
+    insightType: 'All signals within normal range',
+    severity: 'info',
+    confidence: 'high',
+  },
 ]
 
 export default function DashboardPage() {
@@ -149,6 +183,25 @@ export default function DashboardPage() {
             </div>
             <div className="mt-3">
               <NdviMapPanel />
+            </div>
+          </section>
+        </div>
+
+        {/* ===== FIELD TIMELINE SECTION ===== */}
+        {/* Purpose: Chronological view of field insights and events */}
+        {/* Safe to add: Timeline filters, export button, date range selector */}
+        <div className="dashboard-section dashboard-section-timeline mb-14">
+          <section aria-labelledby="timeline-heading" className="dashboard-section">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Field Activity</span>
+                <h2 id="timeline-heading" className="section-heading text-lg font-semibold">Timeline</h2>
+              </div>
+            </div>
+            <div className="mt-3">
+              <Card className="p-4">
+                <FieldTimeline entries={mockTimelineEntries} />
+              </Card>
             </div>
           </section>
         </div>
