@@ -8,9 +8,12 @@ import { TimelineEntry } from '@/lib/timeline'
 
 interface FieldTimelineProps {
   entries: TimelineEntry[]
+  // TODO: Phase 4 - Wire these callbacks to UI state management
+  onEntryHover?: (insightId: string | null) => void
+  onEntrySelect?: (insightId: string) => void
 }
 
-export function FieldTimeline({ entries }: FieldTimelineProps) {
+export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTimelineProps) {
   // Sort entries by timestamp, newest first
   const sortedEntries = [...entries].sort((a, b) => {
     return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
@@ -27,7 +30,12 @@ export function FieldTimeline({ entries }: FieldTimelineProps) {
   return (
     <div className="max-h-80 overflow-y-auto space-y-2.5">
       {sortedEntries.map((entry) => (
-        <TimelineEntryItem key={entry.insightId} entry={entry} />
+        <TimelineEntryItem 
+          key={entry.insightId} 
+          entry={entry}
+          onHover={onEntryHover}
+          onSelect={onEntrySelect}
+        />
       ))}
     </div>
   )
@@ -35,15 +43,23 @@ export function FieldTimeline({ entries }: FieldTimelineProps) {
 
 interface TimelineEntryItemProps {
   entry: TimelineEntry
+  onHover?: (insightId: string | null) => void
+  onSelect?: (insightId: string) => void
 }
 
-function TimelineEntryItem({ entry }: TimelineEntryItemProps) {
+function TimelineEntryItem({ entry, onHover, onSelect }: TimelineEntryItemProps) {
   const relativeTime = getRelativeTime(entry.timestamp)
   const severityColor = getSeverityColor(entry.severity)
   const confidenceColor = getConfidenceColor(entry.confidence)
 
   return (
-    <div className="flex gap-2.5 py-2 border-b last:border-0" style={{ borderColor: 'rgba(255, 255, 255, 0.06)' }}>
+    <div 
+      className="flex gap-2.5 py-2 border-b last:border-0" 
+      style={{ borderColor: 'rgba(255, 255, 255, 0.06)' }}
+      onMouseEnter={() => onHover?.(entry.insightId)}
+      onMouseLeave={() => onHover?.(null)}
+      onClick={() => onSelect?.(entry.insightId)}
+    >
       {/* Severity indicator */}
       <div className="flex-shrink-0 mt-0.5">
         <div
