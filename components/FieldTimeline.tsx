@@ -147,7 +147,10 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
                 }}
               >
                 {/* Vertical tick */}
-                <div className="w-px h-6 bg-white/20" />
+                <div 
+                  className={`w-px h-6 ${event.isPredictive ? 'border-l border-dashed border-white/30' : 'bg-white/20'}`}
+                  style={event.isPredictive ? { borderWidth: '1px' } : undefined}
+                />
 
                 {/* Anchor dot */}
                 <div className={`w-2 h-2 rounded-full mt-1 ${getEventColor(event.type)} ${getMarkerOpacity(event.isPredictive, event.confidence)} ${getMarkerBorder(event.isPredictive)}`} />
@@ -155,10 +158,17 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
                 {/* Tooltip */}
                 <div className={`absolute bottom-10 ${tooltipPositionClass} opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-50`}>
                   <div className="bg-[#0f172a] border border-white/10 rounded-lg px-3 py-2 text-xs max-w-[240px] shadow-sm">
-                    <div className="font-medium text-white">
-                      {event.title}
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="font-medium text-white flex-1">
+                        {event.title}
+                      </div>
+                      {event.isPredictive && (
+                        <span className="text-[10px] uppercase tracking-wide text-white/40 font-medium">
+                          Projected
+                        </span>
+                      )}
                     </div>
-                    <div className="text-white/60 mt-1 leading-snug">
+                    <div className="text-white/60 leading-snug">
                       {event.description}
                     </div>
                   </div>
