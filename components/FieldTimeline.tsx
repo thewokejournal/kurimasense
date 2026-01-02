@@ -4,6 +4,9 @@
  * Displays a chronological list of field timeline entries.
  */
 
+'use client'
+
+import { motion } from 'framer-motion'
 import { TimelineEntry } from '@/lib/timeline'
 
 interface FieldTimelineProps {
@@ -21,82 +24,126 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
 
   if (entries.length === 0) {
     return (
-      <div className="text-center py-6 meta-text" style={{ opacity: 0.5 }}>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="text-center py-8 meta-text" 
+        style={{ opacity: 0.5 }}
+      >
         No timeline entries available
-      </div>
+      </motion.div>
     )
   }
 
   return (
-    <div className="space-y-6">
-      {sortedEntries.map((entry) => (
-        <TimelineEntryItem 
-          key={entry.insightId} 
-          entry={entry}
-          onHover={onEntryHover}
-          onSelect={onEntrySelect}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+    >
+      {/* Section Title */}
+      <div className="mb-6 pb-4" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
+        <h3 className="font-semibold tracking-tight" style={{ fontSize: '15px', opacity: 0.85 }}>
+          Field Health Timeline
+        </h3>
+        <p className="meta-text mt-1" style={{ opacity: 0.45 }}>
+          Chronological health events and observations
+        </p>
+      </div>
+
+      {/* Timeline entries */}
+      <div className="relative">
+        {/* Vertical connecting line */}
+        <div 
+          className="absolute left-[7px] top-4 bottom-4"
+          style={{
+            width: '1px',
+            background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02))',
+          }}
+          aria-hidden="true"
         />
-      ))}
-    </div>
+
+        {/* Entries */}
+        <div className="space-y-8">
+          {sortedEntries.map((entry, index) => (
+            <TimelineEntryItem 
+              key={entry.insightId} 
+              entry={entry}
+              index={index}
+              onHover={onEntryHover}
+              onSelect={onEntrySelect}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
   )
 }
 
 interface TimelineEntryItemProps {
   entry: TimelineEntry
+  index: number
   onHover?: (insightId: string | null) => void
   onSelect?: (insightId: string) => void
 }
 
-function TimelineEntryItem({ entry, onHover, onSelect }: TimelineEntryItemProps) {
+function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryItemProps) {
   const relativeTime = getRelativeTime(entry.timestamp)
   const severityColor = getSeverityColor(entry.severity)
   const confidenceColor = getConfidenceColor(entry.confidence)
   const formattedDate = formatDate(entry.timestamp)
 
   return (
-    <div 
-      className="pb-6 border-b last:border-0" 
-      style={{ borderColor: 'rgba(255, 255, 255, 0.04)' }}
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
+      className="relative pl-8"
       onMouseEnter={() => onHover?.(entry.insightId)}
       onMouseLeave={() => onHover?.(null)}
       onClick={() => onSelect?.(entry.insightId)}
     >
-      {/* Date label */}
-      <div className="meta-text uppercase tracking-wider mb-2" style={{ opacity: 0.4 }}>
-        {formattedDate}
+      {/* Timeline dot */}
+      <div 
+        className="absolute left-0 top-1 w-4 h-4 rounded-full flex items-center justify-center"
+        style={{ 
+          backgroundColor: 'rgba(17, 24, 39, 0.8)',
+          border: `2px solid ${severityColor}`,
+          boxShadow: `0 0 8px ${severityColor}40`,
+        }}
+        aria-label={`Severity: ${entry.severity}`}
+      >
+        <div 
+          className="w-1.5 h-1.5 rounded-full"
+          style={{ backgroundColor: severityColor }}
+        />
       </div>
 
-      {/* Content group */}
-      <div className="flex gap-3">
-        {/* Severity indicator */}
-        <div className="flex-shrink-0 mt-1">
-          <div
-            className="w-2 h-2 rounded-full"
-            style={{ backgroundColor: severityColor, opacity: 0.8 }}
-            aria-label={`Severity: ${entry.severity}`}
-          />
+      {/* Content */}
+      <div>
+        {/* Date label */}
+        <div className="meta-text uppercase tracking-wider mb-2" style={{ opacity: 0.35, fontSize: '10px' }}>
+          {formattedDate}
         </div>
 
-        {/* Text content */}
-        <div className="flex-1 min-w-0">
-          {/* Health event title */}
-          <div className="font-semibold tracking-tight mb-1" style={{ fontSize: '14px' }}>
-            {entry.insightType}
-          </div>
-          
-          {/* Description */}
-          <div className="label-text mb-2" style={{ opacity: 0.6, lineHeight: '1.5' }}>
-            {getEventDescription(entry.severity, entry.insightType)}
-          </div>
+        {/* Health event title */}
+        <div className="font-semibold tracking-tight mb-2" style={{ fontSize: '14px', lineHeight: '1.4' }}>
+          {entry.insightType}
+        </div>
+        
+        {/* Description */}
+        <div className="label-text mb-3" style={{ opacity: 0.55, lineHeight: '1.6' }}>
+          {getEventDescription(entry.severity, entry.insightType)}
+        </div>
 
-          {/* Confidence indicator */}
-          <div className="confidence-indicator">
-            <span className="confidence-dot" style={{ backgroundColor: confidenceColor }} />
-            <span>{entry.confidence} confidence · {relativeTime}</span>
-          </div>
+        {/* Confidence indicator */}
+        <div className="confidence-indicator">
+          <span className="confidence-dot" style={{ backgroundColor: confidenceColor }} />
+          <span>{entry.confidence} confidence · {relativeTime}</span>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
