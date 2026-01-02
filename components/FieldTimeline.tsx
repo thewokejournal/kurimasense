@@ -230,7 +230,7 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
     >
       {/* Timeline dot */}
       <div 
-        className="absolute left-0 top-1 w-4 h-4 rounded-full flex items-center justify-center"
+        className="absolute left-0 top-0 w-4 h-4 rounded-full flex items-center justify-center"
         style={{ 
           backgroundColor: 'rgba(17, 24, 39, 0.8)',
           border: `2px solid ${severityColor}`,
@@ -247,7 +247,7 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
       {/* Content */}
       <div>
         {/* Date label */}
-        <div className="meta-text uppercase tracking-wider mb-2" style={{ opacity: 0.35, fontSize: '10px' }}>
+        <div className="meta-text uppercase tracking-wider mb-2 flex items-center" style={{ opacity: 0.35, fontSize: '10px', minHeight: '16px' }}>
           {formattedDate}
         </div>
 
