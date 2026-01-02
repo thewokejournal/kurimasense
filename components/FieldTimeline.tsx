@@ -81,7 +81,7 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
           {events.map((event, index) => (
             <div
               key={index}
-              className="absolute flex flex-col items-center"
+              className="absolute flex flex-col items-center group pointer-events-auto"
               style={{
                 left: `${(index / (events.length - 1)) * 100}%`,
                 bottom: 0,
@@ -92,6 +92,18 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
 
               {/* Anchor dot */}
               <div className="w-2 h-2 rounded-full bg-white/40 mt-1" />
+
+              {/* Tooltip */}
+              <div className="absolute bottom-10 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-150 pointer-events-none z-50">
+                <div className="bg-[#0f172a] border border-white/10 rounded-lg px-3 py-2 text-xs max-w-[240px] shadow-sm">
+                  <div className="font-medium text-white">
+                    {event.title}
+                  </div>
+                  <div className="text-white/60 mt-1 leading-snug">
+                    {event.description}
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
