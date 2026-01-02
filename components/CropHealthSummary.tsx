@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { TrendingUp, TrendingDown, Minus, Activity } from 'lucide-react'
+import { TrendIndicator } from './TrendIndicator'
 
 type HealthStatus = 'Healthy' | 'Stable' | 'Under Observation' | 'Stressed' | 'Critical'
 type Trend = 'Improving' | 'Stable' | 'Declining'
@@ -12,6 +13,8 @@ interface CropHealthSummaryProps {
   trend: Trend
   confidence: Confidence
   detectedAt: string
+  trendDirection?: 'improving' | 'stable' | 'declining'
+  stability?: number
 }
 
 const getStatusColor = (status: HealthStatus) => {
@@ -56,10 +59,17 @@ export default function CropHealthSummary({
   trend,
   confidence,
   detectedAt,
+  trendDirection,
+  stability,
 }: CropHealthSummaryProps) {
   const TrendIcon = getTrendIcon(trend)
   const statusColor = getStatusColor(status)
   const trendColor = getTrendColor(trend)
+
+  // Fallback for trend direction if not provided
+  const normalizedTrendDirection = trendDirection || trend.toLowerCase() as 'improving' | 'stable' | 'declining'
+  // Fallback for stability if not provided (default to 0.7)
+  const normalizedStability = stability !== undefined ? stability : 0.7
 
   return (
     <motion.div
@@ -89,6 +99,10 @@ export default function CropHealthSummary({
             <div className="health-metadata-value" style={{ color: trendColor }}>
               <TrendIcon className="w-5 h-5" />
               <span>{trend}</span>
+              <TrendIndicator 
+                direction={normalizedTrendDirection} 
+                stability={normalizedStability} 
+              />
             </div>
           </div>
 
