@@ -129,6 +129,8 @@ export default function DashboardPage() {
               trend="Improving"
               confidence="High"
               detectedAt="April 18, 2025 (4 days ago)"
+              trendDirection="improving"
+              stability={0.82}
             />
           </div>
         </div>
