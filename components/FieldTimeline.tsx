@@ -98,7 +98,7 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
 
         {/* Vertical connecting line */}
         <div 
-          className="absolute left-[7px] top-4 bottom-4"
+          className="absolute left-[8px] top-4 bottom-4"
           style={{
             width: '1px',
             background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02))',
@@ -141,7 +141,7 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
-      className="relative pl-8"
+      className="relative pl-12"
       onMouseEnter={() => onHover?.(entry.insightId)}
       onMouseLeave={() => onHover?.(null)}
       onClick={() => onSelect?.(entry.insightId)}
