@@ -159,7 +159,7 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
                 <div className={`absolute bottom-10 ${tooltipPositionClass} opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-50`}>
                   <div className="bg-[#0f172a] border border-white/10 rounded-lg px-3 py-2 text-xs max-w-[240px] shadow-sm">
                     {event.isPredictive && (
-                      <div className="text-[9px] uppercase tracking-widest text-white/30 font-medium mb-2">
+                      <div className="text-[10px] uppercase tracking-wider text-white/40 mb-1">
                         Forecast
                       </div>
                     )}
