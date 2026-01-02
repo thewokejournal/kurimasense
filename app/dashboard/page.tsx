@@ -19,6 +19,7 @@ import NdviMapPanel from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
 import DashboardCommandBar from '@/components/DashboardCommandBar'
 import { FieldTimeline } from '@/components/FieldTimeline'
+import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import type { TimelineEntry } from '@/lib/timeline'
 
 
@@ -225,7 +226,10 @@ export default function DashboardPage() {
               transition={{ delay: 0.2 }}
             >
               <Card className="insight-card mt-2">
-                <h3 className="font-semibold tracking-tight mb-2 text-base">Recent Observation</h3>
+                <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
+                  Recent Observation
+                  <ConfidenceBadge confidence={0.85} source="satellite" />
+                </h3>
                 <p className="label-text">Crop vigor declining in Parcel 3 during reproductive stage. Dry conditions observed in southeast area since mid-April.</p>
                 <div className="confidence-indicator" style={{ marginTop: '10px', fontSize: '9px', opacity: 0.45 }}>
                   <span className="confidence-dot" />
