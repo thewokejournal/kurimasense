@@ -31,6 +31,20 @@ const events = [
   },
 ]
 
+// Event type color mapping for timeline markers
+const eventTypeColors: Record<string, string> = {
+  observation: 'bg-blue-400/60',
+  alert: 'bg-red-400/60',
+  recommendation: 'bg-amber-400/60',
+  anomaly: 'bg-purple-400/60',
+  environmental: 'bg-teal-400/60',
+  advisory: 'bg-orange-400/60',
+}
+
+const getEventColor = (type: string): string => {
+  return eventTypeColors[type] || 'bg-white/40'
+}
+
 interface FieldTimelineProps {
   entries: TimelineEntry[]
   // TODO: Phase 4 - Wire these callbacks to UI state management
@@ -91,7 +105,7 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
               <div className="w-px h-6 bg-white/20" />
 
               {/* Anchor dot */}
-              <div className="w-2 h-2 rounded-full bg-white/40 mt-1" />
+              <div className={`w-2 h-2 rounded-full mt-1 ${getEventColor(event.type)}`} />
 
               {/* Tooltip */}
               <div className="absolute bottom-10 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-150 pointer-events-none z-50">
