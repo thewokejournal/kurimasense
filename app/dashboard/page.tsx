@@ -191,18 +191,20 @@ export default function DashboardPage() {
         {/* Purpose: Chronological view of field insights and events */}
         {/* Safe to add: Timeline filters, export button, date range selector */}
         <div className="dashboard-section dashboard-section-timeline mb-14">
-          <section aria-labelledby="timeline-heading" className="dashboard-section">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Field Activity</span>
-                <h2 id="timeline-heading" className="section-heading text-lg font-semibold">Timeline</h2>
-              </div>
+          <section aria-labelledby="timeline-heading" className="dashboard-section-tight">
+            <div className="mb-2">
+              <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Field Activity</span>
             </div>
-            <div className="mt-3">
-              <Card className="p-4">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="insight-card mt-2">
+                <h3 className="font-semibold tracking-tight mb-3 text-base">Recent Events</h3>
                 <FieldTimeline entries={mockTimelineEntries} />
-              </Card>
-            </div>
+              </div>
+            </motion.div>
           </section>
         </div>
 

@@ -18,14 +18,14 @@ export function FieldTimeline({ entries }: FieldTimelineProps) {
 
   if (entries.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500 text-sm">
+      <div className="text-center py-6" style={{ color: 'rgba(230, 238, 248, 0.5)', fontSize: '13px' }}>
         No timeline entries available
       </div>
     )
   }
 
   return (
-    <div className="max-h-96 overflow-y-auto space-y-3 px-1">
+    <div className="max-h-80 overflow-y-auto space-y-2.5">
       {sortedEntries.map((entry) => (
         <TimelineEntryItem key={entry.insightId} entry={entry} />
       ))}
@@ -43,11 +43,11 @@ function TimelineEntryItem({ entry }: TimelineEntryItemProps) {
   const confidenceColor = getConfidenceColor(entry.confidence)
 
   return (
-    <div className="flex gap-3 py-2 border-b border-gray-100 last:border-0">
+    <div className="flex gap-2.5 py-2 border-b last:border-0" style={{ borderColor: 'rgba(255, 255, 255, 0.06)' }}>
       {/* Severity indicator */}
-      <div className="flex-shrink-0 mt-1">
+      <div className="flex-shrink-0 mt-0.5">
         <div
-          className="w-2 h-2 rounded-full"
+          className="w-1.5 h-1.5 rounded-full"
           style={{ backgroundColor: severityColor }}
           aria-label={`Severity: ${entry.severity}`}
         />
@@ -55,26 +55,13 @@ function TimelineEntryItem({ entry }: TimelineEntryItemProps) {
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-baseline justify-between gap-2 mb-1">
-          <span className="text-sm font-medium text-gray-900 capitalize">
-            {entry.severity}
-          </span>
-          <span className="text-xs text-gray-500 flex-shrink-0">
-            {relativeTime}
-          </span>
-        </div>
-        <div className="text-sm text-gray-600">
+        <div className="label-text" style={{ marginBottom: '4px' }}>
           {entry.insightType}
         </div>
-      </div>
-
-      {/* Confidence dot */}
-      <div className="flex-shrink-0 mt-1">
-        <div
-          className="w-1.5 h-1.5 rounded-full"
-          style={{ backgroundColor: confidenceColor }}
-          aria-label={`Confidence: ${entry.confidence}`}
-        />
+        <div className="confidence-indicator" style={{ fontSize: '9px', opacity: 0.45 }}>
+          <span className="confidence-dot" style={{ backgroundColor: confidenceColor }} />
+          <span>{relativeTime} · {entry.severity}</span>
+        </div>
       </div>
     </div>
   )
