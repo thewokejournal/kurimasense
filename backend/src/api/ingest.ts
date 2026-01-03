@@ -1,25 +1,23 @@
 import express from 'express'
-import satellitePayloadSchema from '../types/satellite.js'
-import weatherPayloadSchema from '../types/weather.js'
+import { satellitePayloadSchema, weatherPayloadSchema } from '../types/contracts.js'
 import { insertSatelliteRecord, insertWeatherRecord } from '../db/client.js'
 
 const router = express.Router()
 
 /**
  * POST /api/ingest/satellite
- * Ingest raw satellite data
+ * Accept raw satellite data, validate, and store
  */
-router.post('/satellite', async (req, res) => {
+router.post('/satellite', (req, res) => {
   try {
     // Validate payload
     const validated = satellitePayloadSchema.parse(req.body)
     
-    // Store raw record
+    // Store raw payload without transformation
     const result = insertSatelliteRecord(validated)
     
     res.status(201).json({
       success: true,
-      message: 'Satellite data ingested',
       id: result.id
     })
   } catch (error: any) {
@@ -31,29 +29,27 @@ router.post('/satellite', async (req, res) => {
       })
     }
     
-    console.error('Satellite ingestion error:', error)
     res.status(500).json({
       success: false,
-      error: 'Failed to ingest satellite data'
+      error: 'Internal server error'
     })
   }
 })
 
 /**
  * POST /api/ingest/weather
- * Ingest raw weather data
+ * Accept raw weather data, validate, and store
  */
-router.post('/weather', async (req, res) => {
+router.post('/weather', (req, res) => {
   try {
     // Validate payload
     const validated = weatherPayloadSchema.parse(req.body)
     
-    // Store raw record
+    // Store raw payload without transformation
     const result = insertWeatherRecord(validated)
     
     res.status(201).json({
       success: true,
-      message: 'Weather data ingested',
       id: result.id
     })
   } catch (error: any) {
@@ -65,10 +61,9 @@ router.post('/weather', async (req, res) => {
       })
     }
     
-    console.error('Weather ingestion error:', error)
     res.status(500).json({
       success: false,
-      error: 'Failed to ingest weather data'
+      error: 'Internal server error'
     })
   }
 })
