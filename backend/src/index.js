@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import satelliteRouter from './routes/satellite.js'
-import weatherRouter from './routes/weather.js'
+import satelliteRoutes from './api/satellite.js'
+import weatherRoutes from './api/weather.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -16,8 +16,8 @@ app.get('/health', (req, res) => {
 })
 
 // API routes
-app.use('/api/satellite', satelliteRouter)
-app.use('/api/weather', weatherRouter)
+app.use('/api/satellite', satelliteRoutes)
+app.use('/api/weather', weatherRoutes)
 
 // Error handling
 app.use((err, req, res, next) => {

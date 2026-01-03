@@ -1,6 +1,6 @@
 import express from 'express'
-import { weatherPayloadSchema } from '../schemas/weather.js'
-import storage from '../storage.js'
+import weatherPayloadSchema from '../types/weather.js'
+import storage from '../db/storage.js'
 
 const router = express.Router()
 

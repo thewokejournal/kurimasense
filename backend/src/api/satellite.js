@@ -1,6 +1,6 @@
 import express from 'express'
-import { satellitePayloadSchema } from '../schemas/satellite.js'
-import storage from '../storage.js'
+import satellitePayloadSchema from '../types/satellite.js'
+import storage from '../db/storage.js'
 
 const router = express.Router()
 

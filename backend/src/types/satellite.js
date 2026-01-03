@@ -4,7 +4,7 @@ import { z } from 'zod'
  * Satellite Data Schema
  * Validates raw satellite imagery and NDVI data
  */
-export const satellitePayloadSchema = z.object({
+const satellitePayloadSchema = z.object({
   fieldId: z.string().min(1),
   timestamp: z.string().datetime(),
   source: z.enum(['sentinel-2', 'landsat-8', 'planet']),
@@ -26,4 +26,4 @@ export const satellitePayloadSchema = z.object({
   rawData: z.any().optional(), // Preserve raw payload
 })
 
-export type SatellitePayload = z.infer<typeof satellitePayloadSchema>
+export default satellitePayloadSchema

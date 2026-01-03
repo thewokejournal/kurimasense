@@ -4,7 +4,7 @@ import { z } from 'zod'
  * Weather Data Schema
  * Validates raw weather station and forecast data
  */
-export const weatherPayloadSchema = z.object({
+const weatherPayloadSchema = z.object({
   fieldId: z.string().min(1),
   timestamp: z.string().datetime(),
   source: z.enum(['weather-station', 'openweather', 'noaa', 'forecast']),
@@ -35,4 +35,4 @@ export const weatherPayloadSchema = z.object({
   rawData: z.any().optional(), // Preserve raw payload
 })
 
-export type WeatherPayload = z.infer<typeof weatherPayloadSchema>
+export default weatherPayloadSchema
