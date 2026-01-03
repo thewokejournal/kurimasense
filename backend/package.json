@@ -1,0 +1,17 @@
+{
+  "name": "kurimasense-backend",
+  "version": "1.0.0",
+  "description": "Backend services for KurimaSense agricultural monitoring platform",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "agriculture",
+    "monitoring",
+    "crop-health"
+  ],
+  "author": "",
+  "license": "ISC"
+}
