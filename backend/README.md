@@ -1,69 +1,99 @@
 # KurimaSense Backend
 
-Backend API services for satellite and weather data ingestion.
+Agricultural monitoring backend with raw data ingestion and signal processing.
 
-## Installation
+## Architecture
 
-```bash
-cd backend
-npm install
+```
+┌─────────────────┐
+│  Data Sources   │  Satellite imagery, weather stations, IoT sensors
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  POST /ingest   │  Validate with Zod, store raw JSON
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Raw Records    │  satellite_records, weather_records (JSON blobs)
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ POST /signals/  │  Extract metrics, transform, normalize
+│     process     │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Signals Table  │  Structured time-series data
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  GET /signals/  │  Query for visualization
+│    :fieldId     │
+└─────────────────┘
 ```
 
-## Running
+## Directory Structure
 
-```bash
-# Development mode with auto-reload
-npm run dev
-
-# Production mode
-npm start
 ```
-
-Server runs on `http://localhost:3001` by default.
+backend/
+├── src/
+│   ├── api/          API endpoints
+│   │   ├── ingest.ts    - POST /api/ingest/{satellite,weather}
+│   │   ├── signals.ts   - GET/POST /api/signals
+│   │   ├── satellite.js - Legacy (file storage)
+│   │   └── weather.js   - Legacy (file storage)
+│   ├── db/           Database layer
+│   │   └── client.ts    - Simple SQLite client
+│   ├── signals/      Signal processing
+│   │   └── processor.ts - Transform raw → signals
+│   ├── types/        Zod schemas
+│   │   ├── satellite.js
+│   │   └── weather.js
+│   └── index.js      Express server
+├── data/             SQLite database files
+└── package.json
+```
 
 ## API Endpoints
 
-### Satellite Data
+### Ingestion
+```bash
+POST /api/ingest/satellite
+POST /api/ingest/weather
+```
 
-**POST /api/satellite**
-- Accepts raw satellite data payload
-- Validates with Zod schema
-- Persists without modification
-- Returns storage confirmation
+### Signal Processing
+```bash
+POST /api/signals/process
+GET /api/signals/:fieldId?type=ndvi
+```
 
-**GET /api/satellite/:fieldId**
-- Retrieves all satellite data for a field
-- Returns data sorted by timestamp (newest first)
+### Legacy
+```bash
+POST /api/satellite
+GET /api/satellite/:fieldId
+POST /api/weather
+GET /api/weather/:fieldId
+```
 
-### Weather Data
+## Development
 
-**POST /api/weather**
-- Accepts raw weather data payload
-- Validates with Zod schema
-- Persists without modification
-- Returns storage confirmation
+```bash
+npm install
+npm run dev    # Hot reload with tsx
+npm run build  # Compile TypeScript
+npm start      # Production
+```
 
-**GET /api/weather/:fieldId**
-- Retrieves all weather data for a field
-- Returns data sorted by timestamp (newest first)
+Server runs on `http://localhost:3001`
 
-### Health Check
+## Data Flow
 
-**GET /health**
-- Returns server status and timestamp
-
-## Data Storage
-
-Data is stored in `backend/data/` as JSON files:
-- `satellite/` - Satellite payloads
-- `weather/` - Weather payloads
-
-Files are named: `{type}-{fieldId}-{timestamp}.json`
-
-## Schema Validation
-
-All payloads are validated using Zod schemas:
-- `src/schemas/satellite.js` - Satellite data schema
-- `src/schemas/weather.js` - Weather data schema
-
-Validation errors return 400 with detailed error messages.
+1. **Ingest** → Validate → Store as JSON
+2. **Process** → Extract signals → Store structured
+3. **Query** → Retrieve signals for visualization
