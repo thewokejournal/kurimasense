@@ -43,23 +43,20 @@ export default function DashboardCommandBar() {
     >
       {/* Left side: Search */}
       <div className={`
+        surface-soft
         flex items-center gap-3 w-full max-w-sm 
-        bg-gradient-to-br from-neutral-900/70 to-neutral-900/50
-        backdrop-blur-lg
-        border border-neutral-700/40 
-        rounded-full px-5 py-3 min-h-[48px] 
-        focus-within:border-neutral-600/60 
-        focus-within:bg-gradient-to-br focus-within:from-neutral-900/90 focus-within:to-neutral-900/70
-        focus-within:shadow-lg focus-within:shadow-neutral-950/40
+        px-5 py-3 min-h-[48px] 
+        rounded-xl
+        focus-within:ring-1 focus-within:ring-white/10
         transition-all duration-300 ease-out
         ${hasScrolled 
-          ? 'shadow-2xl shadow-black/40 scale-[0.98] border-neutral-600/50' 
+          ? 'shadow-2xl shadow-black/40 scale-[0.98]' 
           : 'shadow-lg shadow-black/25'
         }
       `}>
         <Search 
           className={`
-            h-4 w-4 text-neutral-500 
+            h-4 w-4 text-muted
             transition-all duration-300 ease-out
             cursor-pointer
             ${!shouldShowFullSearch ? 'hover:text-neutral-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' : ''}
@@ -82,9 +79,8 @@ export default function DashboardCommandBar() {
             focus:outline-none
             font-sans
             text-[15px]
-            text-white
-            placeholder:text-neutral-500
-            caret-white
+            text-primary
+            placeholder:text-muted
             transition-all duration-300 ease-out
             sm:opacity-100 sm:max-w-[16rem]
             ${shouldShowFullSearch 
@@ -97,28 +93,8 @@ export default function DashboardCommandBar() {
 
       {/* Right side: Button */}
       <button
-        className={`
-          flex
-          items-center
-          gap-2
-          bg-gradient-to-br from-emerald-500 to-emerald-600
-          text-white
-          font-sans
-          font-medium
-          text-[14px]
-          px-5
-          py-2.5
-          rounded-full
-          hover:from-emerald-400 hover:to-emerald-500
-          active:scale-95
-          transition-all
-          duration-300
-          ease-out
-          ${hasScrolled 
-            ? 'shadow-xl shadow-emerald-500/35 scale-[0.98]' 
-            : 'shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40'
-          }
-        `}
+        className="btn-primary flex items-center gap-2"
+        onClick={() => console.log('Add field clicked')}
       >
         <Plus className="h-4 w-4" />
         Add Field

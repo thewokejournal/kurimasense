@@ -151,13 +151,13 @@ export default function DashboardPage() {
             <div className="command-separator" />
 
             <div className="flex gap-2">
-              <button className="command-control command-control-active" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
+              <button className="btn-secondary font-semibold">
                 Crop Vigor
               </button>
-              <button className="command-control" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
+              <button className="btn-secondary">
                 Rainfall
               </button>
-              <button className="command-control" style={{ minWidth: 'auto', paddingLeft: '12px', paddingRight: '12px' }}>
+              <button className="btn-secondary">
                 Water Stress
               </button>
             </div>
@@ -210,7 +210,7 @@ export default function DashboardPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 }}
                 >
-                  <Card className="stat-card surface">
+                  <Card className="surface p-5">
                     <div className="stat-value tabular-nums">{s.value}</div>
                     <div>
                       <div className="stat-delta positive">{s.delta}</div>
@@ -282,7 +282,7 @@ export default function DashboardPage() {
               transition={{ delay: 0.2 }}
             >
               {inference && (
-                <Card className="insight-card mt-2">
+                <Card className="surface-soft p-5 mt-2">
                   <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
                     {inference.categories[0]?.category === 'alert' ? 'Alert' :
                      inference.categories[0]?.category === 'advisory' ? 'Advisory' :

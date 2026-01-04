@@ -52,7 +52,7 @@ html {
 h1 {
   font-size: clamp(32px, 5vw + 8px, 52px);
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
   opacity: var(--tone-primary);
 }
@@ -60,7 +60,7 @@ h1 {
 h2 {
   font-size: clamp(18px, 2.5vw + 4px, 28px);
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
   margin-bottom: 12px;
   opacity: var(--tone-primary);
@@ -69,7 +69,7 @@ h2 {
 h3 {
   font-size: 16px;
   font-weight: 650;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
   margin-bottom: 10px;
   opacity: var(--tone-primary);
@@ -149,12 +149,37 @@ p {
   color: var(--text-muted);
 }
 
+/* Input cursor color */
+input {
+  caret-color: white;
+}
+
+/* Button System */
+.btn-primary {
+  background: var(--accent-green);
+  color: white;
+  border-radius: 14px;
+  padding: 10px 18px;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(34, 197, 94, 0.35);
+}
+
+.btn-secondary {
+  background: var(--surface-soft);
+  color: var(--text-secondary);
+  border-radius: 14px;
+  padding: 8px 14px;
+}
+
 .meta-text {
-  font-size: var(--type-meta-size);
-  color: var(--type-meta-color);
-  font-weight: var(--type-meta-weight);
-  line-height: var(--type-meta-line-height);
-  opacity: var(--tone-tertiary);
+  color: var(--text-muted);
+  font-size: 12px;
 }
 
 .label-text {
@@ -775,31 +800,21 @@ p {
 }
 
 .rail-icon {
-  width: 48px;
-  height: 48px;
+  background: var(--surface-soft);
   border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #475569;
-  transition: all 0.25s ease;
+  padding: 12px;
+  color: var(--text-secondary);
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .rail-icon:hover {
-  background: rgba(0, 0, 0, 0.05);
-  transform: translateY(-1px);
+  background: var(--surface-hover);
+  color: var(--text-primary);
 }
 
 .rail-icon.active {
-  background: linear-gradient(
-    135deg,
-    rgba(22, 163, 74, 0.18),
-    rgba(34, 197, 94, 0.12)
-  );
-  color: #065f46;
-  box-shadow:
-    inset 0 0 0 1px rgba(22, 163, 74, 0.25),
-    0 6px 18px rgba(22, 163, 74, 0.25);
+  background: var(--surface-elevated);
+  color: white;
 }
 /* ---------- Map Controls ---------- */
 

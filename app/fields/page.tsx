@@ -37,7 +37,7 @@ return (
 <div className="h-[500px] rounded-2xl overflow-hidden shadow-sm">
 <Map onPolygonCreated={setPolygon} />
 </div>
-<Button onClick={saveField} className="mt-4 rounded-2xl">Save Field</Button>
+<Button onClick={saveField} className="btn-primary mt-4">Save Field</Button>
 </main>
 )
 }
