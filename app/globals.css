@@ -109,7 +109,7 @@ p {
 
 :root {
   --surface-base: #0f172a;
-  --surface-elevated: rgba(255, 255, 255, 0.03);
+  --surface-elevated: rgba(18, 24, 31, 0.6);
   --surface-border: rgba(255, 255, 255, 0.06);
 
   --surface-hover: rgba(255, 255, 255, 0.05);
