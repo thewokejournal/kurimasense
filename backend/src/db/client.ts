@@ -2,6 +2,7 @@ import Database from 'better-sqlite3'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import { existsSync, mkdirSync } from 'fs'
+import { initializeSchema } from './schema.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -16,7 +17,7 @@ if (!existsSync(DB_DIR)) {
 const db = new Database(DB_PATH)
 db.pragma('journal_mode = WAL')
 
-// Simple tables: just store raw JSON payloads
+// Initialize raw records tables
 db.exec(`
   CREATE TABLE IF NOT EXISTS satellite_records (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,6 +31,9 @@ db.exec(`
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 `)
+
+// Initialize signal tables
+initializeSchema(db)
 
 /**
  * Insert raw satellite record
