@@ -168,7 +168,7 @@ export default function DashboardPage() {
         {/* Purpose: Dominant crop health summary - the single most important metric */}
         {/* Safe to add: Supplementary callout cards, quick action buttons */}
         {/* WARNING: This section must remain visually dominant - do not add competing elements */}
-        <div className="dashboard-section dashboard-section-primary-summary mb-16">
+        <div className="dashboard-section dashboard-section-primary-summary mt-10 mb-16">
           <div className="bg-card rounded-xl shadow-sm p-6">
             {isLoading ? (
               <div className="text-center py-12 text-gray-500">Loading crop health data...</div>
@@ -196,8 +196,8 @@ export default function DashboardPage() {
         {/* Purpose: Secondary KPIs that support crop health narrative */}
         {/* Safe to add: Additional stat cards (max 3-4 per row), comparison indicators */}
         {/* Grid system: 1 col mobile, 3 cols desktop - maintain responsive structure */}
-        <div className="dashboard-section dashboard-section-metrics mb-14">
-          <section aria-labelledby="stats-heading" className="dashboard-section">
+        <div className="dashboard-section dashboard-section-metrics mt-6 mb-14">
+          <section aria-labelledby="stats-heading" className="dashboard-section mt-10">
             <div className="mb-2">
               <span className="meta-text uppercase tracking-wider" style={{ opacity: 0.5, fontSize: '10px' }}>Supporting Metrics</span>
             </div>
@@ -231,8 +231,8 @@ export default function DashboardPage() {
         {/* Purpose: Spatial view of crop health via NDVI map */}
         {/* Safe to add: Map controls, layer toggles, legend, zoom controls */}
         {/* Maintain fixed aspect ratio for map container */}
-        <div className="dashboard-section dashboard-section-map mb-14">
-          <section aria-labelledby="health-map-heading" className="dashboard-section">
+        <div className="dashboard-section dashboard-section-map mt-10 mb-14">
+          <section aria-labelledby="health-map-heading" className="dashboard-section mt-10">
             <div className="flex items-center justify-between">
               <div>
                 <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Crop Health Map</span>
@@ -249,7 +249,7 @@ export default function DashboardPage() {
         {/* ===== FIELD TIMELINE SECTION ===== */}
         {/* Purpose: Chronological view of field insights and events */}
         {/* Safe to add: Timeline filters, export button, date range selector */}
-        <div className="dashboard-section dashboard-section-timeline mb-14">
+        <div className="dashboard-section dashboard-section-timeline mt-10 mb-14">
           <section aria-labelledby="timeline-heading" className="dashboard-section-tight">
             <div className="mb-2">
               <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Field Activity</span>
@@ -271,7 +271,7 @@ export default function DashboardPage() {
         {/* Purpose: Contextual narrative and expert observations */}
         {/* Safe to add: Multiple insight cards, recommendations, alerts */}
         {/* Keep prose-style formatting for readability */}
-        <div className="dashboard-section dashboard-section-insights mb-14">
+        <div className="dashboard-section dashboard-section-insights mt-6 mb-14">
           <section className="dashboard-section-tight">
             <div className="mb-2">
               <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Field Observations</span>
@@ -307,8 +307,8 @@ export default function DashboardPage() {
         {/* Purpose: Detailed field-by-field tabular data */}
         {/* Safe to add: Table filters, pagination, export button, column toggles */}
         {/* Maintain table responsiveness for mobile */}
-        <div className="dashboard-section dashboard-section-table mb-14">
-          <section aria-labelledby="fields-heading" className="dashboard-section">
+        <div className="dashboard-section dashboard-section-table mt-10 mb-14">
+          <section aria-labelledby="fields-heading" className="dashboard-section mt-10">
             <div className="flex items-center justify-between">
               <h2 id="fields-heading" className="section-heading text-lg font-semibold" style={{ letterSpacing: '0.01em' }}>Your Fields</h2>
               <p className="meta-text">Last checked</p>
