@@ -94,12 +94,12 @@ export default function FieldsTable() {
       <table className="w-full label-text">
         <thead>
           <tr className="text-left text-slate-500">
-            <th className="px-6 py-3 font-medium">Priority</th>
-            <th className="px-6 py-3 font-medium">Parcel</th>
-            <th className="px-6 py-3 font-medium">Health Status</th>
-            <th className="px-6 py-3 font-medium">Trend</th>
-            <th className="px-6 py-3 font-medium">Confidence</th>
-            <th className="px-6 py-3 font-medium">Since Detected</th>
+            <th className="px-6 py-4 font-medium">Priority</th>
+            <th className="px-6 py-4 font-medium">Parcel</th>
+            <th className="px-6 py-4 font-medium">Health Status</th>
+            <th className="px-6 py-4 font-medium">Trend</th>
+            <th className="px-6 py-4 font-medium">Confidence</th>
+            <th className="px-6 py-4 font-medium">Since Detected</th>
           </tr>
         </thead>
 
@@ -116,19 +116,19 @@ export default function FieldsTable() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.2, delay: index * 0.05 }}
                 whileHover={{ backgroundColor: 'rgba(0,0,0,0.035)' }}
-                className={`border-t border-black/5 ${field.requiresAttention ? 'triage-attention' : ''}`}
+                className={`border-t border-black/5 py-3 ${field.requiresAttention ? 'triage-attention' : ''}`}
               >
-                <td className="px-6 py-4">
+                <td className="px-6 py-5">
                   {field.requiresAttention && (
                     <div className="priority-indicator">
                       <AlertCircle className="w-4 h-4" style={{ color: healthColor }} />
                     </div>
                   )}
                 </td>
-                <td className="px-6 py-4 font-medium text-slate-900">
+                <td className="px-6 py-5 font-medium text-slate-900">
                   {field.name}
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-5">
                   <span
                     className="health-status-badge"
                     style={{ 
@@ -140,19 +140,19 @@ export default function FieldsTable() {
                     {field.health}
                   </span>
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-5">
                   <div className="trend-indicator" style={{ color: trendColor }}>
                     <TrendIcon className="w-4 h-4" />
                     <span>{field.trend}</span>
                   </div>
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-5">
                   <span className={`confidence-badge ${field.confidence.toLowerCase()}`}>
                     <span className="confidence-dot" />
                     {field.confidence}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-slate-500">
+                <td className="px-6 py-5 text-slate-500">
                   {field.detectedAt}
                 </td>
               </motion.tr>
