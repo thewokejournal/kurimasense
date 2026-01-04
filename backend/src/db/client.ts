@@ -53,4 +53,44 @@ export function insertWeatherRecord(payload: any) {
   return { id: result.lastInsertRowid }
 }
 
+/**
+ * Insert vegetation signal
+ */
+export function insertVegetationSignal(signal: any) {
+  const stmt = db.prepare(`
+    INSERT INTO vegetation_signals (
+      field_id, timestamp, ndvi_mean, ndvi_min, ndvi_max, ndvi_std_dev, data_quality
+    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+  `)
+  const result = stmt.run(
+    signal.fieldId,
+    signal.timestamp,
+    signal.ndvi.mean,
+    signal.ndvi.min,
+    signal.ndvi.max,
+    signal.ndvi.stdDev,
+    signal.dataQuality
+  )
+  return { id: result.lastInsertRowid }
+}
+
+/**
+ * Insert weather signal
+ */
+export function insertWeatherSignal(signal: any) {
+  const stmt = db.prepare(`
+    INSERT INTO weather_signals (
+      field_id, timestamp, rainfall_mm, temperature_c, data_quality
+    ) VALUES (?, ?, ?, ?, ?)
+  `)
+  const result = stmt.run(
+    signal.fieldId,
+    signal.timestamp,
+    signal.rainfall,
+    signal.temperature,
+    signal.dataQuality
+  )
+  return { id: result.lastInsertRowid }
+}
+
 export default db
