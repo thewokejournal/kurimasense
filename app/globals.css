@@ -12,13 +12,8 @@ body {
   font-size: 14px;
   line-height: 1.45;
   letter-spacing: -0.01em;
-  background: linear-gradient(
-    135deg,
-    #0a0e14 0%,
-    #0e1419 40%,
-    #12181f 100%
-  );
-  color: var(--text-secondary);
+  background: var(--bg-app);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
