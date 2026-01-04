@@ -4,6 +4,7 @@ import satelliteRoutes from './api/satellite.js'
 import weatherRoutes from './api/weather.js'
 import ingestRoutes from './api/ingest.js'
 import signalsRoutes from './api/signals.js'
+import { inferenceRouter } from './api/index.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -20,6 +21,7 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/ingest', ingestRoutes)
 app.use('/api/signals', signalsRoutes)
+app.use('/api/inference', inferenceRouter)
 app.use('/api/satellite', satelliteRoutes)
 app.use('/api/weather', weatherRoutes)
 
