@@ -60,3 +60,23 @@ export const weatherPayloadSchema = z.object({
   }).optional(),
   rawData: z.any().optional(),
 })
+
+/**
+ * Inference Response Contract (LOCKED)
+ * DO NOT modify without team consensus
+ * Defines the canonical API response for inference results
+ */
+export const inferenceResponseSchema = z.object({
+  fieldId: z.string().min(1),
+  generatedAt: z.string().datetime(),
+  status: z.enum(['healthy', 'watch', 'stressed']),
+  trend: z.enum(['improving', 'stable', 'declining']),
+  confidence: z.enum(['high', 'medium', 'low']),
+  categories: z.array(z.object({
+    category: z.enum(['observation', 'advisory', 'alert', 'forecast']),
+    message: z.string().min(1),
+  })),
+  explanation: z.string().min(1),
+})
+
+export type InferenceResponse = z.infer<typeof inferenceResponseSchema>
