@@ -1,6 +1,7 @@
 import express from 'express'
 import { satellitePayloadSchema, weatherPayloadSchema } from '../types/contracts.js'
-import { insertSatelliteRecord, insertWeatherRecord } from '../db/client.js'
+import { insertSatelliteRecord, insertWeatherRecord, insertVegetationSignal, insertWeatherSignal } from '../db/client.js'
+import { toVegetationSignal, toWeatherSignal } from '../signals/index.js'
 
 const router = express.Router()
 
@@ -14,11 +15,18 @@ router.post('/satellite', (req, res) => {
     const validated = satellitePayloadSchema.parse(req.body)
     
     // Store raw payload without transformation
-    const result = insertSatelliteRecord(validated)
+    const rawResult = insertSatelliteRecord(validated)
+    
+    // Normalize to signal
+    const signal = toVegetationSignal(validated)
+    
+    // Persist signal
+    const signalResult = insertVegetationSignal(signal)
     
     res.status(201).json({
       success: true,
-      id: result.id
+      id: rawResult.id,
+      signalId: signalResult.id
     })
   } catch (error: any) {
     if (error.name === 'ZodError') {
@@ -46,11 +54,18 @@ router.post('/weather', (req, res) => {
     const validated = weatherPayloadSchema.parse(req.body)
     
     // Store raw payload without transformation
-    const result = insertWeatherRecord(validated)
+    const rawResult = insertWeatherRecord(validated)
+    
+    // Normalize to signal
+    const signal = toWeatherSignal(validated)
+    
+    // Persist signal
+    const signalResult = insertWeatherSignal(signal)
     
     res.status(201).json({
       success: true,
-      id: result.id
+      id: rawResult.id,
+      signalId: signalResult.id
     })
   } catch (error: any) {
     if (error.name === 'ZodError') {
