@@ -11,6 +11,7 @@
  * Internal documentation for developers only - not visible in UI
  */
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Map, Leaf, AlertTriangle, ChevronDown, Calendar, Clock } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -21,6 +22,9 @@ import DashboardCommandBar from '@/components/DashboardCommandBar'
 import { FieldTimeline } from '@/components/FieldTimeline'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import type { TimelineEntry } from '@/lib/timeline'
+import { fetchInference } from '@/app/lib/api'
+import { formatGeneratedAt, getPrimaryCategoryMessage } from '@/app/lib/inferenceAdapter'
+import type { InferenceResponse } from '@/app/types/inference'
 
 
 const stats = [
@@ -62,6 +66,47 @@ const mockTimelineEntries: TimelineEntry[] = [
 ]
 
 export default function DashboardPage() {
+  const [inference, setInference] = useState<InferenceResponse | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function loadInference() {
+      try {
+        setIsLoading(true)
+        const windowEnd = new Date().toISOString()
+        const windowStart = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+        
+        const data = await fetchInference({
+          fieldId: 'field-3-corn',
+          windowStart,
+          windowEnd,
+        })
+        
+        setInference(data)
+        setError(null)
+      } catch (err) {
+        console.error('Failed to load inference:', err)
+        setError(err instanceof Error ? err.message : 'Failed to load data')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadInference()
+  }, [])
+
+  // Map inference to component props
+  const statusForUI = inference?.status === 'healthy' ? 'Healthy' : 
+                      inference?.status === 'watch' ? 'Under Observation' :
+                      inference?.status === 'stressed' ? 'Stressed' : 'Stable'
+  
+  const trendForUI = inference?.trend === 'improving' ? 'Improving' :
+                     inference?.trend === 'declining' ? 'Declining' : 'Stable'
+  
+  const confidenceForUI = inference?.confidence === 'high' ? 'High' :
+                          inference?.confidence === 'medium' ? 'Medium' : 'Low'
+
   return (
     <main className="dashboard-shell">
       <DashboardCommandBar />
@@ -125,14 +170,25 @@ export default function DashboardPage() {
         {/* WARNING: This section must remain visually dominant - do not add competing elements */}
         <div className="dashboard-section dashboard-section-primary-summary mb-16">
           <div className="bg-card rounded-xl shadow-sm p-6">
-            <CropHealthSummary
-              status="Stable"
-              trend="Improving"
-              confidence="High"
-              detectedAt="April 18, 2025 (4 days ago)"
-              trendDirection="improving"
-              stability={0.82}
-            />
+            {isLoading ? (
+              <div className="text-center py-12 text-gray-500">Loading crop health data...</div>
+            ) : error ? (
+              <div className="text-center py-12 text-red-600">
+                <p>Failed to load data</p>
+                <p className="text-sm mt-2">{error}</p>
+              </div>
+            ) : inference ? (
+              <CropHealthSummary
+                status={statusForUI as any}
+                trend={trendForUI as any}
+                confidence={confidenceForUI as any}
+                detectedAt={formatGeneratedAt(inference.generatedAt)}
+                trendDirection={inference.trend}
+                stability={inference.confidence === 'high' ? 0.9 : inference.confidence === 'medium' ? 0.6 : 0.3}
+              />
+            ) : (
+              <div className="text-center py-12 text-gray-500">No data available</div>
+            )}
           </div>
         </div>
 
@@ -225,17 +281,24 @@ export default function DashboardPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Card className="insight-card mt-2">
-                <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
-                  Recent Observation
-                  <ConfidenceBadge confidence={0.85} source="satellite" />
-                </h3>
-                <p className="label-text">Crop vigor declining in Parcel 3 during reproductive stage. Dry conditions observed in southeast area since mid-April.</p>
-                <div className="confidence-indicator" style={{ marginTop: '10px', fontSize: '9px', opacity: 0.45 }}>
-                  <span className="confidence-dot" />
-                  <span>Reported Apr 21, 2025 at 14:32 UTC</span>
-                </div>
-              </Card>
+              {inference && (
+                <Card className="insight-card mt-2">
+                  <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
+                    {inference.categories[0]?.category === 'alert' ? 'Alert' :
+                     inference.categories[0]?.category === 'advisory' ? 'Advisory' :
+                     inference.categories[0]?.category === 'forecast' ? 'Forecast' : 'Recent Observation'}
+                    <ConfidenceBadge 
+                      confidence={inference.confidence === 'high' ? 0.9 : inference.confidence === 'medium' ? 0.6 : 0.3} 
+                      source="satellite" 
+                    />
+                  </h3>
+                  <p className="label-text">{getPrimaryCategoryMessage(inference)}</p>
+                  <div className="confidence-indicator" style={{ marginTop: '10px', fontSize: '9px', opacity: 0.45 }}>
+                    <span className="confidence-dot" />
+                    <span>Generated {formatGeneratedAt(inference.generatedAt)}</span>
+                  </div>
+                </Card>
+              )}
             </motion.div>
           </section>
         </div>
