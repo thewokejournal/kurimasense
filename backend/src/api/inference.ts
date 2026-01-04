@@ -12,6 +12,7 @@ import {
   type Inference,
 } from '../inference/index.js'
 import type { InferenceResponse } from '../types/api.js'
+import { inferenceResponseSchema } from '../types/contracts.js'
 
 const router = Router()
 
@@ -86,8 +87,15 @@ router.get('/', async (req: Request, res: Response) => {
     // Transform to canonical API response
     const response = toInferenceResponse(inference)
 
+    // Validate response against schema
+    const validationResult = inferenceResponseSchema.safeParse(response)
+    if (!validationResult.success) {
+      console.error('Response validation failed:', validationResult.error)
+      throw new Error('Invalid inference response structure')
+    }
+
     // Return as JSON
-    res.json(response)
+    res.json(validationResult.data)
   } catch (error) {
     console.error('Inference error:', error)
     res.status(500).json({ error: 'Failed to generate inference' })
