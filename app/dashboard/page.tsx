@@ -211,16 +211,17 @@ export default function DashboardPage() {
                   transition={{ delay: i * 0.06 }}
                 >
                   <Card className="surface p-5">
-                    <div className="text-3xl font-semibold tabular-nums">
+                    <div className="stat-value tabular-nums">
                       {s.value}
                     </div>
-                    <div className="text-sm text-secondary mt-1">
+                    <div className="stat-label">
                       {s.label}
                     </div>
-                    <div className="text-xs text-muted mt-2">
+                    <div className="stat-delta positive">
                       {s.delta}
                     </div>
-                    <div className="text-xs text-muted mt-1">
+                    <div className="confidence-indicator">
+                      <span className="confidence-dot" />
                       {s.timeContext}
                     </div>
                   </Card>
