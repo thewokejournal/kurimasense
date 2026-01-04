@@ -9,9 +9,42 @@ import {
   inferCropHealthStatus,
   emitInferenceCategory,
   assembleInference,
+  type Inference,
 } from '../inference/index.js'
+import type { InferenceResponse } from '../types/api.js'
 
 const router = Router()
+
+/**
+ * Transform internal Inference to canonical InferenceResponse
+ */
+function toInferenceResponse(inference: Inference): InferenceResponse {
+  // Convert numeric confidence to categorical
+  let confidence: 'high' | 'medium' | 'low'
+  if (inference.confidence >= 70) {
+    confidence = 'high'
+  } else if (inference.confidence >= 40) {
+    confidence = 'medium'
+  } else {
+    confidence = 'low'
+  }
+
+  // Extract status string (default to 'watch' if null)
+  const status = inference.status?.status || 'watch'
+
+  // Trend is stable for now (no trend inference yet)
+  const trend = 'stable' as const
+
+  return {
+    fieldId: inference.fieldId,
+    generatedAt: inference.timestamp,
+    status,
+    trend,
+    confidence,
+    categories: [inference.category],
+    explanation: inference.explanation,
+  }
+}
 
 /**
  * GET /api/inference
@@ -50,8 +83,11 @@ router.get('/', async (req: Request, res: Response) => {
     // Assemble final inference object
     const inference = assembleInference(status, category, input)
 
+    // Transform to canonical API response
+    const response = toInferenceResponse(inference)
+
     // Return as JSON
-    res.json(inference)
+    res.json(response)
   } catch (error) {
     console.error('Inference error:', error)
     res.status(500).json({ error: 'Failed to generate inference' })
