@@ -24,8 +24,11 @@ test.describe('Visual: hover and focus states', () => {
     await card.screenshot({ path: `${outDir}/card-hover.png` });
 
     // Make card focusable for snapshotting focus styles
-    await page.evaluate((el) => el.setAttribute('tabindex', '0'), await card.elementHandle());
-    await card.focus();
+    const cardHandle = await card.elementHandle();
+    if (cardHandle) {
+      await page.evaluate((el) => el.setAttribute('tabindex', '0'), cardHandle);
+      await card.focus();
+    }
     await page.waitForTimeout(80);
     await card.screenshot({ path: `${outDir}/card-focus.png` });
   });
@@ -40,8 +43,11 @@ test.describe('Visual: hover and focus states', () => {
     await page.waitForTimeout(120);
     await panel.screenshot({ path: `${outDir}/ndvi-hover.png` });
 
-    await page.evaluate((el) => el.setAttribute('tabindex', '0'), await panel.elementHandle());
-    await panel.focus();
+    const panelHandle = await panel.elementHandle();
+    if (panelHandle) {
+      await page.evaluate((el) => el.setAttribute('tabindex', '0'), panelHandle);
+      await panel.focus();
+    }
     await page.waitForTimeout(80);
     await panel.screenshot({ path: `${outDir}/ndvi-focus.png` });
   });
