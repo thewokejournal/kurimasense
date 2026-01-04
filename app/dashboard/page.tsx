@@ -78,7 +78,7 @@ export default function DashboardPage() {
         const windowStart = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
         
         const data = await fetchInference({
-          fieldId: 'field-3-corn',
+          fieldId: 'test-field-1',
           windowStart,
           windowEnd,
         })
