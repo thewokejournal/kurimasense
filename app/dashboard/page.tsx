@@ -236,14 +236,14 @@ export default function DashboardPage() {
         {/* Maintain fixed aspect ratio for map container */}
         <div className="dashboard-section dashboard-section-map mt-10 mb-14">
           <section aria-labelledby="health-map-heading" className="dashboard-section mt-10">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <div>
                 <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Crop Health Map</span>
-                <h2 id="health-map-heading" className="section-heading text-lg font-semibold">Field Overview</h2>
+                <h2 id="health-map-heading" className="section-heading text-lg font-semibold mb-4">Field Overview</h2>
               </div>
               <p className="meta-text">Last updated: 2h ago</p>
             </div>
-            <div className="mt-3">
+            <div className="mt-6">
               <NdviMapPanel />
             </div>
           </section>
@@ -312,11 +312,11 @@ export default function DashboardPage() {
         {/* Maintain table responsiveness for mobile */}
         <div className="dashboard-section dashboard-section-table mt-10 mb-14">
           <section aria-labelledby="fields-heading" className="dashboard-section mt-10">
-            <div className="flex items-center justify-between">
-              <h2 id="fields-heading" className="section-heading text-lg font-semibold" style={{ letterSpacing: '0.01em' }}>Your Fields</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 id="fields-heading" className="section-heading text-lg font-semibold mb-4" style={{ letterSpacing: '0.01em' }}>Your Fields</h2>
               <p className="meta-text">Last checked</p>
             </div>
-            <div className="mt-3">
+            <div className="mt-6">
               <FieldsTable />
             </div>
           </section>
