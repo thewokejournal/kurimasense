@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search, Plus } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 export default function DashboardCommandBar() {
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -92,13 +93,16 @@ export default function DashboardCommandBar() {
       </div>
 
       {/* Right side: Button */}
-      <button
-        className="btn-primary flex items-center gap-2"
-        onClick={() => console.log('Add field clicked')}
-      >
-        <Plus className="h-4 w-4" />
-        Add Field
-      </button>
+      <div className="flex items-center gap-3">
+        <ThemeToggle />
+        <button
+          className="btn-primary flex items-center gap-2"
+          onClick={() => console.log('Add field clicked')}
+        >
+          <Plus className="h-4 w-4" />
+          Add Field
+        </button>
+      </div>
     </div>
   );
 }

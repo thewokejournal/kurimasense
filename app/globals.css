@@ -183,6 +183,11 @@ input {
   caret-color: white;
 }
 
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.35);
+}
+
 /* Button System */
 .btn-primary {
   background: var(--accent-green);
