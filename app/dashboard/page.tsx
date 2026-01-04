@@ -210,7 +210,7 @@ export default function DashboardPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 }}
                 >
-                  <Card className="surface p-5">
+                  <Card className="stat-card surface p-5">
                     <div className="stat-value tabular-nums">{s.value}</div>
                     <div>
                       <div className="stat-delta positive">{s.delta}</div>
