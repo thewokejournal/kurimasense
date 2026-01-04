@@ -103,6 +103,52 @@ p {
   --tone-tertiary: 0.78; /* metadata and captions - subtle but readable */
 }
 
+/* ============================
+   CALM ANALYTICAL SURFACE SYSTEM
+   ============================ */
+
+:root {
+  --surface-base: #0f172a;
+  --surface-elevated: rgba(255, 255, 255, 0.03);
+  --surface-border: rgba(255, 255, 255, 0.06);
+
+  --surface-hover: rgba(255, 255, 255, 0.05);
+
+  --text-primary: #e5e7eb;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent-green: #22c55e;
+}
+
+/* Core surface */
+.surface {
+  background: var(--surface-elevated);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 0 0 1px var(--surface-border),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Subtle elevation */
+.surface-soft {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+}
+
+/* Typography defaults */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
 .meta-text {
   font-size: var(--type-meta-size);
   color: var(--type-meta-color);
