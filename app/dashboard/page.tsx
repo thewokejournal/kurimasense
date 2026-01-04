@@ -202,7 +202,7 @@ export default function DashboardPage() {
               <span className="meta-text uppercase tracking-wider" style={{ opacity: 0.5, fontSize: '10px' }}>Supporting Metrics</span>
             </div>
             <h2 id="stats-heading" className="sr-only">Supporting Metrics</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ marginTop: '20px', marginBottom: '16px' }}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" style={{ marginTop: '20px', marginBottom: '16px' }}>
               {stats.map((s, i) => (
                 <motion.div
                   key={s.label}
