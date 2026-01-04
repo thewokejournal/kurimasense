@@ -18,8 +18,3 @@ export interface InferenceResponse {
 
   explanation: string
 }
-
-export type CropHealthStatus = 'healthy' | 'watch' | 'stressed'
-export type CropHealthTrend = 'improving' | 'stable' | 'declining'
-export type InferenceConfidence = 'high' | 'medium' | 'low'
-export type InferenceCategory = 'observation' | 'advisory' | 'alert' | 'forecast'
