@@ -38,8 +38,20 @@ export const FIELDS_TABLE = `
   )
 `
 
+export const ANALYSIS_RUNS_TABLE = `
+  CREATE TABLE IF NOT EXISTS analysis_runs (
+    id TEXT PRIMARY KEY,
+    field_id TEXT NOT NULL,
+    window_start TEXT NOT NULL,
+    window_end TEXT NOT NULL,
+    inference_response TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`
+
 export function initializeSchema(db: any): void {
   db.exec(VEGETATION_SIGNALS_TABLE)
   db.exec(WEATHER_SIGNALS_TABLE)
   db.exec(FIELDS_TABLE)
+  db.exec(ANALYSIS_RUNS_TABLE)
 }

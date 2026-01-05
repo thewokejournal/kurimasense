@@ -174,4 +174,114 @@ export function deleteField(id: string) {
   return { id, deleted: result.changes > 0 }
 }
 
+/**
+ * AnalysisRun Persistence Functions
+ */
+
+/**
+ * Create a new analysis run
+ */
+export function insertAnalysisRun(
+  id: string,
+  fieldId: string,
+  windowStart: string,
+  windowEnd: string,
+  inferenceResponse: any
+) {
+  const stmt = db.prepare(`
+    INSERT INTO analysis_runs (id, field_id, window_start, window_end, inference_response, created_at)
+    VALUES (?, ?, ?, ?, ?, datetime('now'))
+  `)
+  stmt.run(id, fieldId, windowStart, windowEnd, JSON.stringify(inferenceResponse))
+  return { id }
+}
+
+/**
+ * Get an analysis run by ID
+ */
+export function getAnalysisRunById(id: string) {
+  const stmt = db.prepare('SELECT * FROM analysis_runs WHERE id = ?')
+  const row = stmt.get(id) as any
+  if (!row) return null
+  return {
+    id: row.id,
+    fieldId: row.field_id,
+    windowStart: row.window_start,
+    windowEnd: row.window_end,
+    inferenceResponse: JSON.parse(row.inference_response),
+    createdAt: row.created_at
+  }
+}
+
+/**
+ * Get analysis runs by field ID
+ */
+export function getAnalysisRunsByFieldId(fieldId: string) {
+  const stmt = db.prepare(`
+    SELECT * FROM analysis_runs 
+    WHERE field_id = ? 
+    ORDER BY created_at DESC
+  `)
+  const rows = stmt.all(fieldId) as any[]
+  return rows.map(row => ({
+    id: row.id,
+    fieldId: row.field_id,
+    windowStart: row.window_start,
+    windowEnd: row.window_end,
+    inferenceResponse: JSON.parse(row.inference_response),
+    createdAt: row.created_at
+  }))
+}
+
+/**
+ * Get analysis runs by field ID and time window
+ */
+export function getAnalysisRunByFieldAndWindow(
+  fieldId: string,
+  windowStart: string,
+  windowEnd: string
+) {
+  const stmt = db.prepare(`
+    SELECT * FROM analysis_runs 
+    WHERE field_id = ? AND window_start = ? AND window_end = ?
+    ORDER BY created_at DESC
+    LIMIT 1
+  `)
+  const row = stmt.get(fieldId, windowStart, windowEnd) as any
+  if (!row) return null
+  return {
+    id: row.id,
+    fieldId: row.field_id,
+    windowStart: row.window_start,
+    windowEnd: row.window_end,
+    inferenceResponse: JSON.parse(row.inference_response),
+    createdAt: row.created_at
+  }
+}
+
+/**
+ * Get all analysis runs
+ */
+export function getAllAnalysisRuns() {
+  const stmt = db.prepare('SELECT * FROM analysis_runs ORDER BY created_at DESC')
+  const rows = stmt.all() as any[]
+  return rows.map(row => ({
+    id: row.id,
+    fieldId: row.field_id,
+    windowStart: row.window_start,
+    windowEnd: row.window_end,
+    inferenceResponse: JSON.parse(row.inference_response),
+    createdAt: row.created_at
+  }))
+}
+
+/**
+ * Delete an analysis run
+ */
+export function deleteAnalysisRun(id: string) {
+  const stmt = db.prepare('DELETE FROM analysis_runs WHERE id = ?')
+  const result = stmt.run(id)
+  return { id, deleted: result.changes > 0 }
+}
+
 export default db
