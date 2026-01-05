@@ -164,6 +164,36 @@ export default function DashboardPage() {
     }
   }
 
+  // Phase 6.1: Generate provenance only via explicit user action (view-time only, NOT persisted)
+  async function handleShowProvenance() {
+    if (!selectedAnalysisRunId || !inference) {
+      return
+    }
+
+    // Find the selected analysis run to get time window
+    const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
+    if (!selectedRun) {
+      return
+    }
+
+    try {
+      setIsLoadingProvenance(true)
+      setProvenanceError(null)
+      const provenanceData = await generateProvenance(
+        selectedFieldId,
+        selectedRun.windowStart,
+        selectedRun.windowEnd
+      )
+      setProvenance(provenanceData)
+      setShowProvenance(true)
+    } catch (err) {
+      console.error('Failed to generate provenance:', err)
+      setProvenanceError(err instanceof Error ? err.message : 'Failed to generate provenance')
+    } finally {
+      setIsLoadingProvenance(false)
+    }
+  }
+
   // Map inference to component props (Phase 4.3: use verbatim labels)
   const statusForUI = inference?.status === 'healthy' ? 'Healthy' : 
                       inference?.status === 'watch' ? 'Watch' :
