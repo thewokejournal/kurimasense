@@ -107,7 +107,7 @@ export default function DashboardPage() {
       try {
         setIsLoading(true)
         const run = await fetchAnalysisRunById(selectedAnalysisRunId)
-        setInference(run.inferenceResponse)
+        setInference(run.inference) // Phase 4.2: use 'inference' field (contract)
         setError(null)
       } catch (err) {
         console.error('Failed to load analysis run:', err)

@@ -4,6 +4,7 @@ import {
   insertField,
   getFieldById,
   getAllFields,
+  getAnalysisRunsByFieldId,
 } from '../db/client.js'
 import type { CreateFieldInput } from '../types/field.js'
 
@@ -25,6 +26,30 @@ router.get('/', (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch fields'
+    })
+  }
+})
+
+/**
+ * GET /api/fields/:id/analysis-runs
+ * Get all AnalysisRuns for a specific field
+ * 
+ * Phase 4.2: Returns stored AnalysisRuns only, no recomputation
+ * Must be defined before /:id route to avoid route conflict
+ */
+router.get('/:id/analysis-runs', (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const runs = getAnalysisRunsByFieldId(id)
+    res.json({
+      success: true,
+      data: runs
+    })
+  } catch (error) {
+    console.error('Error fetching analysis runs for field:', error)
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch analysis runs'
     })
   }
 })

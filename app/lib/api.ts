@@ -30,14 +30,14 @@ export interface FetchInferenceOptions {
 }
 
 /**
- * AnalysisRun type matching backend structure
+ * AnalysisRun type matching backend structure (Phase 4.2 contract)
  */
 export interface AnalysisRun {
   id: string
   fieldId: string
   windowStart: string
   windowEnd: string
-  inferenceResponse: InferenceResponse
+  inference: InferenceResponse // Embedded snapshot (contract uses 'inference', not 'inferenceResponse')
   createdAt: string
 }
 
@@ -78,12 +78,14 @@ export async function fetchInference(
 /**
  * Fetch analysis runs for a field
  * 
+ * Phase 4.2: Uses GET /api/fields/:id/analysis-runs endpoint
+ * 
  * @param fieldId - Field ID to fetch analysis runs for
  * @returns Promise resolving to array of AnalysisRun
  * @throws Error if request fails
  */
 export async function fetchAnalysisRunsByField(fieldId: string): Promise<AnalysisRun[]> {
-  const response = await fetch(`${API_BASE_URL}/api/analysis-runs?fieldId=${encodeURIComponent(fieldId)}`, {
+  const response = await fetch(`${API_BASE_URL}/api/fields/${encodeURIComponent(fieldId)}/analysis-runs`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
