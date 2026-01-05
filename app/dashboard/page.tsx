@@ -628,3 +628,31 @@ export default function DashboardPage() {
         </div>
 
         {/* ===== DATA TABLE SECTION ===== */}
+
+      </div>
+
+      {/* Phase A: Analysis creation dialog */}
+      <CreateAnalysisDialog
+        isOpen={isCreateDialogOpen}
+        onClose={() => {
+          setIsCreateDialogOpen(false)
+          setCreateAnalysisError(null)
+        }}
+        fields={fields}
+        onCreate={handleCreateAnalysis}
+        isCreating={isCreatingAnalysis}
+        error={createAnalysisError}
+      />
+
+      {/* Phase A: Analysis success feedback */}
+      {createdAnalysisRun && (
+        <div className="fixed bottom-4 left-4 right-4 max-w-2xl mx-auto z-50">
+          <AnalysisSuccessFeedback
+            analysisRun={createdAnalysisRun}
+            onClose={() => setCreatedAnalysisRun(null)}
+          />
+        </div>
+      )}
+    </main>
+  )
+}
