@@ -14,22 +14,17 @@ import type { InferenceResponse } from '@/app/types/inference'
 
 /**
  * Status display configuration
+ * Phase 4.3: Labels only (no descriptions that add meaning)
  */
 export const STATUS_CONFIG = {
   healthy: {
     label: 'Healthy',
-    color: 'green',
-    description: 'Crops are growing well',
   },
   watch: {
     label: 'Watch',
-    color: 'yellow',
-    description: 'Monitor closely',
   },
   stressed: {
     label: 'Stressed',
-    color: 'red',
-    description: 'Requires attention',
   },
 } as const
 
@@ -56,19 +51,17 @@ export const TREND_CONFIG = {
 
 /**
  * Confidence display configuration
+ * Phase 4.3: Labels only (no descriptions that add meaning)
  */
 export const CONFIDENCE_CONFIG = {
   high: {
-    label: 'High Confidence',
-    description: 'Based on comprehensive data',
+    label: 'High',
   },
   medium: {
-    label: 'Medium Confidence',
-    description: 'Based on partial data',
+    label: 'Medium',
   },
   low: {
-    label: 'Low Confidence',
-    description: 'Limited data available',
+    label: 'Low',
   },
 } as const
 

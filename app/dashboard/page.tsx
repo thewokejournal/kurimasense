@@ -22,7 +22,7 @@ import { FieldTimeline } from '@/components/FieldTimeline'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import type { TimelineEntry } from '@/lib/timeline'
 import { fetchAnalysisRunsByField, fetchAnalysisRunById, type AnalysisRun } from '@/app/lib/api'
-import { formatGeneratedAt, getPrimaryCategoryMessage } from '@/app/lib/inferenceAdapter'
+import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import type { InferenceResponse } from '@/app/types/inference'
 
 
@@ -120,9 +120,9 @@ export default function DashboardPage() {
     loadSelectedAnalysisRun()
   }, [selectedAnalysisRunId])
 
-  // Map inference to component props
+  // Map inference to component props (Phase 4.3: use verbatim labels)
   const statusForUI = inference?.status === 'healthy' ? 'Healthy' : 
-                      inference?.status === 'watch' ? 'Under Observation' :
+                      inference?.status === 'watch' ? 'Watch' :
                       inference?.status === 'stressed' ? 'Stressed' : 'Stable'
   
   const trendForUI = inference?.trend === 'improving' ? 'Improving' :
@@ -229,7 +229,6 @@ export default function DashboardPage() {
                 confidence={confidenceForUI as any}
                 detectedAt={formatGeneratedAt(inference.generatedAt)}
                 trendDirection={inference.trend}
-                stability={inference.confidence === 'high' ? 0.9 : inference.confidence === 'medium' ? 0.6 : 0.3}
               />
             ) : (
               <div className="text-center py-12 text-gray-500">No data available</div>
@@ -331,22 +330,39 @@ export default function DashboardPage() {
               transition={{ delay: 0.2 }}
             >
               {inference && (
-                <Card className="surface-soft p-5 mt-2">
-                  <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
-                    {inference.categories[0]?.category === 'alert' ? 'Alert' :
-                     inference.categories[0]?.category === 'advisory' ? 'Advisory' :
-                     inference.categories[0]?.category === 'forecast' ? 'Forecast' : 'Recent Observation'}
-                    <ConfidenceBadge 
-                      confidence={inference.confidence === 'high' ? 0.9 : inference.confidence === 'medium' ? 0.6 : 0.3} 
-                      source="satellite" 
-                    />
-                  </h3>
-                  <p className="label-text">{getPrimaryCategoryMessage(inference)}</p>
-                  <div className="confidence-indicator" style={{ marginTop: '10px', fontSize: '9px', opacity: 0.45 }}>
-                    <span className="confidence-dot" />
-                    <span>Generated {formatGeneratedAt(inference.generatedAt)}</span>
-                  </div>
-                </Card>
+                <div className="space-y-4">
+                  {/* Phase 4.3: Display all categories verbatim */}
+                  {inference.categories.length > 0 && (
+                    <Card className="surface-soft p-5">
+                      <div className="space-y-4">
+                        {inference.categories.map((cat, index) => (
+                          <div key={index}>
+                            <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
+                              {cat.category.charAt(0).toUpperCase() + cat.category.slice(1)}
+                              <ConfidenceBadge 
+                                confidence={inference.confidence === 'high' ? 0.9 : inference.confidence === 'medium' ? 0.6 : 0.3} 
+                                source="satellite" 
+                              />
+                            </h3>
+                            <p className="label-text">{cat.message}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="confidence-indicator mt-4" style={{ fontSize: '9px', opacity: 0.45 }}>
+                        <span className="confidence-dot" />
+                        <span>Generated {formatGeneratedAt(inference.generatedAt)}</span>
+                      </div>
+                    </Card>
+                  )}
+                  
+                  {/* Phase 4.3: Display explanation text verbatim */}
+                  {inference.explanation && (
+                    <Card className="surface-soft p-5">
+                      <h3 className="font-semibold tracking-tight mb-2 text-base">Explanation</h3>
+                      <p className="label-text whitespace-pre-wrap">{inference.explanation}</p>
+                    </Card>
+                  )}
+                </div>
               )}
             </motion.div>
           </section>

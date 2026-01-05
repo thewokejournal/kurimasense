@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion'
 import { TrendingUp, TrendingDown, Minus, Activity, ArrowUp, ArrowRight, ArrowDown } from 'lucide-react'
-import { TrendIndicator } from './TrendIndicator'
 
 type HealthStatus = 'Healthy' | 'Stable' | 'Under Observation' | 'Stressed' | 'Critical'
 type Trend = 'Improving' | 'Stable' | 'Declining'
@@ -14,7 +13,6 @@ interface CropHealthSummaryProps {
   confidence: Confidence
   detectedAt: string
   trendDirection?: 'improving' | 'stable' | 'declining'
-  stability?: number
 }
 
 const getStatusColor = (status: HealthStatus) => {
@@ -76,21 +74,6 @@ const getTrendArrowColor = (trend: Trend) => {
   }
 }
 
-const getWatchGuidance = (status: HealthStatus, trend: Trend): string => {
-  if (status === 'Critical' || status === 'Stressed') {
-    return 'Monitoring southeast parcels and soil moisture levels'
-  }
-  if (status === 'Under Observation') {
-    return 'Watching for changes in canopy vigor and water stress indicators'
-  }
-  if (trend === 'Declining') {
-    return 'Tracking NDVI trends and weather patterns over next 3–5 days'
-  }
-  if (trend === 'Improving') {
-    return 'Observing recovery patterns in previously stressed areas'
-  }
-  return 'Maintaining routine field monitoring across all parcels'
-}
 
 export default function CropHealthSummary({
   status,
@@ -98,7 +81,6 @@ export default function CropHealthSummary({
   confidence,
   detectedAt,
   trendDirection,
-  stability,
 }: CropHealthSummaryProps) {
   const TrendIcon = getTrendIcon(trend)
   const statusColor = getStatusColor(status)
@@ -108,8 +90,6 @@ export default function CropHealthSummary({
 
   // Fallback for trend direction if not provided
   const normalizedTrendDirection = trendDirection || trend.toLowerCase() as 'improving' | 'stable' | 'declining'
-  // Fallback for stability if not provided (default to 0.7)
-  const normalizedStability = stability !== undefined ? stability : 0.7
 
   return (
     <motion.div
@@ -124,7 +104,7 @@ export default function CropHealthSummary({
           <div className="flex items-center gap-3 mb-2">
             <Activity className="w-6 h-6" style={{ color: statusColor, opacity: 0.9 }} />
             <span className="meta-text uppercase tracking-wider opacity-70">
-              Overall Crop Status
+              Crop Status
             </span>
           </div>
           <h2 className="health-status-value" style={{ color: statusColor }}>
@@ -142,10 +122,6 @@ export default function CropHealthSummary({
                 <TrendArrowIcon className={`${trendArrowColorClass}`} size={14} />
                 <span>{trend}</span>
               </span>
-              <TrendIndicator 
-                direction={normalizedTrendDirection} 
-                stability={normalizedStability} 
-              />
             </div>
           </div>
 
@@ -165,13 +141,6 @@ export default function CropHealthSummary({
               <span style={{ opacity: 0.85 }}>{detectedAt}</span>
             </div>
           </div>
-        </div>
-
-        {/* What to watch */}
-        <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.04)' }}>
-          <p className="meta-text" style={{ opacity: 0.5, fontSize: '12px', lineHeight: '1.5' }}>
-            {getWatchGuidance(status, trend)}
-          </p>
         </div>
       </div>
     </motion.div>
