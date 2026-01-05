@@ -77,7 +77,7 @@ export default function DashboardPage() {
   const [inference, setInference] = useState<InferenceResponse | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  
+
   // Phase 5: Context state (loaded only via explicit user action)
   const [context, setContext] = useState<ContextData | null>(null)
   const [isLoadingContext, setIsLoadingContext] = useState(false)
@@ -89,6 +89,12 @@ export default function DashboardPage() {
   const [isLoadingProvenance, setIsLoadingProvenance] = useState(false)
   const [provenanceError, setProvenanceError] = useState<string | null>(null)
   const [showProvenance, setShowProvenance] = useState(false)
+  
+  // Phase 7: Decision context state (user-invoked only, non-actionable)
+  const [decisionContexts, setDecisionContexts] = useState<DecisionContextResponse | null>(null)
+  const [isLoadingDecisionContexts, setIsLoadingDecisionContexts] = useState(false)
+  const [decisionContextError, setDecisionContextError] = useState<string | null>(null)
+  const [showDecisionContexts, setShowDecisionContexts] = useState(false)
 
   // Load analysis runs for the selected field
   useEffect(() => {
@@ -413,21 +419,21 @@ export default function DashboardPage() {
                       <div className="space-y-4">
                         {inference.categories.map((cat, index) => (
                           <div key={index}>
-                            <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
+                  <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
                               {cat.category.charAt(0).toUpperCase() + cat.category.slice(1)}
-                              <ConfidenceBadge 
-                                confidence={inference.confidence === 'high' ? 0.9 : inference.confidence === 'medium' ? 0.6 : 0.3} 
-                                source="satellite" 
-                              />
-                            </h3>
+                    <ConfidenceBadge 
+                      confidence={inference.confidence === 'high' ? 0.9 : inference.confidence === 'medium' ? 0.6 : 0.3} 
+                      source="satellite" 
+                    />
+                  </h3>
                             <p className="label-text">{cat.message}</p>
                           </div>
                         ))}
                       </div>
                       <div className="confidence-indicator mt-4" style={{ fontSize: '9px', opacity: 0.45 }}>
-                        <span className="confidence-dot" />
-                        <span>Generated {formatGeneratedAt(inference.generatedAt)}</span>
-                      </div>
+                    <span className="confidence-dot" />
+                    <span>Generated {formatGeneratedAt(inference.generatedAt)}</span>
+                  </div>
                     </Card>
                   )}
                   
