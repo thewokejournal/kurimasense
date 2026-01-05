@@ -22,10 +22,6 @@ export interface CreateFieldInput {
   geometry?: string | null
 }
 
-export interface UpdateFieldInput {
-  name?: string
-  geometry?: string | null
-}
 
 export interface FetchInferenceOptions {
   fieldId: string
@@ -203,49 +199,3 @@ export async function createField(input: CreateFieldInput): Promise<Field> {
   return result.data
 }
 
-/**
- * Update an existing field
- * 
- * @param id - Field ID
- * @param input - Field update input
- * @returns Promise resolving to updated Field
- * @throws Error if request fails
- */
-export async function updateField(id: string, input: UpdateFieldInput): Promise<Field> {
-  const response = await fetch(`${API_BASE_URL}/api/fields/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(input),
-  })
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
-    throw new Error(error.error || `Failed to update field: ${response.statusText}`)
-  }
-
-  const result = await response.json()
-  return result.data
-}
-
-/**
- * Delete a field
- * 
- * @param id - Field ID
- * @returns Promise resolving when deletion is complete
- * @throws Error if request fails
- */
-export async function deleteField(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/fields/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
-    throw new Error(error.error || `Failed to delete field: ${response.statusText}`)
-  }
-}

@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Map, Plus, Calendar } from 'lucide-react'
 import { Card } from '@/components/ui/card'
-import { fetchAllFields, createField, deleteField, type Field } from '@/app/lib/api'
+import { fetchAllFields, createField, type Field } from '@/app/lib/api'
 import { formatFieldCreatedAt } from '@/app/lib/fieldAdapter'
 
 export default function FieldsPage() {
@@ -64,21 +64,6 @@ export default function FieldsPage() {
       setError(err instanceof Error ? err.message : 'Failed to create field')
     } finally {
       setIsCreating(false)
-    }
-  }
-
-  async function handleDeleteField(id: string) {
-    if (!confirm('Are you sure you want to delete this field?')) {
-      return
-    }
-
-    try {
-      setError(null)
-      await deleteField(id)
-      await loadFields()
-    } catch (err) {
-      console.error('Failed to delete field:', err)
-      setError(err instanceof Error ? err.message : 'Failed to delete field')
     }
   }
 
@@ -201,15 +186,6 @@ export default function FieldsPage() {
                           </div>
                         )}
                       </div>
-
-                      <div className="mt-4 pt-4 border-t border-subtle">
-                        <button
-                          onClick={() => handleDeleteField(field.id)}
-                          className="text-xs text-red-600 dark:text-red-400 hover:opacity-80 transition-opacity"
-                        >
-                          Delete
-                        </button>
-                      </div>
                     </Card>
                   </motion.div>
                 ))}
@@ -218,7 +194,8 @@ export default function FieldsPage() {
           </section>
         </div>
 
-      </div>
-    </main>
-  )
+</div>
+</main>
+)
 }
+ 

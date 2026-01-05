@@ -17,8 +17,4 @@ export interface CreateFieldInput {
   geometry?: string | null
 }
 
-export interface UpdateFieldInput {
-  name?: string
-  geometry?: string | null
-}
 

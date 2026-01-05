@@ -41,18 +41,4 @@ export function hasGeometry(field: Field): boolean {
   return field.geometry !== null && field.geometry !== undefined && field.geometry.trim() !== ''
 }
 
-/**
- * Parse geometry JSON string to object (if valid)
- * Returns null if geometry is invalid or missing
- */
-export function parseGeometry(geometry: string | null | undefined): any | null {
-  if (!geometry || geometry.trim() === '') {
-    return null
-  }
-  try {
-    return JSON.parse(geometry)
-  } catch {
-    return null
-  }
-}
 
