@@ -1,11 +1,31 @@
 /**
- * Inference API Client
- * Handles communication with the inference endpoint
+ * API Client
+ * Handles communication with backend endpoints
  */
 
 import type { InferenceResponse } from '@/app/types/inference'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+
+/**
+ * Field type matching backend structure
+ */
+export interface Field {
+  id: string
+  name: string
+  geometry?: string | null
+  createdAt: string
+}
+
+export interface CreateFieldInput {
+  name: string
+  geometry?: string | null
+}
+
+export interface UpdateFieldInput {
+  name?: string
+  geometry?: string | null
+}
 
 export interface FetchInferenceOptions {
   fieldId: string
@@ -105,4 +125,127 @@ export async function fetchAnalysisRunById(id: string): Promise<AnalysisRun> {
 
   const result = await response.json()
   return result.data
+}
+
+/**
+ * Field API Client Functions
+ */
+
+/**
+ * Fetch all fields
+ * 
+ * @returns Promise resolving to array of Field
+ * @throws Error if request fails
+ */
+export async function fetchAllFields(): Promise<Field[]> {
+  const response = await fetch(`${API_BASE_URL}/api/fields`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to fetch fields: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.success ? result.data : []
+}
+
+/**
+ * Fetch a single field by ID
+ * 
+ * @param id - Field ID
+ * @returns Promise resolving to Field
+ * @throws Error if request fails
+ */
+export async function fetchFieldById(id: string): Promise<Field> {
+  const response = await fetch(`${API_BASE_URL}/api/fields/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to fetch field: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.data
+}
+
+/**
+ * Create a new field
+ * 
+ * @param input - Field creation input
+ * @returns Promise resolving to created Field
+ * @throws Error if request fails
+ */
+export async function createField(input: CreateFieldInput): Promise<Field> {
+  const response = await fetch(`${API_BASE_URL}/api/fields`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(input),
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to create field: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.data
+}
+
+/**
+ * Update an existing field
+ * 
+ * @param id - Field ID
+ * @param input - Field update input
+ * @returns Promise resolving to updated Field
+ * @throws Error if request fails
+ */
+export async function updateField(id: string, input: UpdateFieldInput): Promise<Field> {
+  const response = await fetch(`${API_BASE_URL}/api/fields/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(input),
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to update field: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.data
+}
+
+/**
+ * Delete a field
+ * 
+ * @param id - Field ID
+ * @returns Promise resolving when deletion is complete
+ * @throws Error if request fails
+ */
+export async function deleteField(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/api/fields/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to delete field: ${response.statusText}`)
+  }
 }
