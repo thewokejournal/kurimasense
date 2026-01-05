@@ -395,6 +395,26 @@ input:focus {
   font-weight: 600;
 }
 
+.command-control-select {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  appearance: none;
+  flex: 1;
+}
+
+.command-control-select:focus {
+  outline: none;
+}
+
+.command-control select option {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+}
+
 .command-separator {
   width: 1px;
   height: 24px;

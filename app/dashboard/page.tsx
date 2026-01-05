@@ -171,17 +171,6 @@ export default function DashboardPage() {
                   value={selectedAnalysisRunId || ''}
                   onChange={(e) => setSelectedAnalysisRunId(e.target.value)}
                   className="command-control-select"
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    outline: 'none',
-                    color: 'inherit',
-                    font: 'inherit',
-                    cursor: 'pointer',
-                    appearance: 'none',
-                    paddingRight: '20px',
-                    flex: 1,
-                  }}
                 >
                   {analysisRuns.map((run) => {
                     const runDate = new Date(run.createdAt)
@@ -194,7 +183,7 @@ export default function DashboardPage() {
                     )
                   })}
                 </select>
-                <ChevronDown className="w-3.5 h-3.5 ml-auto opacity-60" style={{ pointerEvents: 'none', position: 'absolute', right: '12px' }} />
+                <ChevronDown className="w-3.5 h-3.5 opacity-60" style={{ pointerEvents: 'none', position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               </div>
             )}
 
