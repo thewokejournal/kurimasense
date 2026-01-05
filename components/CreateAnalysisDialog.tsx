@@ -167,7 +167,10 @@ export default function CreateAnalysisDialog({
         ) : (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-medium mb-3">Confirm Analysis</h3>
+              <h3 className="text-sm font-medium mb-3">Confirm Analysis Creation</h3>
+              <p className="text-xs text-muted mb-3">
+                This will create a new immutable analysis record. The analysis cannot be modified or deleted after creation.
+              </p>
               <div className="space-y-3 p-4 bg-surface-soft rounded-md">
                 <div className="flex items-start gap-2">
                   <Map className="w-4 h-4 mt-0.5 opacity-50" />
