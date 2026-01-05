@@ -42,6 +42,20 @@ export interface AnalysisRun {
 }
 
 /**
+ * Context Data type (Phase 5)
+ * Read-only, descriptive context data. Not persisted.
+ */
+export interface ContextData {
+  source: string
+  timeWindow: {
+    start: string
+    end: string
+  }
+  fetchedAt: string
+  data: Record<string, any>
+}
+
+/**
  * Fetch inference results for a field within a time window
  * 
  * @param options - Field ID and time window parameters
@@ -199,5 +213,47 @@ export async function createField(input: CreateFieldInput): Promise<Field> {
 
   const result = await response.json()
   return result.data
+}
+
+/**
+ * Context API Client Functions (Phase 5)
+ */
+
+/**
+ * Fetch context data for a field and time window
+ * 
+ * Phase 5: Context is read-only, descriptive, and NOT persisted.
+ * Loaded only via explicit user action.
+ * 
+ * @param fieldId - Field ID
+ * @param windowStart - Start of time window (ISO 8601)
+ * @param windowEnd - End of time window (ISO 8601)
+ * @returns Promise resolving to ContextData
+ * @throws Error if request fails
+ */
+export async function fetchContext(
+  fieldId: string,
+  windowStart: string,
+  windowEnd: string
+): Promise<ContextData> {
+  const params = new URLSearchParams({
+    windowStart,
+    windowEnd,
+  })
+
+  const response = await fetch(`${API_BASE_URL}/api/context/${encodeURIComponent(fieldId)}?${params}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to fetch context: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.success ? result.data : null
 }
 

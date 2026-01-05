@@ -21,9 +21,10 @@ import FieldsTable from '@/components/FieldsTable'
 import { FieldTimeline } from '@/components/FieldTimeline'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import type { TimelineEntry } from '@/lib/timeline'
-import { fetchAnalysisRunsByField, fetchAnalysisRunById, type AnalysisRun } from '@/app/lib/api'
+import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, type AnalysisRun, type ContextData } from '@/app/lib/api'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import type { InferenceResponse } from '@/app/types/inference'
+import ContextPanel from '@/components/ContextPanel'
 
 
 const stats = [
@@ -73,6 +74,12 @@ export default function DashboardPage() {
   const [inference, setInference] = useState<InferenceResponse | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  
+  // Phase 5: Context state (loaded only via explicit user action)
+  const [context, setContext] = useState<ContextData | null>(null)
+  const [isLoadingContext, setIsLoadingContext] = useState(false)
+  const [contextError, setContextError] = useState<string | null>(null)
+  const [showContext, setShowContext] = useState(false)
 
   // Load analysis runs for the selected field
   useEffect(() => {
@@ -119,6 +126,36 @@ export default function DashboardPage() {
 
     loadSelectedAnalysisRun()
   }, [selectedAnalysisRunId])
+
+  // Phase 5: Load context only via explicit user action
+  async function handleLoadContext() {
+    if (!selectedAnalysisRunId || !inference) {
+      return
+    }
+
+    // Find the selected analysis run to get time window
+    const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
+    if (!selectedRun) {
+      return
+    }
+
+    try {
+      setIsLoadingContext(true)
+      setContextError(null)
+      const contextData = await fetchContext(
+        selectedFieldId,
+        selectedRun.windowStart,
+        selectedRun.windowEnd
+      )
+      setContext(contextData)
+      setShowContext(true)
+    } catch (err) {
+      console.error('Failed to load context:', err)
+      setContextError(err instanceof Error ? err.message : 'Failed to load context')
+    } finally {
+      setIsLoadingContext(false)
+    }
+  }
 
   // Map inference to component props (Phase 4.3: use verbatim labels)
   const statusForUI = inference?.status === 'healthy' ? 'Healthy' : 
@@ -363,6 +400,44 @@ export default function DashboardPage() {
                     </Card>
                   )}
                 </div>
+              )}
+            </motion.div>
+          </section>
+        </div>
+
+        {/* ===== CONTEXT SECTION (Phase 5) ===== */}
+        {/* Purpose: External, read-only context data. Visually secondary, clearly separated from inference */}
+        <div className="dashboard-section dashboard-section-context mt-6 mb-14">
+          <section className="dashboard-section-tight">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Context</span>
+                <p className="meta-text text-xs mt-1 opacity-70">
+                  Additional descriptive information. Does not modify or explain inference.
+                </p>
+              </div>
+              {inference && !showContext && (
+                <button
+                  onClick={handleLoadContext}
+                  disabled={isLoadingContext}
+                  className="btn-secondary text-sm"
+                >
+                  {isLoadingContext ? 'Loading...' : 'Load Context'}
+                </button>
+              )}
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {contextError && (
+                <Card className="surface-soft p-4 border-l-4 border-red-500">
+                  <p className="label-text text-red-600 dark:text-red-400 text-sm">{contextError}</p>
+                </Card>
+              )}
+              {showContext && (
+                <ContextPanel context={context} isLoading={isLoadingContext} />
               )}
             </motion.div>
           </section>
