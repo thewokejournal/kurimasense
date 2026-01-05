@@ -1,0 +1,179 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { TrendingUp, TrendingDown, Minus, Activity, ArrowUp, ArrowRight, ArrowDown } from 'lucide-react'
+import { TrendIndicator } from './TrendIndicator'
+
+type HealthStatus = 'Healthy' | 'Stable' | 'Under Observation' | 'Stressed' | 'Critical'
+type Trend = 'Improving' | 'Stable' | 'Declining'
+type Confidence = 'High' | 'Medium' | 'Low'
+
+interface CropHealthSummaryProps {
+  status: HealthStatus
+  trend: Trend
+  confidence: Confidence
+  detectedAt: string
+  trendDirection?: 'improving' | 'stable' | 'declining'
+  stability?: number
+}
+
+const getStatusColor = (status: HealthStatus) => {
+  switch (status) {
+    case 'Healthy':
+      return '#10b981'
+    case 'Stable':
+      return '#3b82f6'
+    case 'Under Observation':
+      return '#f59e0b'
+    case 'Stressed':
+      return '#f97316'
+    case 'Critical':
+      return '#ef4444'
+  }
+}
+
+const getTrendIcon = (trend: Trend) => {
+  switch (trend) {
+    case 'Improving':
+      return TrendingUp
+    case 'Declining':
+      return TrendingDown
+    case 'Stable':
+      return Minus
+  }
+}
+
+const getTrendColor = (trend: Trend) => {
+  switch (trend) {
+    case 'Improving':
+      return '#10b981'
+    case 'Declining':
+      return '#f59e0b'
+    case 'Stable':
+      return 'var(--text-secondary)'
+  }
+}
+
+const getTrendArrowIcon = (trend: Trend) => {
+  switch (trend) {
+    case 'Improving':
+      return ArrowUp
+    case 'Declining':
+      return ArrowDown
+    case 'Stable':
+      return ArrowRight
+  }
+}
+
+const getTrendArrowColor = (trend: Trend) => {
+  switch (trend) {
+    case 'Improving':
+      return 'text-green-400'
+    case 'Declining':
+      return 'text-amber-400'
+    case 'Stable':
+      return 'text-slate-400'
+  }
+}
+
+const getWatchGuidance = (status: HealthStatus, trend: Trend): string => {
+  if (status === 'Critical' || status === 'Stressed') {
+    return 'Monitoring southeast parcels and soil moisture levels'
+  }
+  if (status === 'Under Observation') {
+    return 'Watching for changes in canopy vigor and water stress indicators'
+  }
+  if (trend === 'Declining') {
+    return 'Tracking NDVI trends and weather patterns over next 3–5 days'
+  }
+  if (trend === 'Improving') {
+    return 'Observing recovery patterns in previously stressed areas'
+  }
+  return 'Maintaining routine field monitoring across all parcels'
+}
+
+export default function CropHealthSummary({
+  status,
+  trend,
+  confidence,
+  detectedAt,
+  trendDirection,
+  stability,
+}: CropHealthSummaryProps) {
+  const TrendIcon = getTrendIcon(trend)
+  const statusColor = getStatusColor(status)
+  const trendColor = getTrendColor(trend)
+  const TrendArrowIcon = getTrendArrowIcon(trend)
+  const trendArrowColorClass = getTrendArrowColor(trend)
+
+  // Fallback for trend direction if not provided
+  const normalizedTrendDirection = trendDirection || trend.toLowerCase() as 'improving' | 'stable' | 'declining'
+  // Fallback for stability if not provided (default to 0.7)
+  const normalizedStability = stability !== undefined ? stability : 0.7
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="crop-health-summary"
+    >
+      <div className="health-summary-container">
+        {/* Primary Status */}
+        <div className="health-status-primary">
+          <div className="flex items-center gap-3 mb-2">
+            <Activity className="w-6 h-6" style={{ color: statusColor, opacity: 0.9 }} />
+            <span className="meta-text uppercase tracking-wider opacity-70">
+              Overall Crop Status
+            </span>
+          </div>
+          <h2 className="health-status-value" style={{ color: statusColor }}>
+            {status}
+          </h2>
+        </div>
+
+        {/* Metadata Grid */}
+        <div className="health-metadata-grid">
+          <div className="health-metadata-item">
+            <span className="health-metadata-label">Trend (14-day window)</span>
+            <div className="health-metadata-value" style={{ color: trendColor }}>
+              <TrendIcon className="w-5 h-5" />
+              <span className="inline-flex items-center gap-1">
+                <TrendArrowIcon className={`${trendArrowColorClass}`} size={14} />
+                <span>{trend}</span>
+              </span>
+              <TrendIndicator 
+                direction={normalizedTrendDirection} 
+                stability={normalizedStability} 
+              />
+            </div>
+          </div>
+
+          <div className="health-metadata-item">
+            <span className="health-metadata-label">Confidence</span>
+            <div className="health-metadata-value">
+              <span className={`confidence-badge ${confidence.toLowerCase()}`}>
+                <span className="confidence-dot" />
+                {confidence}
+              </span>
+            </div>
+          </div>
+
+          <div className="health-metadata-item">
+            <span className="health-metadata-label">Condition Detected</span>
+            <div className="health-metadata-value">
+              <span style={{ opacity: 0.85 }}>{detectedAt}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* What to watch */}
+        <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.04)' }}>
+          <p className="meta-text" style={{ opacity: 0.5, fontSize: '12px', lineHeight: '1.5' }}>
+            {getWatchGuidance(status, trend)}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
