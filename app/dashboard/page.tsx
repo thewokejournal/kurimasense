@@ -201,10 +201,17 @@ export default function DashboardPage() {
       setCreatedAnalysisRun(newRun)
       setIsCreateDialogOpen(false)
       
-      // Reload analysis runs for the selected field (if it matches)
+      // Phase A: Explicit reload behavior - only reload if viewing the same field
+      // This is NOT automatic - it's explicit because:
+      // 1. Success feedback will show, making it clear what happened
+      // 2. Reload only happens if user is viewing the field they just created analysis for
+      // 3. If they created for a different field, they'll see success but list won't change (explicit)
       if (fieldId === selectedFieldId) {
         const runs = await fetchAnalysisRunsByField(selectedFieldId)
         setAnalysisRuns(runs)
+        // Phase A: Auto-select the newly created analysis for convenience
+        // This is explicit because success feedback shows, and user can see the new analysis immediately
+        setSelectedAnalysisRunId(newRun.id)
       }
     } catch (err) {
       console.error('Failed to create analysis run:', err)
