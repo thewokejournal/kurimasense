@@ -171,6 +171,40 @@ export async function fetchAnalysisRunById(id: string): Promise<AnalysisRun> {
 }
 
 /**
+ * Create a new analysis run
+ * 
+ * Phase A: Explicit analysis creation via user action only.
+ * Requires fieldId, windowStart, windowEnd.
+ * 
+ * @param fieldId - Field ID
+ * @param windowStart - ISO 8601 timestamp for window start
+ * @param windowEnd - ISO 8601 timestamp for window end
+ * @returns Promise resolving to AnalysisRun
+ * @throws Error if request fails or validation fails
+ */
+export async function createAnalysisRun(
+  fieldId: string,
+  windowStart: string,
+  windowEnd: string
+): Promise<AnalysisRun> {
+  const response = await fetch(`${API_BASE_URL}/api/analysis-runs`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ fieldId, windowStart, windowEnd }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to create analysis run: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.success ? result.data : null
+}
+
+/**
  * Field API Client Functions
  */
 

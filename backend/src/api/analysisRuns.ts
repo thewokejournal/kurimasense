@@ -144,10 +144,24 @@ router.post('/', (req: Request, res: Response) => {
       data: run
     })
   } catch (error) {
+    // Phase A: Explicit error handling - surface errors calmly and explicitly
     console.error('Error creating analysis run:', error)
+    
+    // Distinguish between validation errors and execution errors
+    if (error instanceof Error) {
+      // If error message suggests validation issue, return 400
+      if (error.message.includes('validation') || error.message.includes('invalid')) {
+        return res.status(400).json({
+          success: false,
+          error: `Validation error: ${error.message}`
+        })
+      }
+    }
+    
+    // Default to 500 for execution errors
     res.status(500).json({
       success: false,
-      error: 'Failed to create analysis run'
+      error: 'Failed to create analysis run. Execution error occurred.'
     })
   }
 })

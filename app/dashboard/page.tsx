@@ -28,6 +28,8 @@ import ContextPanel from '@/components/ContextPanel'
 import ProvenancePanel from '@/components/ProvenancePanel'
 import InterpretationAssistant from '@/components/InterpretationAssistant'
 import DecisionContextPanel from '@/components/DecisionContextPanel'
+import CreateAnalysisDialog from '@/components/CreateAnalysisDialog'
+import AnalysisSuccessFeedback from '@/components/AnalysisSuccessFeedback'
 
 
 const stats = [
@@ -103,10 +105,8 @@ export default function DashboardPage() {
         const runs = await fetchAnalysisRunsByField(selectedFieldId)
         setAnalysisRuns(runs)
         
-        // Select the most recent analysis run by default
-        if (runs.length > 0) {
-          setSelectedAnalysisRunId(runs[0].id)
-        }
+        // Phase A: Do not privilege "first" or "latest" runs
+        // User must explicitly select an analysis run
       } catch (err) {
         console.error('Failed to load analysis runs:', err)
         setError(err instanceof Error ? err.message : 'Failed to load analysis runs')
@@ -169,6 +169,28 @@ export default function DashboardPage() {
       setContextError(err instanceof Error ? err.message : 'Failed to load context')
     } finally {
       setIsLoadingContext(false)
+    }
+  }
+
+  // Phase A: Handle analysis creation
+  async function handleCreateAnalysis(fieldId: string, windowStart: string, windowEnd: string) {
+    try {
+      setIsCreatingAnalysis(true)
+      setCreateAnalysisError(null)
+      const newRun = await createAnalysisRun(fieldId, windowStart, windowEnd)
+      setCreatedAnalysisRun(newRun)
+      setIsCreateDialogOpen(false)
+      
+      // Reload analysis runs for the selected field (if it matches)
+      if (fieldId === selectedFieldId) {
+        const runs = await fetchAnalysisRunsByField(selectedFieldId)
+        setAnalysisRuns(runs)
+      }
+    } catch (err) {
+      console.error('Failed to create analysis run:', err)
+      setCreateAnalysisError(err instanceof Error ? err.message : 'Failed to create analysis run')
+    } finally {
+      setIsCreatingAnalysis(false)
     }
   }
 
