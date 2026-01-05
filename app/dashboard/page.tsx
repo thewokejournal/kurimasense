@@ -526,44 +526,4 @@ export default function DashboardPage() {
           </section>
         </div>
 
-        {/* ===== DATA TABLE SECTION ===== */}
-        {/* Purpose: Detailed field-by-field tabular data */}
-        {/* Safe to add: Table filters, pagination, export button, column toggles */}
-        {/* Maintain table responsiveness for mobile */}
-        <div className="dashboard-section dashboard-section-table mt-10 mb-14">
-          <section aria-labelledby="fields-heading" className="dashboard-section mt-10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 id="fields-heading" className="section-heading text-lg font-semibold mb-4" style={{ letterSpacing: '0.01em' }}>Your Fields</h2>
-              <p className="meta-text">Last checked</p>
-            </div>
-            <div className="mt-6">
-              <FieldsTable />
-            </div>
-          </section>
-        </div>
-
-      </div>
-
-      {/* ===== INTERPRETATION ASSISTANT (Phase 6.2) ===== */}
-      {/* Purpose: User-invoked interpretation helper. Hidden by default, revealed via explicit user action */}
-      {inference && (
-        <>
-          {!isAssistantOpen && (
-            <button
-              onClick={() => setIsAssistantOpen(true)}
-              className="fixed bottom-4 right-4 p-3 bg-surface border border-border-subtle rounded-full shadow-lg hover:bg-surface-soft transition-colors z-40"
-              aria-label="Open interpretation helper"
-            >
-              <HelpCircle className="w-5 h-5 opacity-60" />
-            </button>
-          )}
-          <InterpretationAssistant
-            analysisRunId={selectedAnalysisRunId}
-            isOpen={isAssistantOpen}
-            onClose={() => setIsAssistantOpen(false)}
-          />
-        </>
-      )}
-    </main>
-  )
-}
+        {/* ===== DECISION CONTEXT SECTION (Phase 7) ===== */}        {/* Purpose: Non-actionable decision contexts to help structure decision-making. Hidden by default, revealed via explicit user action */}        <div className="dashboard-section dashboard-section-decision-context mt-6 mb-14">          <section className="dashboard-section-tight">            <div className="mb-4 flex items-center justify-between">              <div>                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Decision Context</span>                <p className="meta-text text-xs mt-1 opacity-70">                  Non-actionable frames to help structure decision-making. Clarifies considerations and uncertainties only.                </p>              </div>              {inference && !showDecisionContexts && (                <button                  onClick={async () => {                    if (!selectedAnalysisRunId) return                    try {                      setIsLoadingDecisionContexts(true)                      setDecisionContextError(null)                      const contexts = await generateDecisionContexts(selectedAnalysisRunId)                      setDecisionContexts(contexts)                      setShowDecisionContexts(true)                    } catch (err) {                      console.error('Failed to generate decision contexts:', err)                      setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')                    } finally {                      setIsLoadingDecisionContexts(false)                    }                  }}                  disabled={isLoadingDecisionContexts}                  className="btn-secondary text-sm"                >                  {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}                </button>              )}            </div>            <motion.div              initial={{ opacity: 0, y: 10 }}              animate={{ opacity: 1, y: 0 }}              transition={{ delay: 0.2 }}            >              {decisionContextError && (                <Card className="surface-soft p-4 border-l-4 border-red-500">                  <p className="label-text text-red-600 dark:text-red-400 text-sm">{decisionContextError}</p>                </Card>              )}              {showDecisionContexts && (                <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />              )}            </motion.div>          </section>        </div>        {/* ===== DATA TABLE SECTION ===== */}
