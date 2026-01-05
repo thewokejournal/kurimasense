@@ -366,3 +366,55 @@ export async function getInterpretation(
   return result.success ? result.data : null
 }
 
+/**
+ * Decision Context API Client Functions (Phase 7)
+ */
+
+export interface InferenceReference {
+  field: string
+  value: string
+}
+
+export interface DecisionContext {
+  domain: string
+  inferenceReferences: InferenceReference[]
+  considerations: string[]
+  uncertainties: string[]
+}
+
+export interface DecisionContextResponse {
+  contexts: DecisionContext[]
+  responsibilityStatement: string
+}
+
+/**
+ * Generate decision contexts for an analysis run
+ * 
+ * Phase 7: Non-actionable, read-only decision contexts.
+ * Clarifies considerations, uncertainties, and information gaps only.
+ * User-invoked only, session-bound to current AnalysisRun.
+ * 
+ * @param analysisRunId - Analysis Run ID
+ * @returns Promise resolving to DecisionContextResponse
+ * @throws Error if request fails
+ */
+export async function generateDecisionContexts(
+  analysisRunId: string
+): Promise<DecisionContextResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/decision-context/generate`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ analysisRunId }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to generate decision contexts: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.success ? result.data : null
+}
+

@@ -1,0 +1,41 @@
+/**
+ * Interpretation Assistant API Client Functions (Phase 6.2)
+ */
+
+export interface InterpretationResponse {
+  response: string
+  refused: boolean
+}
+
+/**
+ * Get interpretation assistance for an analysis run
+ * 
+ * Phase 6.2: Assistant has ZERO authority - only restates, defines, or explains stored fields.
+ * User-invoked only, session-bound to current AnalysisRun.
+ * 
+ * @param analysisRunId - Analysis Run ID
+ * @param query - User query
+ * @returns Promise resolving to InterpretationResponse
+ * @throws Error if request fails
+ */
+export async function getInterpretation(
+  analysisRunId: string,
+  query: string
+): Promise<InterpretationResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/interpretation/assist`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ analysisRunId, query }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to get interpretation: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.success ? result.data : null
+}
+

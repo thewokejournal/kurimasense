@@ -27,6 +27,7 @@ import type { InferenceResponse } from '@/app/types/inference'
 import ContextPanel from '@/components/ContextPanel'
 import ProvenancePanel from '@/components/ProvenancePanel'
 import InterpretationAssistant from '@/components/InterpretationAssistant'
+import DecisionContextPanel from '@/components/DecisionContextPanel'
 
 
 const stats = [
