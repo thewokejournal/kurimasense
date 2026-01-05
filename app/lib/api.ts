@@ -56,6 +56,37 @@ export interface ContextData {
 }
 
 /**
+ * Provenance Data type (Phase 6.1)
+ * View-time provenance data. Not persisted.
+ */
+export interface RuleTrace {
+  ruleId: string
+  ruleName: string
+  evaluated: boolean
+  outcome?: string | number
+  contributesTo: ('status' | 'trend' | 'confidence' | 'category')[]
+}
+
+export interface SignalLineage {
+  signalType: 'vegetation' | 'weather'
+  timestamp: string
+  present: boolean
+  dataQuality?: 'high' | 'medium' | 'low'
+}
+
+export interface CategoryProvenance {
+  category: string
+  emittedBy: string[]
+  emittedAt: string
+}
+
+export interface InferenceProvenance {
+  ruleTraces: RuleTrace[]
+  signalLineage: SignalLineage[]
+  categoryProvenance: CategoryProvenance[]
+}
+
+/**
  * Fetch inference results for a field within a time window
  * 
  * @param options - Field ID and time window parameters

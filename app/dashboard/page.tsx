@@ -21,10 +21,11 @@ import FieldsTable from '@/components/FieldsTable'
 import { FieldTimeline } from '@/components/FieldTimeline'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import type { TimelineEntry } from '@/lib/timeline'
-import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, type AnalysisRun, type ContextData } from '@/app/lib/api'
+import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, generateProvenance, type AnalysisRun, type ContextData, type InferenceProvenance } from '@/app/lib/api'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import type { InferenceResponse } from '@/app/types/inference'
 import ContextPanel from '@/components/ContextPanel'
+import ProvenancePanel from '@/components/ProvenancePanel'
 
 
 const stats = [
@@ -80,6 +81,12 @@ export default function DashboardPage() {
   const [isLoadingContext, setIsLoadingContext] = useState(false)
   const [contextError, setContextError] = useState<string | null>(null)
   const [showContext, setShowContext] = useState(false)
+  
+  // Phase 6.1: Provenance state (loaded only via explicit user action, view-time only)
+  const [provenance, setProvenance] = useState<InferenceProvenance | null>(null)
+  const [isLoadingProvenance, setIsLoadingProvenance] = useState(false)
+  const [provenanceError, setProvenanceError] = useState<string | null>(null)
+  const [showProvenance, setShowProvenance] = useState(false)
 
   // Load analysis runs for the selected field
   useEffect(() => {
@@ -438,6 +445,44 @@ export default function DashboardPage() {
               )}
               {showContext && (
                 <ContextPanel context={context} isLoading={isLoadingContext} />
+              )}
+            </motion.div>
+          </section>
+        </div>
+
+        {/* ===== PROVENANCE SECTION (Phase 6.1) ===== */}
+        {/* Purpose: View-time provenance showing HOW inference was produced. Hidden by default, revealed via explicit user action */}
+        <div className="dashboard-section dashboard-section-provenance mt-6 mb-14">
+          <section className="dashboard-section-tight">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Technical Details</span>
+                <p className="meta-text text-xs mt-1 opacity-70">
+                  Inference trace showing mechanical reasoning. Does not explain real-world causes.
+                </p>
+              </div>
+              {inference && !showProvenance && (
+                <button
+                  onClick={handleShowProvenance}
+                  disabled={isLoadingProvenance}
+                  className="btn-secondary text-sm"
+                >
+                  {isLoadingProvenance ? 'Loading...' : 'Show Technical Details'}
+                </button>
+              )}
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {provenanceError && (
+                <Card className="surface-soft p-4 border-l-4 border-red-500">
+                  <p className="label-text text-red-600 dark:text-red-400 text-sm">{provenanceError}</p>
+                </Card>
+              )}
+              {showProvenance && (
+                <ProvenancePanel provenance={provenance} isLoading={isLoadingProvenance} />
               )}
             </motion.div>
           </section>
