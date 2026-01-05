@@ -56,7 +56,7 @@ export default function DashboardLayout({
       <aside className={`dashboard-sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">KurimaSense</div>
-        </div>
+          </div>
         
         <nav className="sidebar-nav">
           {navItems.map(({ href, icon: Icon, label }) => (
@@ -76,8 +76,8 @@ export default function DashboardLayout({
       <div className="dashboard-main-wrapper">
         <HeaderBar onMobileMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
         <main className="dashboard-main">
-          {children}
-        </main>
+        {children}
+      </main>
       </div>
     </div>
   )
