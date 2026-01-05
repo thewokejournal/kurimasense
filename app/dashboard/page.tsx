@@ -21,7 +21,7 @@ import FieldsTable from '@/components/FieldsTable'
 import { FieldTimeline } from '@/components/FieldTimeline'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import type { TimelineEntry } from '@/lib/timeline'
-import { fetchInference } from '@/app/lib/api'
+import { fetchAnalysisRunsByField, fetchAnalysisRunById, type AnalysisRun } from '@/app/lib/api'
 import { formatGeneratedAt, getPrimaryCategoryMessage } from '@/app/lib/inferenceAdapter'
 import type { InferenceResponse } from '@/app/types/inference'
 
@@ -65,35 +65,60 @@ const mockTimelineEntries: TimelineEntry[] = [
 ]
 
 export default function DashboardPage() {
+  // Field selection (hardcoded for now, matching existing UI)
+  const selectedFieldId = 'test-field-1'
+  
+  const [analysisRuns, setAnalysisRuns] = useState<AnalysisRun[]>([])
+  const [selectedAnalysisRunId, setSelectedAnalysisRunId] = useState<string | null>(null)
   const [inference, setInference] = useState<InferenceResponse | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Load analysis runs for the selected field
   useEffect(() => {
-    async function loadInference() {
+    async function loadAnalysisRuns() {
+      try {
+        const runs = await fetchAnalysisRunsByField(selectedFieldId)
+        setAnalysisRuns(runs)
+        
+        // Select the most recent analysis run by default
+        if (runs.length > 0) {
+          setSelectedAnalysisRunId(runs[0].id)
+        }
+      } catch (err) {
+        console.error('Failed to load analysis runs:', err)
+        setError(err instanceof Error ? err.message : 'Failed to load analysis runs')
+        setIsLoading(false)
+      }
+    }
+
+    loadAnalysisRuns()
+  }, [selectedFieldId])
+
+  // Load selected analysis run's inference response
+  useEffect(() => {
+    async function loadSelectedAnalysisRun() {
+      if (!selectedAnalysisRunId) {
+        setInference(null)
+        setIsLoading(false)
+        return
+      }
+
       try {
         setIsLoading(true)
-        const windowEnd = new Date().toISOString()
-        const windowStart = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-        
-        const data = await fetchInference({
-          fieldId: 'test-field-1',
-          windowStart,
-          windowEnd,
-        })
-        
-        setInference(data)
+        const run = await fetchAnalysisRunById(selectedAnalysisRunId)
+        setInference(run.inferenceResponse)
         setError(null)
       } catch (err) {
-        console.error('Failed to load inference:', err)
+        console.error('Failed to load analysis run:', err)
         setError(err instanceof Error ? err.message : 'Failed to load data')
       } finally {
         setIsLoading(false)
       }
     }
 
-    loadInference()
-  }, [])
+    loadSelectedAnalysisRun()
+  }, [selectedAnalysisRunId])
 
   // Map inference to component props
   const statusForUI = inference?.status === 'healthy' ? 'Healthy' : 
@@ -138,6 +163,40 @@ export default function DashboardPage() {
               <span>Field 3 - Corn</span>
               <ChevronDown className="w-3.5 h-3.5 ml-auto opacity-60" />
             </div>
+
+            {analysisRuns.length > 0 && (
+              <div className="command-control" style={{ position: 'relative' }}>
+                <Clock className="w-4 h-4" />
+                <select
+                  value={selectedAnalysisRunId || ''}
+                  onChange={(e) => setSelectedAnalysisRunId(e.target.value)}
+                  className="command-control-select"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    outline: 'none',
+                    color: 'inherit',
+                    font: 'inherit',
+                    cursor: 'pointer',
+                    appearance: 'none',
+                    paddingRight: '20px',
+                    flex: 1,
+                  }}
+                >
+                  {analysisRuns.map((run) => {
+                    const runDate = new Date(run.createdAt)
+                    const dateStr = runDate.toLocaleDateString()
+                    const timeStr = runDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    return (
+                      <option key={run.id} value={run.id}>
+                        {dateStr} {timeStr}
+                      </option>
+                    )
+                  })}
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 ml-auto opacity-60" style={{ pointerEvents: 'none', position: 'absolute', right: '12px' }} />
+              </div>
+            )}
 
             <div className="command-control">
               <Calendar className="w-4 h-4" />
