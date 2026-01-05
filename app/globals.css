@@ -6,6 +6,8 @@
 html,
 body {
   height: 100%;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
@@ -1079,9 +1081,11 @@ input:focus {
 
 .dashboard-shell {
   width: 100%;
+  max-width: 100%;
   padding: 32px 40px;
   background: var(--bg-app);
   min-height: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 1280px) {
@@ -1553,6 +1557,8 @@ html, body {
 
 .app-root {
   background-color: var(--bg-app);
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* =========================================================
@@ -1563,6 +1569,8 @@ html, body {
   display: flex;
   min-height: 100vh;
   background: var(--bg-app);
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* =========================================================
@@ -1630,13 +1638,17 @@ html, body {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  max-width: 100%;
   background: var(--bg-app);
+  overflow-x: hidden;
 }
 
 .dashboard-main {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--bg-app);
+  width: 100%;
 }
 
 /* =========================================================
@@ -1667,7 +1679,7 @@ html, body {
   
   .header-search-wrapper {
     max-width: 320px;
-    min-width: 180px;
+    min-width: 0;
   }
 }
 
@@ -1680,7 +1692,7 @@ html, body {
   
   .header-search-wrapper {
     max-width: 100%;
-    min-width: 150px;
+    min-width: 0;
   }
 }
 
@@ -1719,8 +1731,9 @@ html, body {
   border-radius: 10px;
   padding: 10px 14px;
   max-width: 420px;
-  min-width: 200px;
+  min-width: 0;
   transition: all 120ms cubic-bezier(.2,.8,.4,1);
+  box-sizing: border-box;
 }
 
 .header-search-wrapper:focus-within {
