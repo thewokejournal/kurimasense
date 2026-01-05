@@ -53,7 +53,7 @@ function defineEnumValue(field: string, value: string): string {
   const definitions: Record<string, Record<string, string>> = {
     status: {
       healthy: "The stored status is 'healthy'. This indicates the system recorded healthy vegetation based on NDVI measurements.",
-      watch: "The stored status is 'watch'. This indicates the system recorded moderate vegetation that should be monitored.",
+      watch: "The stored status is 'watch'. This indicates the system recorded moderate vegetation based on NDVI measurements.",
       stressed: "The stored status is 'stressed'. This indicates the system recorded stressed vegetation based on NDVI measurements.",
     },
     trend: {
