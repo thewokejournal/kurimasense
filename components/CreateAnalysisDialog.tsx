@@ -35,16 +35,39 @@ export default function CreateAnalysisDialog({
   const [windowStart, setWindowStart] = useState<string>('')
   const [windowEnd, setWindowEnd] = useState<string>('')
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [validationError, setValidationError] = useState<string | null>(null)
 
   if (!isOpen) return null
 
   const selectedField = fields.find(f => f.id === selectedFieldId)
+
+  // Phase A: Client-side validation before showing confirmation
+  const validateTimeWindow = (start: string, end: string): string | null => {
+    if (!start || !end) {
+      return null // Let required attribute handle empty fields
+    }
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+    if (startDate >= endDate) {
+      return 'Window start must be before window end'
+    }
+    return null
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!selectedFieldId || !windowStart || !windowEnd) {
       return
     }
+    
+    // Phase A: Validate time window before showing confirmation
+    const timeError = validateTimeWindow(windowStart, windowEnd)
+    if (timeError) {
+      setValidationError(timeError)
+      return
+    }
+    
+    setValidationError(null)
     setShowConfirmation(true)
   }
 
@@ -52,16 +75,37 @@ export default function CreateAnalysisDialog({
     if (!selectedFieldId || !windowStart || !windowEnd) {
       return
     }
+    
+    // Phase A: Final validation before execution
+    const timeError = validateTimeWindow(windowStart, windowEnd)
+    if (timeError) {
+      setValidationError(timeError)
+      setShowConfirmation(false)
+      return
+    }
+    
     await onCreate(selectedFieldId, windowStart, windowEnd)
     // Reset form on success
     setSelectedFieldId('')
     setWindowStart('')
     setWindowEnd('')
     setShowConfirmation(false)
+    setValidationError(null)
   }
 
   const handleCancel = () => {
     setShowConfirmation(false)
+    setValidationError(null)
+  }
+  
+  // Phase A: Reset form when dialog closes
+  const handleClose = () => {
+    setSelectedFieldId('')
+    setWindowStart('')
+    setWindowEnd('')
+    setShowConfirmation(false)
+    setValidationError(null)
+    onClose()
   }
 
   return (
@@ -70,7 +114,7 @@ export default function CreateAnalysisDialog({
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Run Analysis</h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-muted hover:text-primary"
             disabled={isCreating}
           >
@@ -114,7 +158,13 @@ export default function CreateAnalysisDialog({
                 <input
                   type="datetime-local"
                   value={windowStart}
-                  onChange={(e) => setWindowStart(e.target.value)}
+                  onChange={(e) => {
+                    setWindowStart(e.target.value)
+                    // Phase A: Clear validation error when user changes input
+                    if (validationError) {
+                      setValidationError(null)
+                    }
+                  }}
                   className="w-full pl-10 pr-4 py-2 border border-border-subtle rounded-md bg-background-secondary focus:outline-none focus:ring-1 focus:ring-blue-500"
                   required
                   disabled={isCreating}
@@ -132,7 +182,13 @@ export default function CreateAnalysisDialog({
                 <input
                   type="datetime-local"
                   value={windowEnd}
-                  onChange={(e) => setWindowEnd(e.target.value)}
+                  onChange={(e) => {
+                    setWindowEnd(e.target.value)
+                    // Phase A: Clear validation error when user changes input
+                    if (validationError) {
+                      setValidationError(null)
+                    }
+                  }}
                   className="w-full pl-10 pr-4 py-2 border border-border-subtle rounded-md bg-background-secondary focus:outline-none focus:ring-1 focus:ring-blue-500"
                   required
                   disabled={isCreating}
@@ -149,7 +205,7 @@ export default function CreateAnalysisDialog({
             <div className="flex gap-3 pt-2">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleClose}
                 className="flex-1 btn-secondary"
                 disabled={isCreating}
               >
