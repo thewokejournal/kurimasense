@@ -201,7 +201,10 @@ export async function createAnalysisRun(
   }
 
   const result = await response.json()
-  return result.success ? result.data : null
+  if (!result.success || !result.data) {
+    throw new Error('Failed to create analysis run: Invalid response')
+  }
+  return result.data
 }
 
 /**
