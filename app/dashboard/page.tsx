@@ -21,7 +21,7 @@ import FieldsTable from '@/components/FieldsTable'
 import { FieldTimeline } from '@/components/FieldTimeline'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import type { TimelineEntry } from '@/lib/timeline'
-import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, generateProvenance, generateDecisionContexts, type AnalysisRun, type ContextData, type InferenceProvenance, type DecisionContextResponse } from '@/app/lib/api'
+import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, generateProvenance, generateDecisionContexts, createAnalysisRun, fetchAllFields, type AnalysisRun, type ContextData, type InferenceProvenance, type DecisionContextResponse, type Field } from '@/app/lib/api'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import type { InferenceResponse } from '@/app/types/inference'
 import ContextPanel from '@/components/ContextPanel'
@@ -300,6 +300,13 @@ export default function DashboardPage() {
             <div className="command-separator" />
 
             <div className="flex gap-2">
+              {/* Phase A: Explicit analysis creation button */}
+              <button
+                onClick={() => setIsCreateDialogOpen(true)}
+                className="btn-primary"
+              >
+                Run Analysis
+              </button>
               <button className="btn-secondary font-semibold">
                 Crop Vigor
               </button>
