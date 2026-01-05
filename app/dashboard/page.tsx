@@ -526,4 +526,56 @@ export default function DashboardPage() {
           </section>
         </div>
 
-        {/* ===== DECISION CONTEXT SECTION (Phase 7) ===== */}        {/* Purpose: Non-actionable decision contexts to help structure decision-making. Hidden by default, revealed via explicit user action */}        <div className="dashboard-section dashboard-section-decision-context mt-6 mb-14">          <section className="dashboard-section-tight">            <div className="mb-4 flex items-center justify-between">              <div>                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Decision Context</span>                <p className="meta-text text-xs mt-1 opacity-70">                  Non-actionable frames to help structure decision-making. Clarifies considerations and uncertainties only.                </p>              </div>              {inference && !showDecisionContexts && (                <button                  onClick={async () => {                    if (!selectedAnalysisRunId) return                    try {                      setIsLoadingDecisionContexts(true)                      setDecisionContextError(null)                      const contexts = await generateDecisionContexts(selectedAnalysisRunId)                      setDecisionContexts(contexts)                      setShowDecisionContexts(true)                    } catch (err) {                      console.error('Failed to generate decision contexts:', err)                      setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')                    } finally {                      setIsLoadingDecisionContexts(false)                    }                  }}                  disabled={isLoadingDecisionContexts}                  className="btn-secondary text-sm"                >                  {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}                </button>              )}            </div>            <motion.div              initial={{ opacity: 0, y: 10 }}              animate={{ opacity: 1, y: 0 }}              transition={{ delay: 0.2 }}            >              {decisionContextError && (                <Card className="surface-soft p-4 border-l-4 border-red-500">                  <p className="label-text text-red-600 dark:text-red-400 text-sm">{decisionContextError}</p>                </Card>              )}              {showDecisionContexts && (                <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />              )}            </motion.div>          </section>        </div>        {/* ===== DATA TABLE SECTION ===== */}
+                {/* ===== DECISION CONTEXT SECTION (Phase 7) ===== */}
+        {/* Purpose: Non-actionable decision contexts to help structure decision-making. Hidden by default, revealed via explicit user action */}
+        <div className="dashboard-section dashboard-section-decision-context mt-6 mb-14">
+          <section className="dashboard-section-tight">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Decision Context</span>
+                <p className="meta-text text-xs mt-1 opacity-70">
+                  Non-actionable frames to help structure decision-making. Clarifies considerations and uncertainties only.
+                </p>
+              </div>
+              {inference && !showDecisionContexts && (
+                <button
+                  onClick={async () => {
+                    if (!selectedAnalysisRunId) return
+                    try {
+                      setIsLoadingDecisionContexts(true)
+                      setDecisionContextError(null)
+                      const contexts = await generateDecisionContexts(selectedAnalysisRunId)
+                      setDecisionContexts(contexts)
+                      setShowDecisionContexts(true)
+                    } catch (err) {
+                      console.error('Failed to generate decision contexts:', err)
+                      setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
+                    } finally {
+                      setIsLoadingDecisionContexts(false)
+                    }
+                  }}
+                  disabled={isLoadingDecisionContexts}
+                  className="btn-secondary text-sm"
+                >
+                  {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
+                </button>
+              )}
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {decisionContextError && (
+                <Card className="surface-soft p-4 border-l-4 border-red-500">
+                  <p className="label-text text-red-600 dark:text-red-400 text-sm">{decisionContextError}</p>
+                </Card>
+              )}
+              {showDecisionContexts && (
+                <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />
+              )}
+            </motion.div>
+          </section>
+        </div>
+
+        {/* ===== DATA TABLE SECTION ===== */}
