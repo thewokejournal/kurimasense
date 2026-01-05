@@ -650,6 +650,8 @@ export default function DashboardPage() {
           <AnalysisSuccessFeedback
             analysisRun={createdAnalysisRun}
             onClose={() => setCreatedAnalysisRun(null)}
+            fieldName={fields.find(f => f.id === createdAnalysisRun.fieldId)?.name}
+            isCurrentField={createdAnalysisRun.fieldId === selectedFieldId}
           />
         </div>
       )}

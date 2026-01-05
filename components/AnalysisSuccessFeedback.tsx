@@ -16,11 +16,15 @@ import type { AnalysisRun } from '@/app/lib/api'
 interface AnalysisSuccessFeedbackProps {
   analysisRun: AnalysisRun
   onClose: () => void
+  fieldName?: string
+  isCurrentField?: boolean
 }
 
 export default function AnalysisSuccessFeedback({
   analysisRun,
   onClose,
+  fieldName,
+  isCurrentField = false,
 }: AnalysisSuccessFeedbackProps) {
   const createdAtDate = new Date(analysisRun.createdAt)
   const windowStartDate = new Date(analysisRun.windowStart)
@@ -63,11 +67,25 @@ export default function AnalysisSuccessFeedback({
           </div>
         </div>
 
+        {fieldName && (
+          <div className="flex items-start gap-2">
+            <Info className="w-4 h-4 mt-0.5 opacity-50" />
+            <div>
+              <p className="text-xs text-muted mb-1">Field</p>
+              <p className="text-sm font-medium">{fieldName}</p>
+            </div>
+          </div>
+        )}
+
         <div className="flex items-start gap-2 pt-2 border-t" style={{ borderTopColor: 'var(--border-subtle)' }}>
           <Info className="w-4 h-4 mt-0.5 opacity-50" />
-          <p className="text-xs text-muted">
-            This analysis run is immutable. It cannot be modified, updated, or recomputed.
-          </p>
+          <div>
+            <p className="text-xs text-muted mb-1">
+              {isCurrentField 
+                ? 'This analysis is now available in the analysis dropdown above. It is immutable and cannot be modified, updated, or recomputed.'
+                : 'This analysis is immutable and cannot be modified, updated, or recomputed. Switch to this field to view it.'}
+            </p>
+          </div>
         </div>
       </div>
     </Card>
