@@ -26,6 +26,7 @@ import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import type { InferenceResponse } from '@/app/types/inference'
 import ContextPanel from '@/components/ContextPanel'
 import ProvenancePanel from '@/components/ProvenancePanel'
+import InterpretationAssistant from '@/components/InterpretationAssistant'
 
 
 const stats = [
@@ -535,6 +536,27 @@ export default function DashboardPage() {
         </div>
 
       </div>
+
+      {/* ===== INTERPRETATION ASSISTANT (Phase 6.2) ===== */}
+      {/* Purpose: User-invoked interpretation helper. Hidden by default, revealed via explicit user action */}
+      {inference && (
+        <>
+          {!isAssistantOpen && (
+            <button
+              onClick={() => setIsAssistantOpen(true)}
+              className="fixed bottom-4 right-4 p-3 bg-surface border border-border-subtle rounded-full shadow-lg hover:bg-surface-soft transition-colors z-40"
+              aria-label="Open interpretation helper"
+            >
+              <HelpCircle className="w-5 h-5 opacity-60" />
+            </button>
+          )}
+          <InterpretationAssistant
+            analysisRunId={selectedAnalysisRunId}
+            isOpen={isAssistantOpen}
+            onClose={() => setIsAssistantOpen(false)}
+          />
+        </>
+      )}
     </main>
   )
 }
