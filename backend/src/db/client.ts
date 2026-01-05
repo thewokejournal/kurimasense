@@ -93,4 +93,85 @@ export function insertWeatherSignal(signal: any) {
   return { id: result.lastInsertRowid }
 }
 
+/**
+ * Field Persistence Functions
+ */
+
+/**
+ * Create a new field
+ */
+export function insertField(id: string, name: string, geometry?: string | null) {
+  const stmt = db.prepare(`
+    INSERT INTO fields (id, name, geometry, created_at)
+    VALUES (?, ?, ?, datetime('now'))
+  `)
+  const result = stmt.run(id, name, geometry || null)
+  return { id }
+}
+
+/**
+ * Get a field by ID
+ */
+export function getFieldById(id: string) {
+  const stmt = db.prepare('SELECT * FROM fields WHERE id = ?')
+  const row = stmt.get(id) as any
+  if (!row) return null
+  return {
+    id: row.id,
+    name: row.name,
+    geometry: row.geometry,
+    createdAt: row.created_at
+  }
+}
+
+/**
+ * Get all fields
+ */
+export function getAllFields() {
+  const stmt = db.prepare('SELECT * FROM fields ORDER BY created_at DESC')
+  const rows = stmt.all() as any[]
+  return rows.map(row => ({
+    id: row.id,
+    name: row.name,
+    geometry: row.geometry,
+    createdAt: row.created_at
+  }))
+}
+
+/**
+ * Update a field
+ */
+export function updateField(id: string, name?: string, geometry?: string | null) {
+  const updates: string[] = []
+  const values: any[] = []
+  
+  if (name !== undefined) {
+    updates.push('name = ?')
+    values.push(name)
+  }
+  
+  if (geometry !== undefined) {
+    updates.push('geometry = ?')
+    values.push(geometry || null)
+  }
+  
+  if (updates.length === 0) {
+    return { id, updated: false }
+  }
+  
+  values.push(id)
+  const stmt = db.prepare(`UPDATE fields SET ${updates.join(', ')} WHERE id = ?`)
+  const result = stmt.run(...values)
+  return { id, updated: result.changes > 0 }
+}
+
+/**
+ * Delete a field
+ */
+export function deleteField(id: string) {
+  const stmt = db.prepare('DELETE FROM fields WHERE id = ?')
+  const result = stmt.run(id)
+  return { id, deleted: result.changes > 0 }
+}
+
 export default db

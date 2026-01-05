@@ -29,7 +29,17 @@ export const WEATHER_SIGNALS_TABLE = `
   )
 `
 
+export const FIELDS_TABLE = `
+  CREATE TABLE IF NOT EXISTS fields (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    geometry TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`
+
 export function initializeSchema(db: any): void {
   db.exec(VEGETATION_SIGNALS_TABLE)
   db.exec(WEATHER_SIGNALS_TABLE)
+  db.exec(FIELDS_TABLE)
 }

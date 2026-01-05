@@ -1,2 +1,3 @@
 export { default as ingestRouter } from './ingest.js'
 export { default as inferenceRouter } from './inference.js'
+export { default as fieldsRouter } from './fields.js'
