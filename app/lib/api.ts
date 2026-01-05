@@ -288,3 +288,40 @@ export async function fetchContext(
   return result.success ? result.data : null
 }
 
+/**
+ * Provenance API Client Functions (Phase 6.1)
+ */
+
+/**
+ * Generate provenance data for a field and time window
+ * 
+ * Phase 6.1: Provenance is view-time only, deterministic, NOT persisted.
+ * Loaded only via explicit user action.
+ * 
+ * @param fieldId - Field ID
+ * @param windowStart - Start of time window (ISO 8601)
+ * @param windowEnd - End of time window (ISO 8601)
+ * @returns Promise resolving to InferenceProvenance
+ * @throws Error if request fails
+ */
+export async function generateProvenance(
+  fieldId: string,
+  windowStart: string,
+  windowEnd: string
+): Promise<InferenceProvenance> {
+  const response = await fetch(`${API_BASE_URL}/api/provenance/generate`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ fieldId, windowStart, windowEnd }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
+    throw new Error(error.error || `Failed to generate provenance: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  return result.success ? result.data : null
+}
