@@ -98,6 +98,26 @@ export default function DashboardPage() {
   const [decisionContextError, setDecisionContextError] = useState<string | null>(null)
   const [showDecisionContexts, setShowDecisionContexts] = useState(false)
 
+  // Phase A: Analysis creation state
+  const [fields, setFields] = useState<Field[]>([])
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [isCreatingAnalysis, setIsCreatingAnalysis] = useState(false)
+  const [createAnalysisError, setCreateAnalysisError] = useState<string | null>(null)
+  const [createdAnalysisRun, setCreatedAnalysisRun] = useState<AnalysisRun | null>(null)
+
+  // Load fields for analysis creation
+  useEffect(() => {
+    async function loadFields() {
+      try {
+        const fieldsData = await fetchAllFields()
+        setFields(fieldsData)
+      } catch (err) {
+        console.error('Failed to load fields:', err)
+      }
+    }
+    loadFields()
+  }, [])
+
   // Load analysis runs for the selected field
   useEffect(() => {
     async function loadAnalysisRuns() {
