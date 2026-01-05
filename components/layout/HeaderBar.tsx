@@ -1,6 +1,6 @@
 'use client'
 
-import { Search, ChevronRight } from 'lucide-react'
+import { Search, ChevronRight, Menu } from 'lucide-react'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import ThemeToggle from '@/components/ThemeToggle'
@@ -15,13 +15,21 @@ const getBreadcrumbs = (pathname: string) => {
   return ['Dashboard']
 }
 
-export default function HeaderBar() {
+export default function HeaderBar({ onMobileMenuToggle }: { onMobileMenuToggle: () => void }) {
   const [searchQuery, setSearchQuery] = useState('')
   const pathname = usePathname()
   const breadcrumbs = getBreadcrumbs(pathname || '')
 
   return (
     <header className="dashboard-header-bar">
+      <button 
+        className="mobile-menu-button"
+        onClick={onMobileMenuToggle}
+        aria-label="Toggle navigation menu"
+      >
+        <Menu size={20} strokeWidth={2} />
+      </button>
+
       <div className="header-breadcrumbs">
         {breadcrumbs.map((crumb, index) => (
           <div key={index} className="breadcrumb-item">
