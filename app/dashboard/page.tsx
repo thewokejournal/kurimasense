@@ -349,7 +349,6 @@ export default function DashboardPage() {
                   analysisRuns={analysisRuns}
                   selectedAnalysisRunId={selectedAnalysisRunId}
                   onSelectAnalysisRun={setSelectedAnalysisRunId}
-                  fieldName={fields.find(f => f.id === selectedFieldId)?.name}
                 />
               </motion.div>
             </section>

@@ -19,14 +19,12 @@ interface AnalysisRunListProps {
   analysisRuns: AnalysisRun[]
   selectedAnalysisRunId: string | null
   onSelectAnalysisRun: (runId: string) => void
-  fieldName?: string
 }
 
 export default function AnalysisRunList({
   analysisRuns,
   selectedAnalysisRunId,
   onSelectAnalysisRun,
-  fieldName,
 }: AnalysisRunListProps) {
   // Phase B: Order chronologically by createdAt (most recent first)
   // Backend already returns runs ordered by created_at DESC (backend/src/db/client.ts line 225)
