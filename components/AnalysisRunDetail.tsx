@@ -16,6 +16,7 @@ import { Card } from '@/components/ui/card'
 import { Clock, Calendar, Map, Info, FileText } from 'lucide-react'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
+import ProvenancePanel from '@/components/ProvenancePanel'
 import type { AnalysisRun, Field } from '@/app/lib/api'
 import type { InferenceResponse } from '@/app/types/inference'
 
@@ -188,6 +189,13 @@ export default function AnalysisRunDetail({
           </div>
         </div>
       </Card>
+
+      {/* Phase C: Provenance Panel (Hidden by default, user must opt in) */}
+      <ProvenancePanel
+        fieldId={analysisRun.fieldId}
+        windowStart={analysisRun.windowStart}
+        windowEnd={analysisRun.windowEnd}
+      />
     </div>
   )
 }
