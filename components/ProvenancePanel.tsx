@@ -32,8 +32,6 @@ export default function ProvenancePanel({
   const [provenance, setProvenance] = useState<InferenceProvenance | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  // Phase C: isExpanded state for toggle control
-
   const handleToggle = async () => {
     if (!isExpanded && !provenance && !isLoading) {
       // Load provenance on first expansion
