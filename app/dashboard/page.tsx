@@ -30,6 +30,8 @@ import InterpretationAssistant from '@/components/InterpretationAssistant'
 import DecisionContextPanel from '@/components/DecisionContextPanel'
 import CreateAnalysisDialog from '@/components/CreateAnalysisDialog'
 import AnalysisSuccessFeedback from '@/components/AnalysisSuccessFeedback'
+import AnalysisRunList from '@/components/AnalysisRunList'
+import AnalysisRunDetail from '@/components/AnalysisRunDetail'
 
 
 const stats = [
@@ -295,28 +297,7 @@ export default function DashboardPage() {
               <ChevronDown className="w-3.5 h-3.5 ml-auto opacity-60" />
             </div>
 
-            {analysisRuns.length > 0 && (
-              <div className="command-control" style={{ position: 'relative' }}>
-                <Clock className="w-4 h-4" />
-                <select
-                  value={selectedAnalysisRunId || ''}
-                  onChange={(e) => setSelectedAnalysisRunId(e.target.value)}
-                  className="command-control-select"
-                >
-                  {analysisRuns.map((run) => {
-                    const runDate = new Date(run.createdAt)
-                    const dateStr = runDate.toLocaleDateString()
-                    const timeStr = runDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                    return (
-                      <option key={run.id} value={run.id}>
-                        {dateStr} {timeStr}
-                      </option>
-                    )
-                  })}
-                </select>
-                <ChevronDown className="w-3.5 h-3.5 opacity-60" style={{ pointerEvents: 'none', position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-              </div>
-            )}
+            {/* Phase B: Field selector remains, analysis run selection moved to dedicated section below */}
 
             <div className="command-control">
               <Calendar className="w-4 h-4" />
@@ -347,20 +328,65 @@ export default function DashboardPage() {
           </motion.div>
         </div>
 
-        {/* ===== PRIMARY SUMMARY SECTION (TIER-1 SAFE INSERTION ZONE) ===== */}
-        {/* Purpose: Dominant crop health summary - the single most important metric */}
-        {/* Safe to add: Supplementary callout cards, quick action buttons */}
-        {/* WARNING: This section must remain visually dominant - do not add competing elements */}
-        <div className="dashboard-section dashboard-section-primary-summary mt-10 mb-16">
-          <div className="bg-card rounded-xl shadow-sm p-6">
-            {isLoading ? (
-              <div className="text-center py-12 text-gray-500">Loading crop health data...</div>
-            ) : error ? (
-              <div className="text-center py-12 text-red-600">
-                <p>Failed to load data</p>
-                <p className="text-sm mt-2">{error}</p>
+        {/* ===== PHASE B: ANALYSIS RUNS SECTION ===== */}
+        {/* Purpose: Display all AnalysisRuns for the selected field in chronological order */}
+        {/* Navigation path: Field → AnalysisRuns → AnalysisRun detail */}
+        {analysisRuns.length > 0 && (
+          <div className="dashboard-section dashboard-section-analysis-runs mt-6 mb-10">
+            <section className="dashboard-section-tight">
+              <div className="mb-4">
+                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Analysis Runs</span>
+                <p className="meta-text text-xs mt-1 opacity-70">
+                  Historical analysis records for this field. Select a run to inspect its details.
+                </p>
               </div>
-            ) : inference ? (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <AnalysisRunList
+                  analysisRuns={analysisRuns}
+                  selectedAnalysisRunId={selectedAnalysisRunId}
+                  onSelectAnalysisRun={setSelectedAnalysisRunId}
+                  fieldName={fields.find(f => f.id === selectedFieldId)?.name}
+                />
+              </motion.div>
+            </section>
+          </div>
+        )}
+
+        {/* ===== PHASE B: ANALYSIS RUN DETAIL (REPLAY VIEW) ===== */}
+        {/* Purpose: Display stored inference exactly as recorded - read-only replay */}
+        {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
+          <div className="dashboard-section dashboard-section-analysis-detail mt-10 mb-16">
+            <section className="dashboard-section-tight">
+              <div className="mb-4">
+                <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Analysis Detail</span>
+                <p className="meta-text text-xs mt-1 opacity-70">
+                  Historical record replay. Stored inference displayed exactly as recorded.
+                </p>
+              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <AnalysisRunDetail
+                  analysisRun={analysisRuns.find(r => r.id === selectedAnalysisRunId)!}
+                  field={fields.find(f => f.id === selectedFieldId)}
+                />
+              </motion.div>
+            </section>
+          </div>
+        )}
+
+        {/* ===== PRIMARY SUMMARY SECTION (TIER-1 SAFE INSERTION ZONE) ===== */}
+        {/* Purpose: Quick overview - shown only when an analysis is selected */}
+        {/* Phase B: This is a secondary view - full details are in AnalysisRunDetail */}
+        {selectedAnalysisRunId && inference && (
+          <div className="dashboard-section dashboard-section-primary-summary mt-10 mb-16">
+            <div className="bg-card rounded-xl shadow-sm p-6">
               <CropHealthSummary
                 status={statusForUI as any}
                 trend={trendForUI as any}
@@ -368,11 +394,9 @@ export default function DashboardPage() {
                 detectedAt={formatGeneratedAt(inference.generatedAt)}
                 trendDirection={inference.trend}
               />
-            ) : (
-              <div className="text-center py-12 text-gray-500">No data available</div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ===== SUPPORTING METRICS SECTION ===== */}
         {/* Purpose: Secondary KPIs that support crop health narrative */}
@@ -453,58 +477,8 @@ export default function DashboardPage() {
           </section>
         </div>
 
-        {/* ===== INSIGHTS & OBSERVATIONS SECTION ===== */}
-        {/* Purpose: Contextual narrative and expert observations */}
-        {/* Safe to add: Multiple insight cards, recommendations, alerts */}
-        {/* Keep prose-style formatting for readability */}
-        <div className="dashboard-section dashboard-section-insights mt-6 mb-14">
-          <section className="dashboard-section-tight">
-            <div className="mb-2">
-              <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em' }}>Field Observations</span>
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              {inference && (
-                <div className="space-y-4">
-                  {/* Phase 4.3: Display all categories verbatim */}
-                  {inference.categories.length > 0 && (
-                    <Card className="surface-soft p-5">
-                      <div className="space-y-4">
-                        {inference.categories.map((cat, index) => (
-                          <div key={index}>
-                  <h3 className="font-semibold tracking-tight mb-2 text-base inline-flex items-center gap-2">
-                              {cat.category.charAt(0).toUpperCase() + cat.category.slice(1)}
-                    <ConfidenceBadge 
-                      confidence={inference.confidence === 'high' ? 0.9 : inference.confidence === 'medium' ? 0.6 : 0.3} 
-                      source="satellite" 
-                    />
-                  </h3>
-                            <p className="label-text">{cat.message}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="confidence-indicator mt-4" style={{ fontSize: '9px', opacity: 0.45 }}>
-                    <span className="confidence-dot" />
-                    <span>Generated {formatGeneratedAt(inference.generatedAt)}</span>
-                  </div>
-                    </Card>
-                  )}
-                  
-                  {/* Phase 4.3: Display explanation text verbatim */}
-                  {inference.explanation && (
-                    <Card className="surface-soft p-5">
-                      <h3 className="font-semibold tracking-tight mb-2 text-base">Explanation</h3>
-                      <p className="label-text whitespace-pre-wrap">{inference.explanation}</p>
-                    </Card>
-                  )}
-                </div>
-              )}
-            </motion.div>
-          </section>
-        </div>
+        {/* Phase B: Categories and explanation now shown in AnalysisRunDetail component above */}
+        {/* This section removed to avoid duplication - all inference details are in the dedicated replay view */}
 
         {/* ===== CONTEXT SECTION (Phase 5) ===== */}
         {/* Purpose: External, read-only context data. Visually secondary, clearly separated from inference */}
