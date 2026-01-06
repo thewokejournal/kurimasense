@@ -32,6 +32,7 @@ import CreateAnalysisDialog from '@/components/CreateAnalysisDialog'
 import AnalysisSuccessFeedback from '@/components/AnalysisSuccessFeedback'
 import AnalysisRunList from '@/components/AnalysisRunList'
 import AnalysisRunDetail from '@/components/AnalysisRunDetail'
+import Footer from '@/components/Footer'
 
 
 const stats = [
@@ -612,6 +613,9 @@ export default function DashboardPage() {
           />
         </div>
       )}
+
+      {/* Footer to mark end of page content */}
+      <Footer />
     </main>
   )
 }
