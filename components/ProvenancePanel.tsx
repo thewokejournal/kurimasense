@@ -32,6 +32,8 @@ export default function ProvenancePanel({
   const [provenance, setProvenance] = useState<InferenceProvenance | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+  // Phase C: isExpanded state for toggle control
+
   const handleToggle = async () => {
     if (!isExpanded && !provenance && !isLoading) {
       // Load provenance on first expansion
@@ -164,6 +166,31 @@ export default function ProvenancePanel({
                   )}
                 </div>
               </div>
+
+              {/* Phase C: Category Provenance (shows which rules emitted each category) */}
+              {provenance.categoryProvenance && provenance.categoryProvenance.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                    <Radio className="w-4 h-4 opacity-50" />
+                    Category Provenance
+                  </h3>
+                  <div className="space-y-2">
+                    {provenance.categoryProvenance.map((catProv, index) => (
+                      <div
+                        key={`${catProv.category}-${index}`}
+                        className="p-3 bg-background-secondary rounded-md text-sm"
+                      >
+                        <p className="font-medium mb-1 capitalize">{catProv.category}</p>
+                        {catProv.emittedBy && catProv.emittedBy.length > 0 && (
+                          <p className="text-xs text-muted">
+                            Emitted by: {catProv.emittedBy.join(', ')}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>
