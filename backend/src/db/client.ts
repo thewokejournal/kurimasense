@@ -182,6 +182,7 @@ export function deleteField(id: string) {
  * Create a new analysis run
  * 
  * Phase 4.2: AnalysisRun is immutable - this is the only way to create one
+ * Phase D: Explicit error handling - throws on database errors
  */
 export function insertAnalysisRun(
   id: string,
@@ -190,12 +191,30 @@ export function insertAnalysisRun(
   windowEnd: string,
   inference: any
 ) {
+  // Phase D: Validate inference is serializable
+  let inferenceJson: string
+  try {
+    inferenceJson = JSON.stringify(inference)
+  } catch (error) {
+    throw new Error(`Failed to serialize inference response: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  }
+
+  // Phase D: Insert with explicit error propagation
   const stmt = db.prepare(`
     INSERT INTO analysis_runs (id, field_id, window_start, window_end, inference_response, created_at)
     VALUES (?, ?, ?, ?, ?, datetime('now'))
   `)
-  stmt.run(id, fieldId, windowStart, windowEnd, JSON.stringify(inference))
-  return { id }
+  
+  try {
+    stmt.run(id, fieldId, windowStart, windowEnd, inferenceJson)
+    return { id }
+  } catch (error: any) {
+    // Phase D: Re-throw with context for upstream handling
+    if (error?.code === 'SQLITE_CONSTRAINT') {
+      throw error // Let caller handle with context
+    }
+    throw new Error(`Database error inserting analysis run: ${error?.message || 'Unknown error'}`)
+  }
 }
 
 /**
