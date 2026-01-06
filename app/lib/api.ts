@@ -196,13 +196,35 @@ export async function createAnalysisRun(
   })
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Unknown error' }))
-    throw new Error(error.error || `Failed to create analysis run: ${response.statusText}`)
+    // Phase D: Extract detailed error information from backend
+    const errorData = await response.json().catch(() => ({ 
+      error: 'Unknown error',
+      whatFailed: 'Network or parsing error',
+      systemAction: 'Request failed'
+    }))
+    
+    // Phase D: Construct specific error message with backend details
+    let errorMessage = errorData.error || `Failed to create analysis run: ${response.statusText}`
+    if (errorData.whatFailed) {
+      errorMessage += ` (${errorData.whatFailed})`
+    }
+    if (errorData.systemAction) {
+      errorMessage += `. ${errorData.systemAction}.`
+    }
+    
+    const error = new Error(errorMessage)
+    // Phase D: Attach error metadata for UI display
+    ;(error as any).errorDetails = {
+      whatFailed: errorData.whatFailed,
+      whyFailed: errorData.whyFailed,
+      systemAction: errorData.systemAction
+    }
+    throw error
   }
 
   const result = await response.json()
   if (!result.success || !result.data) {
-    throw new Error('Failed to create analysis run: Invalid response')
+    throw new Error(result.error || 'Failed to create analysis run: Invalid response')
   }
   return result.data
 }
