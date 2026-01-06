@@ -47,22 +47,31 @@ router.get('/:fieldId', (req: Request, res: Response) => {
       })
     }
 
-    // Phase 5: Context is descriptive only
-    // For now, return mock context data structure
-    // In a real implementation, this would fetch from satellite/weather APIs
-    // but NOT store or persist the data
+    // Phase E: Context is descriptive only, factual and raw
+    // Fetch actual signal data from database (read-only, not persisted as context)
+    const { assembleInferenceInput } = await import('../inference/input.js')
     
+    // Phase E: Get raw signal data for context display
+    const input = assembleInferenceInput(fieldId, windowStart, windowEnd)
+    
+    // Phase E: Build factual, non-interpretive context data
     const context = {
-      source: 'Satellite and Weather APIs',
+      source: 'Database signals (vegetation_signals, weather_signals)',
       timeWindow: {
         start: windowStart,
         end: windowEnd,
       },
       fetchedAt: new Date().toISOString(),
       data: {
-        'Satellite observations': 'Available',
-        'Weather records': 'Available',
-        'Data coverage': 'Complete',
+        'Vegetation signals': `${input.vegetationSignals.length} observations`,
+        'Weather signals': `${input.weatherSignals.length} observations`,
+        'Signal completeness': `${input.signalCompleteness}%`,
+        'Vegetation timestamps': input.vegetationSignals.length > 0
+          ? input.vegetationSignals.map(s => s.timestamp).join(', ')
+          : 'None',
+        'Weather timestamps': input.weatherSignals.length > 0
+          ? input.weatherSignals.map(s => s.timestamp).join(', ')
+          : 'None',
       },
     }
 
