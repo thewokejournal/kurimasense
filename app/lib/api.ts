@@ -322,7 +322,10 @@ export async function fetchContext(
   }
 
   const result = await response.json()
-  return result.success ? result.data : null
+  if (!result.success || !result.data) {
+    throw new Error(result.error || 'Failed to fetch context: Invalid response data')
+  }
+  return result.data
 }
 
 /**
@@ -360,7 +363,10 @@ export async function generateProvenance(
   }
 
   const result = await response.json()
-  return result.success ? result.data : null
+  if (!result.success || !result.data) {
+    throw new Error(result.error || 'Failed to generate provenance: Invalid response data')
+  }
+  return result.data
 }
 /**
  * Interpretation Assistant API Client Functions (Phase 6.2)
@@ -400,7 +406,10 @@ export async function getInterpretation(
   }
 
   const result = await response.json()
-  return result.success ? result.data : null
+  if (!result.success || !result.data) {
+    throw new Error(result.error || 'Failed to get interpretation: Invalid response data')
+  }
+  return result.data
 }
 
 /**
@@ -452,6 +461,9 @@ export async function generateDecisionContexts(
   }
 
   const result = await response.json()
-  return result.success ? result.data : null
+  if (!result.success || !result.data) {
+    throw new Error(result.error || 'Failed to generate decision contexts: Invalid response data')
+  }
+  return result.data
 }
 
