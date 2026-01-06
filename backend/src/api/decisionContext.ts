@@ -147,7 +147,7 @@ router.post('/generate', (req: Request, res: Response) => {
       success: true,
       data: {
         contexts,
-        responsibilityStatement: 'KurimaSense does not make decisions or recommendations.',
+        responsibilityStatement: 'KurimaSense does not make decisions or recommendations. Responsibility remains with the user.',
       }
     })
   } catch (error) {
