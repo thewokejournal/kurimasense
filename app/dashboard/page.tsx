@@ -207,12 +207,10 @@ export default function DashboardPage() {
       // 1. Success feedback will show, making it clear what happened
       // 2. Reload only happens if user is viewing the field they just created analysis for
       // 3. If they created for a different field, they'll see success but list won't change (explicit)
+      // User must explicitly select which analysis to view - no auto-selection
       if (fieldId === selectedFieldId) {
         const runs = await fetchAnalysisRunsByField(selectedFieldId)
         setAnalysisRuns(runs)
-        // Phase A: Auto-select the newly created analysis for convenience
-        // This is explicit because success feedback shows, and user can see the new analysis immediately
-        setSelectedAnalysisRunId(newRun.id)
       }
     } catch (err) {
       console.error('Failed to create analysis run:', err)
@@ -358,8 +356,8 @@ export default function DashboardPage() {
         {/* Purpose: Quick overview - shown only when an analysis is selected */}
         {/* Phase B: This is a secondary view - full details are in AnalysisRunDetail */}
         {selectedAnalysisRunId && inference && (
-          <div className="dashboard-section dashboard-section-primary-summary mt-10 mb-16">
-            <div className="bg-card rounded-xl shadow-sm p-6">
+        <div className="dashboard-section dashboard-section-primary-summary mt-10 mb-16">
+          <div className="bg-card rounded-xl shadow-sm p-6">
               <CropHealthSummary
                 status={statusForUI as any}
                 trend={trendForUI as any}
