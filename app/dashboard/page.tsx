@@ -356,8 +356,8 @@ export default function DashboardPage() {
         {/* Purpose: Quick overview - shown only when an analysis is selected */}
         {/* Phase B: This is a secondary view - full details are in AnalysisRunDetail */}
         {selectedAnalysisRunId && inference && (
-        <div className="dashboard-section dashboard-section-primary-summary mt-10 mb-16">
-          <div className="bg-card rounded-xl shadow-sm p-6">
+          <div className="dashboard-section dashboard-section-primary-summary mt-10 mb-16">
+            <div className="bg-card rounded-xl shadow-sm p-6">
               <CropHealthSummary
                 status={statusForUI as any}
                 trend={trendForUI as any}
