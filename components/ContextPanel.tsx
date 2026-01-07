@@ -57,7 +57,7 @@ export default function ContextPanel({ context, isLoading }: ContextPanelProps) 
               Context
             </h3>
             <p className="meta-text text-xs mb-3 opacity-70">
-              Additional descriptive information. Does not modify or explain inference.
+              Additional descriptive information. Factual data only. Does not modify, explain, or influence inference.
             </p>
           </div>
 

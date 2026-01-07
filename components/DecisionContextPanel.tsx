@@ -107,7 +107,7 @@ export default function DecisionContextPanel({ decisionContexts, isLoading }: De
                     {/* Considerations */}
                     <div>
                       <p className="text-xs font-medium text-muted mb-1.5">
-                        Information that may be relevant includes
+                        Information that may be relevant includes:
                       </p>
                       <ul className="space-y-1">
                         {context.considerations.map((consideration, idx) => (

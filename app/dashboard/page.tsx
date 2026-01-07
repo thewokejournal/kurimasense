@@ -21,7 +21,7 @@ import FieldsTable from '@/components/FieldsTable'
 import { FieldTimeline } from '@/components/FieldTimeline'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import type { TimelineEntry } from '@/lib/timeline'
-import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, generateProvenance, generateDecisionContexts, createAnalysisRun, fetchAllFields, type AnalysisRun, type ContextData, type InferenceProvenance, type DecisionContextResponse, type Field } from '@/app/lib/api'
+import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, generateDecisionContexts, createAnalysisRun, fetchAllFields, type AnalysisRun, type ContextData, type DecisionContextResponse, type Field } from '@/app/lib/api'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import type { InferenceResponse } from '@/app/types/inference'
 import ContextPanel from '@/components/ContextPanel'
@@ -32,6 +32,7 @@ import CreateAnalysisDialog from '@/components/CreateAnalysisDialog'
 import AnalysisSuccessFeedback from '@/components/AnalysisSuccessFeedback'
 import AnalysisRunList from '@/components/AnalysisRunList'
 import AnalysisRunDetail from '@/components/AnalysisRunDetail'
+import Footer from '@/components/Footer'
 
 
 const stats = [
@@ -88,10 +89,8 @@ export default function DashboardPage() {
   const [contextError, setContextError] = useState<string | null>(null)
   const [showContext, setShowContext] = useState(false)
   
-  // Phase 6.1: Provenance state (loaded only via explicit user action, view-time only)
-  const [provenance, setProvenance] = useState<InferenceProvenance | null>(null)
-  const [isLoadingProvenance, setIsLoadingProvenance] = useState(false)
-  const [provenanceError, setProvenanceError] = useState<string | null>(null)
+  // Phase C: Provenance state (loaded only via explicit user action, view-time only)
+  // ProvenancePanel now handles loading internally, so we just track visibility
   const [showProvenance, setShowProvenance] = useState(false)
   
   // Phase 7: Decision context state (user-invoked only, non-actionable)
@@ -208,12 +207,10 @@ export default function DashboardPage() {
       // 1. Success feedback will show, making it clear what happened
       // 2. Reload only happens if user is viewing the field they just created analysis for
       // 3. If they created for a different field, they'll see success but list won't change (explicit)
+      // User must explicitly select which analysis to view - no auto-selection
       if (fieldId === selectedFieldId) {
         const runs = await fetchAnalysisRunsByField(selectedFieldId)
         setAnalysisRuns(runs)
-        // Phase A: Auto-select the newly created analysis for convenience
-        // This is explicit because success feedback shows, and user can see the new analysis immediately
-        setSelectedAnalysisRunId(newRun.id)
       }
     } catch (err) {
       console.error('Failed to create analysis run:', err)
@@ -223,34 +220,9 @@ export default function DashboardPage() {
     }
   }
 
-  // Phase 6.1: Generate provenance only via explicit user action (view-time only, NOT persisted)
-  async function handleShowProvenance() {
-    if (!selectedAnalysisRunId || !inference) {
-      return
-    }
-
-    // Find the selected analysis run to get time window
-    const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
-    if (!selectedRun) {
-      return
-    }
-
-    try {
-      setIsLoadingProvenance(true)
-      setProvenanceError(null)
-      const provenanceData = await generateProvenance(
-        selectedFieldId,
-        selectedRun.windowStart,
-        selectedRun.windowEnd
-      )
-      setProvenance(provenanceData)
-      setShowProvenance(true)
-    } catch (err) {
-      console.error('Failed to generate provenance:', err)
-      setProvenanceError(err instanceof Error ? err.message : 'Failed to generate provenance')
-    } finally {
-      setIsLoadingProvenance(false)
-    }
+  // Phase C: Show provenance panel (ProvenancePanel handles loading internally)
+  function handleShowProvenance() {
+    setShowProvenance(true)
   }
 
   // Map inference to component props (Phase 4.3: use verbatim labels)
@@ -531,10 +503,9 @@ export default function DashboardPage() {
               {inference && !showProvenance && (
                 <button
                   onClick={handleShowProvenance}
-                  disabled={isLoadingProvenance}
                   className="btn-secondary text-sm"
                 >
-                  {isLoadingProvenance ? 'Loading...' : 'Show Technical Details'}
+                  Show Technical Details
                 </button>
               )}
             </div>
@@ -543,13 +514,18 @@ export default function DashboardPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              {provenanceError && (
-                <Card className="surface-soft p-4 border-l-4 border-red-500">
-                  <p className="label-text text-red-600 dark:text-red-400 text-sm">{provenanceError}</p>
-                </Card>
-              )}
-              {showProvenance && (
-                <ProvenancePanel provenance={provenance} isLoading={isLoadingProvenance} />
+              {showProvenance && selectedAnalysisRunId && (
+                (() => {
+                  const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
+                  if (!selectedRun) return null
+                  return (
+                    <ProvenancePanel
+                      fieldId={selectedRun.fieldId}
+                      windowStart={selectedRun.windowStart}
+                      windowEnd={selectedRun.windowEnd}
+                    />
+                  )
+                })()
               )}
             </motion.div>
           </section>
@@ -635,6 +611,9 @@ export default function DashboardPage() {
           />
         </div>
       )}
+
+      {/* Footer to mark end of page content */}
+      <Footer />
     </main>
   )
 }
