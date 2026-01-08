@@ -260,9 +260,11 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
         </div>
 
         {/* Confidence indicator */}
-        <div className="confidence-indicator">
-          <span className="confidence-dot" style={{ backgroundColor: confidenceColor }} />
-          <span>{entry.confidence} confidence · {relativeTime}</span>
+        <div className="flex items-center gap-2 mt-1">
+          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: confidenceColor }} />
+          <span className="text-xs text-muted">{entry.confidence} confidence</span>
+          <span className="text-xs text-muted opacity-60">·</span>
+          <span className="text-xs text-muted">{relativeTime}</span>
         </div>
       </div>
     </motion.div>

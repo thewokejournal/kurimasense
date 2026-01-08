@@ -475,93 +475,104 @@ export default function DashboardPage() {
             ) : (
               <div className="bg-surface-elevated rounded-lg p-6 border border-border-subtle flex items-center justify-center">
                 <p className="text-muted text-sm">Select an analysis run to view details</p>
-              </div>
-              )}
           </div>
+        )}
+          </div>
+
+          {/* Field Activity Card */}
+          <div className="bg-surface-elevated border border-border-subtle rounded-lg p-6">
+            <div className="mb-4">
+              <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em', fontSize: '10px' }}>FIELD ACTIVITY</span>
+            </div>
+            <div className="insight-card">
+                <h3 className="font-semibold tracking-tight mb-3 text-base">Recent Events</h3>
+                <FieldTimeline entries={mockTimelineEntries} />
+              </div>
+        </div>
 
           {/* Optional Layers - Stacked Below Map */}
           <div className="space-y-4">
             {/* Context Section */}
             <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
               <div className="flex items-center justify-between mb-4">
-                <div>
+              <div>
                   <h3 className="text-sm font-semibold text-primary">Context</h3>
                   <p className="text-xs text-muted mt-0.5">External descriptive data</p>
-                </div>
-                {!showContext && (
-                  <button
-                    onClick={handleLoadContext}
-                    disabled={isLoadingContext}
-                    className="btn-secondary text-xs px-3 py-1.5"
-                  >
-                    {isLoadingContext ? 'Loading...' : 'Load Context'}
-                  </button>
-                )}
               </div>
+                {!showContext && (
+                <button
+                  onClick={handleLoadContext}
+                  disabled={isLoadingContext}
+                    className="btn-secondary text-xs px-3 py-1.5"
+                >
+                  {isLoadingContext ? 'Loading...' : 'Load Context'}
+                </button>
+              )}
+            </div>
               {showContext && <ContextPanel context={context} isLoading={isLoadingContext} />}
               {contextError && <p className="text-xs text-red-400 mt-2">{contextError}</p>}
-            </div>
+        </div>
 
             {/* Provenance Section */}
             <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
               <div className="flex items-center justify-between mb-4">
-                <div>
+              <div>
                   <h3 className="text-sm font-semibold text-primary">Technical Details</h3>
                   <p className="text-xs text-muted mt-0.5">Inference trace</p>
-                </div>
-                {!showProvenance && (
-                  <button
-                    onClick={handleShowProvenance}
-                    className="btn-secondary text-xs px-3 py-1.5"
-                  >
-                    Show Technical Details
-                  </button>
-                )}
               </div>
-              {showProvenance && selectedAnalysisRunId && (() => {
-                const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
-                if (!selectedRun) return null
-                return (
-                  <ProvenancePanel
-                    fieldId={selectedRun.fieldId}
-                    windowStart={selectedRun.windowStart}
-                    windowEnd={selectedRun.windowEnd}
-                  />
-                )
-              })()}
+                {!showProvenance && (
+                <button
+                  onClick={handleShowProvenance}
+                    className="btn-secondary text-xs px-3 py-1.5"
+                >
+                  Show Technical Details
+                </button>
+              )}
             </div>
+              {showProvenance && selectedAnalysisRunId && (() => {
+                  const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
+                  if (!selectedRun) return null
+                  return (
+                    <ProvenancePanel
+                      fieldId={selectedRun.fieldId}
+                      windowStart={selectedRun.windowStart}
+                      windowEnd={selectedRun.windowEnd}
+                    />
+                  )
+              })()}
+        </div>
 
             {/* Decision Context Section */}
             <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
               <div className="flex items-center justify-between mb-4">
-                <div>
+              <div>
                   <h3 className="text-sm font-semibold text-primary">Decision Context</h3>
                   <p className="text-xs text-muted mt-0.5">Non-actionable frames</p>
-                </div>
-                {!showDecisionContexts && (
-                  <button
-                    onClick={async () => {
-                      if (!selectedAnalysisRunId) return
-                      try {
-                        setIsLoadingDecisionContexts(true)
-                        setDecisionContextError(null)
-                        const contexts = await generateDecisionContexts(selectedAnalysisRunId)
-                        setDecisionContexts(contexts)
-                        setShowDecisionContexts(true)
-                      } catch (err) {
-                        console.error('Failed to generate decision contexts:', err)
-                        setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
-                      } finally {
-                        setIsLoadingDecisionContexts(false)
-                      }
-                    }}
-                    disabled={isLoadingDecisionContexts}
-                    className="btn-secondary text-xs px-3 py-1.5"
-                  >
-                    {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
-                  </button>
-                )}
               </div>
+                {!showDecisionContexts && (
+                <button
+                  onClick={async () => {
+                    if (!selectedAnalysisRunId) return
+                    try {
+                      setIsLoadingDecisionContexts(true)
+                      setDecisionContextError(null)
+                      const contexts = await generateDecisionContexts(selectedAnalysisRunId)
+                      setDecisionContexts(contexts)
+                      setShowDecisionContexts(true)
+                    } catch (err) {
+                      console.error('Failed to generate decision contexts:', err)
+                      setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
+                    } finally {
+                      setIsLoadingDecisionContexts(false)
+                    }
+                  }}
+                  disabled={isLoadingDecisionContexts}
+                    className="btn-secondary text-xs px-3 py-1.5"
+                >
+                  {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
+                </button>
+              )}
+            </div>
               {showDecisionContexts && (
                 <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />
               )}
