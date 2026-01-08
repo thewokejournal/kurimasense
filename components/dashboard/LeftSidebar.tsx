@@ -19,13 +19,13 @@ export function LeftSidebar({ selectedFieldId, fields, onFieldSelect }: LeftSide
   return (
     <div className="left-sidebar">
       {/* Field Selector */}
-      <div className="metric-card">
-        <div className="metric-icon">
+      <div className="metric-card metric-card-primary">
+        <div className="metric-icon metric-icon-primary">
           <Map className="w-5 h-5" />
         </div>
         <div className="metric-content">
           <div className="metric-label">Current Field</div>
-          <div className="text-base font-semibold text-primary">
+          <div className="metric-value-primary">
             {selectedField?.name || 'Select Field'}
           </div>
           {selectedField?.location && (
@@ -35,8 +35,8 @@ export function LeftSidebar({ selectedFieldId, fields, onFieldSelect }: LeftSide
       </div>
 
       {/* Metrics Section */}
-      <div className="space-y-3">
-        <div className="px-2">
+      <div className="metric-section">
+        <div className="metric-section-header">
           <span className="meta-text uppercase tracking-wider text-xs">Field Metrics</span>
         </div>
 

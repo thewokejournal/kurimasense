@@ -299,7 +299,7 @@ export default function DashboardPage() {
 
   return (
     <main className="dashboard-shell">
-      {/* Unified Header Bar */}
+      {/* Modern Header Bar */}
       <header className="dashboard-header-bar">
         <div className="dashboard-header-left">
           <Logo />
@@ -307,7 +307,7 @@ export default function DashboardPage() {
             <button className="nav-tab active">Dashboard</button>
             <button 
               onClick={() => setShowCreateForm(!showCreateForm)}
-              className="nav-tab"
+              className={`nav-tab ${showCreateForm ? 'active' : ''}`}
             >
               Run Analysis
             </button>
@@ -316,44 +316,65 @@ export default function DashboardPage() {
         <div className="dashboard-header-right">
           <div className="header-search">
             <Search className="header-search-icon w-4 h-4" />
-            <input type="text" placeholder="Search Data..." />
+            <input type="text" placeholder="Search fields, analysis runs..." />
           </div>
           <ThemeToggle />
         </div>
       </header>
 
-      {/* Two-Column Layout */}
+      {/* Two-Column Layout with Better Spacing */}
       <div className="dashboard-two-column">
         
         {/* LEFT SIDEBAR */}
-        <LeftSidebar
-          selectedFieldId={selectedFieldId}
-          fields={fields}
-          onFieldSelect={() => {/* TODO: implement field selection */}}
-        />
+        <aside className="dashboard-left-sidebar">
+          <LeftSidebar
+            selectedFieldId={selectedFieldId}
+            fields={fields}
+            onFieldSelect={() => {/* TODO: implement field selection */}}
+          />
+        </aside>
 
         {/* MAIN CONTENT */}
-        <div className="main-content">
+        <div className="dashboard-main-content">
+          {/* Hero Section - Crop Health Summary */}
+          {selectedAnalysisRunId && inference && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="dashboard-hero-section"
+            >
+              <CropHealthSummary
+                status={statusForUI as any}
+                trend={trendForUI as any}
+                confidence={confidenceForUI as any}
+                detectedAt={formatGeneratedAt(inference.generatedAt)}
+              />
+            </motion.div>
+          )}
+
           {/* Analysis Creation Form */}
           {showCreateForm && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="dashboard-card dashboard-form-card"
             >
-              <form onSubmit={handleSubmitInlineAnalysis} className="bg-background-secondary p-6 rounded-lg border border-border-subtle">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-base font-semibold mb-4">Create New Analysis Run</h3>
-                    <p className="text-sm text-muted mb-4">
-                      Select a field and time window for analysis. The system will compute crop health inference for the specified period.
-                    </p>
-                  </div>
-
+              <div className="dashboard-card-header">
+                <div>
+                  <h3 className="dashboard-card-title">Create New Analysis Run</h3>
+                  <p className="dashboard-card-description">
+                    Select a field and time window for analysis. The system will compute crop health inference for the specified period.
+                  </p>
+                </div>
+              </div>
+              <form onSubmit={handleSubmitInlineAnalysis} className="dashboard-form">
+                <div className="dashboard-form-grid">
                   {/* Field Selection */}
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
+                  <div className="dashboard-form-field">
+                    <label className="dashboard-form-label">
                       Field <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -362,7 +383,7 @@ export default function DashboardPage() {
                         setCreateFieldId(e.target.value)
                         if (createValidationError) setCreateValidationError(null)
                       }}
-                      className="w-full px-4 py-2 border border-border-subtle rounded-md bg-background focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="dashboard-form-input"
                       required
                       disabled={isCreatingAnalysis}
                     >
@@ -376,12 +397,12 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Window Start */}
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
+                  <div className="dashboard-form-field">
+                    <label className="dashboard-form-label">
                       Window Start <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
-                      <Calendar className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 opacity-50" />
+                    <div className="dashboard-form-input-wrapper">
+                      <Calendar className="dashboard-form-icon" />
                       <input
                         type="datetime-local"
                         value={createWindowStart}
@@ -389,7 +410,7 @@ export default function DashboardPage() {
                           setCreateWindowStart(e.target.value)
                           if (createValidationError) setCreateValidationError(null)
                         }}
-                        className="w-full pl-10 pr-4 py-2 border border-border-subtle rounded-md bg-background focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="dashboard-form-input dashboard-form-input-with-icon"
                         required
                         disabled={isCreatingAnalysis}
                       />
@@ -397,12 +418,12 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Window End */}
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
+                  <div className="dashboard-form-field">
+                    <label className="dashboard-form-label">
                       Window End <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
-                      <Calendar className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 opacity-50" />
+                    <div className="dashboard-form-input-wrapper">
+                      <Calendar className="dashboard-form-icon" />
                       <input
                         type="datetime-local"
                         value={createWindowEnd}
@@ -410,7 +431,7 @@ export default function DashboardPage() {
                           setCreateWindowEnd(e.target.value)
                           if (createValidationError) setCreateValidationError(null)
                         }}
-                        className="w-full pl-10 pr-4 py-2 border border-border-subtle rounded-md bg-background focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="dashboard-form-input dashboard-form-input-with-icon"
                         required
                         disabled={isCreatingAnalysis}
                       />
@@ -419,24 +440,24 @@ export default function DashboardPage() {
 
                   {/* Validation Error */}
                   {createValidationError && (
-                    <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-                      <p className="text-sm text-red-600 dark:text-red-400">{createValidationError}</p>
+                    <div className="dashboard-alert dashboard-alert-error">
+                      <p className="text-sm">{createValidationError}</p>
                     </div>
                   )}
 
                   {/* API Error */}
                   {createAnalysisError && (
-                    <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-                      <p className="text-sm text-red-600 dark:text-red-400">{createAnalysisError}</p>
+                    <div className="dashboard-alert dashboard-alert-error">
+                      <p className="text-sm">{createAnalysisError}</p>
                     </div>
                   )}
 
                   {/* Action Buttons */}
-                  <div className="flex gap-3 pt-2">
+                  <div className="dashboard-form-actions">
                     <button
                       type="submit"
                       disabled={isCreatingAnalysis || !createFieldId || !createWindowStart || !createWindowEnd}
-                      className="btn-primary flex-1"
+                      className="btn-primary"
                     >
                       {isCreatingAnalysis ? 'Creating...' : 'Create Analysis'}
                     </button>
@@ -444,7 +465,7 @@ export default function DashboardPage() {
                       type="button"
                       onClick={handleCancelCreateForm}
                       disabled={isCreatingAnalysis}
-                      className="btn-secondary px-6"
+                      className="btn-secondary"
                     >
                       Cancel
                     </button>
@@ -454,18 +475,38 @@ export default function DashboardPage() {
             </motion.div>
           )}
 
-          {/* Map and Affected Area Report Grid */}
-          <div className="center-map-grid">
-            {/* Map */}
-            <div>
+          {/* Analysis Runs List - Show when no analysis selected */}
+          {!selectedAnalysisRunId && analysisRuns.length > 0 && (
+            <div className="dashboard-card">
+              <div className="dashboard-card-header">
+                <div>
+                  <h3 className="dashboard-card-title">Analysis Runs</h3>
+                  <p className="dashboard-card-description">Select an analysis run to view details</p>
+                </div>
+              </div>
+              <AnalysisRunList
+                analysisRuns={analysisRuns}
+                selectedAnalysisRunId={selectedAnalysisRunId}
+                onSelectAnalysisRun={setSelectedAnalysisRunId}
+              />
+            </div>
+          )}
+
+          {/* Map and Analysis Detail Grid */}
+          <div className="dashboard-grid-map">
+            {/* Map Section */}
+            <div className="dashboard-map-section">
               <NdviMapPanel />
             </div>
 
-            {/* Affected Area Report - Only show when analysis is selected */}
+            {/* Analysis Detail Section - Only show when analysis is selected */}
             {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
-              <div className="bg-surface-elevated rounded-lg p-6 border border-border-subtle">
-                <div className="mb-3">
-                  <span className="meta-text uppercase tracking-wider text-xs">Affected Area Report</span>
+              <div className="dashboard-card dashboard-analysis-detail">
+                <div className="dashboard-card-header">
+                  <div>
+                    <h3 className="dashboard-card-title">Analysis Details</h3>
+                    <p className="dashboard-card-description">Complete analysis record</p>
+                  </div>
                 </div>
                 <AnalysisRunDetail
                   analysisRun={analysisRuns.find(r => r.id === selectedAnalysisRunId)!}
@@ -475,104 +516,120 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* Field Activity Card */}
-          <div className="bg-surface-elevated border border-border-subtle rounded-lg p-6">
-            <div className="mb-4">
-              <span className="meta-text uppercase tracking-wider" style={{ letterSpacing: '0.08em', fontSize: '10px' }}>FIELD ACTIVITY</span>
-            </div>
-            <div className="insight-card">
-                <h3 className="font-semibold tracking-tight mb-3 text-base">Recent Events</h3>
-                <FieldTimeline entries={mockTimelineEntries} />
-              </div>
-        </div>
-
-          {/* Optional Layers - Stacked Below Map */}
-          <div className="space-y-4">
-            {/* Context Section */}
-            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
-              <div className="flex items-center justify-between mb-4">
+          {/* Field Activity Timeline */}
+          <div className="dashboard-card">
+            <div className="dashboard-card-header">
               <div>
-                  <h3 className="text-sm font-semibold text-primary">Context</h3>
-                  <p className="text-xs text-muted mt-0.5">External descriptive data</p>
+                <h3 className="dashboard-card-title">Field Activity</h3>
+                <p className="dashboard-card-description">Recent events and timeline</p>
               </div>
+            </div>
+            <FieldTimeline entries={mockTimelineEntries} />
+          </div>
+
+          {/* Optional Layers - Expandable Sections */}
+          <div className="dashboard-optional-layers">
+            {/* Context Section */}
+            <div className="dashboard-card dashboard-expandable">
+              <div className="dashboard-card-header">
+                <div>
+                  <h3 className="dashboard-card-title">Context</h3>
+                  <p className="dashboard-card-description">External descriptive data</p>
+                </div>
                 {!showContext && (
-                <button
-                  onClick={handleLoadContext}
-                  disabled={isLoadingContext}
-                    className="btn-secondary text-xs px-3 py-1.5"
-                >
-                  {isLoadingContext ? 'Loading...' : 'Load Context'}
-                </button>
+                  <button
+                    onClick={handleLoadContext}
+                    disabled={isLoadingContext}
+                    className="btn-secondary btn-sm"
+                  >
+                    {isLoadingContext ? 'Loading...' : 'Load Context'}
+                  </button>
+                )}
+              </div>
+              {showContext && (
+                <div className="dashboard-card-content">
+                  <ContextPanel context={context} isLoading={isLoadingContext} />
+                </div>
+              )}
+              {contextError && (
+                <div className="dashboard-alert dashboard-alert-error mt-4">
+                  <p className="text-sm">{contextError}</p>
+                </div>
               )}
             </div>
-              {showContext && <ContextPanel context={context} isLoading={isLoadingContext} />}
-              {contextError && <p className="text-xs text-red-400 mt-2">{contextError}</p>}
-        </div>
 
             {/* Provenance Section */}
-            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
-              <div className="flex items-center justify-between mb-4">
-              <div>
-                  <h3 className="text-sm font-semibold text-primary">Technical Details</h3>
-                  <p className="text-xs text-muted mt-0.5">Inference trace</p>
-              </div>
+            <div className="dashboard-card dashboard-expandable">
+              <div className="dashboard-card-header">
+                <div>
+                  <h3 className="dashboard-card-title">Technical Details</h3>
+                  <p className="dashboard-card-description">Inference trace and provenance</p>
+                </div>
                 {!showProvenance && (
-                <button
-                  onClick={handleShowProvenance}
-                    className="btn-secondary text-xs px-3 py-1.5"
-                >
-                  Show Technical Details
-                </button>
-              )}
-            </div>
+                  <button
+                    onClick={handleShowProvenance}
+                    className="btn-secondary btn-sm"
+                  >
+                    Show Technical Details
+                  </button>
+                )}
+              </div>
               {showProvenance && selectedAnalysisRunId && (() => {
-                  const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
-                  if (!selectedRun) return null
-                  return (
+                const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
+                if (!selectedRun) return null
+                return (
+                  <div className="dashboard-card-content">
                     <ProvenancePanel
                       fieldId={selectedRun.fieldId}
                       windowStart={selectedRun.windowStart}
                       windowEnd={selectedRun.windowEnd}
                     />
-                  )
+                  </div>
+                )
               })()}
-        </div>
+            </div>
 
             {/* Decision Context Section */}
-            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
-              <div className="flex items-center justify-between mb-4">
-              <div>
-                  <h3 className="text-sm font-semibold text-primary">Decision Context</h3>
-                  <p className="text-xs text-muted mt-0.5">Non-actionable frames</p>
-              </div>
+            <div className="dashboard-card dashboard-expandable">
+              <div className="dashboard-card-header">
+                <div>
+                  <h3 className="dashboard-card-title">Decision Context</h3>
+                  <p className="dashboard-card-description">Non-actionable decision frames</p>
+                </div>
                 {!showDecisionContexts && (
-                <button
-                  onClick={async () => {
-                    if (!selectedAnalysisRunId) return
-                    try {
-                      setIsLoadingDecisionContexts(true)
-                      setDecisionContextError(null)
-                      const contexts = await generateDecisionContexts(selectedAnalysisRunId)
-                      setDecisionContexts(contexts)
-                      setShowDecisionContexts(true)
-                    } catch (err) {
-                      console.error('Failed to generate decision contexts:', err)
-                      setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
-                    } finally {
-                      setIsLoadingDecisionContexts(false)
-                    }
-                  }}
-                  disabled={isLoadingDecisionContexts}
-                    className="btn-secondary text-xs px-3 py-1.5"
-                >
-                  {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
-                </button>
-              )}
-            </div>
+                  <button
+                    onClick={async () => {
+                      if (!selectedAnalysisRunId) return
+                      try {
+                        setIsLoadingDecisionContexts(true)
+                        setDecisionContextError(null)
+                        const contexts = await generateDecisionContexts(selectedAnalysisRunId)
+                        setDecisionContexts(contexts)
+                        setShowDecisionContexts(true)
+                      } catch (err) {
+                        console.error('Failed to generate decision contexts:', err)
+                        setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
+                      } finally {
+                        setIsLoadingDecisionContexts(false)
+                      }
+                    }}
+                    disabled={isLoadingDecisionContexts}
+                    className="btn-secondary btn-sm"
+                  >
+                    {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
+                  </button>
+                )}
+              </div>
               {showDecisionContexts && (
-                <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />
+                <div className="dashboard-card-content">
+                  <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />
+                </div>
               )}
-              {decisionContextError && <p className="text-xs text-red-400 mt-2">{decisionContextError}</p>}
+              {decisionContextError && (
+                <div className="dashboard-alert dashboard-alert-error mt-4">
+                  <p className="text-sm">{decisionContextError}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
