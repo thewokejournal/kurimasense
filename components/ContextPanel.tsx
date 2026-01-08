@@ -4,7 +4,7 @@
  * Context Panel Component
  * Phase 5 — Context Expansion
  * 
- * Displays external, read-only context data that helps users understand inference.
+ * Displays external, read-only context data for optional reference alongside inference.
  * Context is descriptive only and does not influence, modify, or explain inference.
  */
 

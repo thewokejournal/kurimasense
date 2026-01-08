@@ -67,10 +67,10 @@ router.get('/:fieldId', (req: Request, res: Response) => {
         'Weather signals': `${input.weatherSignals.length} observations`,
         'Signal completeness': `${input.signalCompleteness}%`,
         'Vegetation timestamps': input.vegetationSignals.length > 0
-          ? input.vegetationSignals.map(s => s.timestamp).join(', ')
+          ? input.vegetationSignals.map((s: any) => s.timestamp).join(', ')
           : 'None',
         'Weather timestamps': input.weatherSignals.length > 0
-          ? input.weatherSignals.map(s => s.timestamp).join(', ')
+          ? input.weatherSignals.map((s: any) => s.timestamp).join(', ')
           : 'None',
       },
     }
