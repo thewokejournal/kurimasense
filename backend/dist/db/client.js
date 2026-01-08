@@ -68,4 +68,147 @@ export function insertWeatherSignal(signal) {
     const result = stmt.run(signal.fieldId, signal.timestamp, signal.rainfall, signal.temperature, signal.dataQuality);
     return { id: result.lastInsertRowid };
 }
+/**
+ * Field Persistence Functions
+ */
+/**
+ * Create a new field
+ */
+export function insertField(id, name, geometry) {
+    const stmt = db.prepare(`
+    INSERT INTO fields (id, name, geometry, created_at)
+    VALUES (?, ?, ?, datetime('now'))
+  `);
+    const result = stmt.run(id, name, geometry || null);
+    return { id };
+}
+/**
+ * Get a field by ID
+ */
+export function getFieldById(id) {
+    const stmt = db.prepare('SELECT * FROM fields WHERE id = ?');
+    const row = stmt.get(id);
+    if (!row)
+        return null;
+    return {
+        id: row.id,
+        name: row.name,
+        geometry: row.geometry,
+        createdAt: row.created_at
+    };
+}
+/**
+ * Get all fields
+ */
+export function getAllFields() {
+    const stmt = db.prepare('SELECT * FROM fields ORDER BY created_at DESC');
+    const rows = stmt.all();
+    return rows.map(row => ({
+        id: row.id,
+        name: row.name,
+        geometry: row.geometry,
+        createdAt: row.created_at
+    }));
+}
+/**
+ * Update a field
+ */
+export function updateField(id, name, geometry) {
+    const updates = [];
+    const values = [];
+    if (name !== undefined) {
+        updates.push('name = ?');
+        values.push(name);
+    }
+    if (geometry !== undefined) {
+        updates.push('geometry = ?');
+        values.push(geometry || null);
+    }
+    if (updates.length === 0) {
+        return { id, updated: false };
+    }
+    values.push(id);
+    const stmt = db.prepare(`UPDATE fields SET ${updates.join(', ')} WHERE id = ?`);
+    const result = stmt.run(...values);
+    return { id, updated: result.changes > 0 };
+}
+/**
+ * Delete a field
+ */
+export function deleteField(id) {
+    const stmt = db.prepare('DELETE FROM fields WHERE id = ?');
+    const result = stmt.run(id);
+    return { id, deleted: result.changes > 0 };
+}
+/**
+ * AnalysisRun Persistence Functions
+ */
+/**
+ * Create a new analysis run
+ *
+ * Phase 4.2: AnalysisRun is immutable - this is the only way to create one
+ * Phase D: Explicit error handling - throws on database errors
+ */
+export function insertAnalysisRun(id, fieldId, windowStart, windowEnd, inference) {
+    // Phase D: Validate inference is serializable
+    let inferenceJson;
+    try {
+        inferenceJson = JSON.stringify(inference);
+    }
+    catch (error) {
+        throw new Error(`Failed to serialize inference response: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+    // Phase D: Insert with explicit error propagation
+    const stmt = db.prepare(`
+    INSERT INTO analysis_runs (id, field_id, window_start, window_end, inference_response, created_at)
+    VALUES (?, ?, ?, ?, ?, datetime('now'))
+  `);
+    try {
+        stmt.run(id, fieldId, windowStart, windowEnd, inferenceJson);
+        return { id };
+    }
+    catch (error) {
+        // Phase D: Re-throw with context for upstream handling
+        if (error?.code === 'SQLITE_CONSTRAINT') {
+            throw error; // Let caller handle with context
+        }
+        throw new Error(`Database error inserting analysis run: ${error?.message || 'Unknown error'}`);
+    }
+}
+/**
+ * Get an analysis run by ID
+ */
+export function getAnalysisRunById(id) {
+    const stmt = db.prepare('SELECT * FROM analysis_runs WHERE id = ?');
+    const row = stmt.get(id);
+    if (!row)
+        return null;
+    return {
+        id: row.id,
+        fieldId: row.field_id,
+        windowStart: row.window_start,
+        windowEnd: row.window_end,
+        inference: JSON.parse(row.inference_response), // Map DB column to contract field name
+        createdAt: row.created_at
+    };
+}
+/**
+ * Get analysis runs by field ID
+ */
+export function getAnalysisRunsByFieldId(fieldId) {
+    const stmt = db.prepare(`
+    SELECT * FROM analysis_runs 
+    WHERE field_id = ? 
+    ORDER BY created_at DESC
+  `);
+    const rows = stmt.all(fieldId);
+    return rows.map(row => ({
+        id: row.id,
+        fieldId: row.field_id,
+        windowStart: row.window_start,
+        windowEnd: row.window_end,
+        inference: JSON.parse(row.inference_response), // Map DB column to contract field name
+        createdAt: row.created_at
+    }));
+}
 export default db;
