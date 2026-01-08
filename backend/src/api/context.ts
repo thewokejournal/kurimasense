@@ -13,6 +13,7 @@
  */
 
 import express, { Request, Response } from 'express'
+import { assembleInferenceInput } from '../inference/input.js'
 
 const router = express.Router()
 
@@ -49,9 +50,6 @@ router.get('/:fieldId', (req: Request, res: Response) => {
 
     // Phase E: Context is descriptive only, factual and raw
     // Fetch actual signal data from database (read-only, not persisted as context)
-    const { assembleInferenceInput } = require('../inference/input.js')
-    
-    // Phase E: Get raw signal data for context display
     const input = assembleInferenceInput(fieldId, windowStart, windowEnd)
     
     // Phase E: Build factual, non-interpretive context data
