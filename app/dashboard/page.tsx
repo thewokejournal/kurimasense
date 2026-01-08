@@ -459,24 +459,20 @@ export default function DashboardPage() {
             {/* Map */}
             <div>
               <NdviMapPanel />
-        </div>
+            </div>
 
-            {/* Affected Area Report */}
-            {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) ? (
+            {/* Affected Area Report - Only show when analysis is selected */}
+            {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
               <div className="bg-surface-elevated rounded-lg p-6 border border-border-subtle">
                 <div className="mb-3">
                   <span className="meta-text uppercase tracking-wider text-xs">Affected Area Report</span>
-              </div>
+                </div>
                 <AnalysisRunDetail
                   analysisRun={analysisRuns.find(r => r.id === selectedAnalysisRunId)!}
                   field={fields.find(f => f.id === selectedFieldId)}
                 />
               </div>
-            ) : (
-              <div className="bg-surface-elevated rounded-lg p-6 border border-border-subtle flex items-center justify-center">
-                <p className="text-muted text-sm">Select an analysis run to view details</p>
-          </div>
-        )}
+            )}
           </div>
 
           {/* Field Activity Card */}
