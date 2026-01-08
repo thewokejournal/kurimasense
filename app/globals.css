@@ -348,6 +348,7 @@ input:focus {
   gap: 20px;
   overflow-y: auto;
   min-height: 0;
+  width: 100%;
 }
 
 @media (max-width: 1024px) {
@@ -463,6 +464,7 @@ input:focus {
   grid-template-columns: 1.6fr 1fr;
   gap: 16px;
   min-height: 500px;
+  width: 100%;
 }
 
 @media (max-width: 1280px) {
@@ -1357,6 +1359,7 @@ input:focus {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .dashboard-two-column {
@@ -1366,8 +1369,8 @@ input:focus {
   flex: 1;
   padding: 20px;
   min-height: 0;
-  max-width: 1600px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (max-width: 1440px) {
