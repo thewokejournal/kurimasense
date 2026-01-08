@@ -28,7 +28,6 @@ import ContextPanel from '@/components/ContextPanel'
 import ProvenancePanel from '@/components/ProvenancePanel'
 import InterpretationAssistant from '@/components/InterpretationAssistant'
 import DecisionContextPanel from '@/components/DecisionContextPanel'
-import CreateAnalysisDialog from '@/components/CreateAnalysisDialog'
 import AnalysisSuccessFeedback from '@/components/AnalysisSuccessFeedback'
 import AnalysisRunList from '@/components/AnalysisRunList'
 import AnalysisRunDetail from '@/components/AnalysisRunDetail'
@@ -99,11 +98,15 @@ export default function DashboardPage() {
   const [decisionContextError, setDecisionContextError] = useState<string | null>(null)
   const [showDecisionContexts, setShowDecisionContexts] = useState(false)
 
-  // Phase A: Analysis creation state
+  // Phase A: Analysis creation state (inline form)
   const [fields, setFields] = useState<Field[]>([])
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [createFieldId, setCreateFieldId] = useState<string>('')
+  const [createWindowStart, setCreateWindowStart] = useState<string>('')
+  const [createWindowEnd, setCreateWindowEnd] = useState<string>('')
   const [isCreatingAnalysis, setIsCreatingAnalysis] = useState(false)
   const [createAnalysisError, setCreateAnalysisError] = useState<string | null>(null)
+  const [createValidationError, setCreateValidationError] = useState<string | null>(null)
   const [createdAnalysisRun, setCreatedAnalysisRun] = useState<AnalysisRun | null>(null)
 
   // Load fields for analysis creation
@@ -193,22 +196,67 @@ export default function DashboardPage() {
     }
   }
 
-  // Phase A: Handle analysis creation
-  async function handleCreateAnalysis(fieldId: string, windowStart: string, windowEnd: string) {
+  // Phase D: Convert datetime-local format to ISO 8601
+  // datetime-local produces: 2024-01-01T00:00
+  // Backend expects: 2024-01-01T00:00:00Z
+  function toISO8601(datetimeLocal: string): string {
+    if (!datetimeLocal) return ''
+    // If already has seconds, just add Z
+    if (datetimeLocal.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)) {
+      return datetimeLocal.endsWith('Z') ? datetimeLocal : `${datetimeLocal}Z`
+    }
+    // Otherwise add :00 for seconds and Z for timezone
+    return `${datetimeLocal}:00Z`
+  }
+
+  // Phase A: Validate time window
+  function validateTimeWindow(start: string, end: string): string | null {
+    if (!start || !end) {
+      return null // Let required attribute handle empty fields
+    }
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+    if (startDate >= endDate) {
+      return 'Window start must be before window end'
+    }
+    return null
+  }
+
+  // Phase A: Handle inline form submission
+  async function handleSubmitInlineAnalysis(e: React.FormEvent) {
+    e.preventDefault()
+    
+    if (!createFieldId || !createWindowStart || !createWindowEnd) {
+      return
+    }
+    
+    // Validate time window
+    const timeError = validateTimeWindow(createWindowStart, createWindowEnd)
+    if (timeError) {
+      setCreateValidationError(timeError)
+      return
+    }
+    
     try {
       setIsCreatingAnalysis(true)
       setCreateAnalysisError(null)
-      const newRun = await createAnalysisRun(fieldId, windowStart, windowEnd)
+      setCreateValidationError(null)
+      
+      // Convert to ISO 8601 format
+      const windowStartISO = toISO8601(createWindowStart)
+      const windowEndISO = toISO8601(createWindowEnd)
+      
+      const newRun = await createAnalysisRun(createFieldId, windowStartISO, windowEndISO)
       setCreatedAnalysisRun(newRun)
-      setIsCreateDialogOpen(false)
+      
+      // Reset form and close
+      setCreateFieldId('')
+      setCreateWindowStart('')
+      setCreateWindowEnd('')
+      setShowCreateForm(false)
       
       // Phase A: Explicit reload behavior - only reload if viewing the same field
-      // This is NOT automatic - it's explicit because:
-      // 1. Success feedback will show, making it clear what happened
-      // 2. Reload only happens if user is viewing the field they just created analysis for
-      // 3. If they created for a different field, they'll see success but list won't change (explicit)
-      // User must explicitly select which analysis to view - no auto-selection
-      if (fieldId === selectedFieldId) {
+      if (createFieldId === selectedFieldId) {
         const runs = await fetchAnalysisRunsByField(selectedFieldId)
         setAnalysisRuns(runs)
       }
@@ -218,6 +266,16 @@ export default function DashboardPage() {
     } finally {
       setIsCreatingAnalysis(false)
     }
+  }
+
+  // Phase A: Handle form cancellation
+  function handleCancelCreateForm() {
+    setShowCreateForm(false)
+    setCreateFieldId('')
+    setCreateWindowStart('')
+    setCreateWindowEnd('')
+    setCreateValidationError(null)
+    setCreateAnalysisError(null)
   }
 
   // Phase C: Show provenance panel (ProvenancePanel handles loading internally)
@@ -282,10 +340,10 @@ export default function DashboardPage() {
             <div className="flex gap-2">
               {/* Phase A: Explicit analysis creation button */}
               <button
-                onClick={() => setIsCreateDialogOpen(true)}
+                onClick={() => setShowCreateForm(!showCreateForm)}
                 className="btn-primary"
               >
-                Run Analysis
+                {showCreateForm ? 'Hide Form' : 'Run Analysis'}
               </button>
               <button className="btn-secondary font-semibold">
                 Crop Vigor
@@ -298,6 +356,127 @@ export default function DashboardPage() {
               </button>
             </div>
           </motion.div>
+
+          {/* Phase A: Inline analysis creation form (expands when showCreateForm is true) */}
+          {showCreateForm && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-6"
+            >
+              <form onSubmit={handleSubmitInlineAnalysis} className="bg-background-secondary p-6 rounded-lg border border-border-subtle">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-base font-semibold mb-4">Create New Analysis Run</h3>
+                    <p className="text-sm text-muted mb-4">
+                      Select a field and time window for analysis. The system will compute crop health inference for the specified period.
+                    </p>
+                  </div>
+
+                  {/* Field Selection */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Field <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={createFieldId}
+                      onChange={(e) => {
+                        setCreateFieldId(e.target.value)
+                        if (createValidationError) setCreateValidationError(null)
+                      }}
+                      className="w-full px-4 py-2 border border-border-subtle rounded-md bg-background focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      required
+                      disabled={isCreatingAnalysis}
+                    >
+                      <option value="">Select a field...</option>
+                      {fields.map(field => (
+                        <option key={field.id} value={field.id}>
+                          {field.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Window Start */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Window Start <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Calendar className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 opacity-50" />
+                      <input
+                        type="datetime-local"
+                        value={createWindowStart}
+                        onChange={(e) => {
+                          setCreateWindowStart(e.target.value)
+                          if (createValidationError) setCreateValidationError(null)
+                        }}
+                        className="w-full pl-10 pr-4 py-2 border border-border-subtle rounded-md bg-background focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        required
+                        disabled={isCreatingAnalysis}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Window End */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Window End <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Calendar className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 opacity-50" />
+                      <input
+                        type="datetime-local"
+                        value={createWindowEnd}
+                        onChange={(e) => {
+                          setCreateWindowEnd(e.target.value)
+                          if (createValidationError) setCreateValidationError(null)
+                        }}
+                        className="w-full pl-10 pr-4 py-2 border border-border-subtle rounded-md bg-background focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        required
+                        disabled={isCreatingAnalysis}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Validation Error */}
+                  {createValidationError && (
+                    <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                      <p className="text-sm text-red-600 dark:text-red-400">{createValidationError}</p>
+                    </div>
+                  )}
+
+                  {/* API Error */}
+                  {createAnalysisError && (
+                    <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                      <p className="text-sm text-red-600 dark:text-red-400">{createAnalysisError}</p>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="submit"
+                      disabled={isCreatingAnalysis || !createFieldId || !createWindowStart || !createWindowEnd}
+                      className="btn-primary flex-1"
+                    >
+                      {isCreatingAnalysis ? 'Creating...' : 'Create Analysis'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCancelCreateForm}
+                      disabled={isCreatingAnalysis}
+                      className="btn-secondary px-6"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </motion.div>
+          )}
         </div>
 
         {/* ===== PHASE B: ANALYSIS RUNS SECTION ===== */}
@@ -586,19 +765,6 @@ export default function DashboardPage() {
         {/* ===== DATA TABLE SECTION ===== */}
 
       </div>
-
-      {/* Phase A: Analysis creation dialog */}
-      <CreateAnalysisDialog
-        isOpen={isCreateDialogOpen}
-        onClose={() => {
-          setIsCreateDialogOpen(false)
-          setCreateAnalysisError(null)
-        }}
-        fields={fields}
-        onCreate={handleCreateAnalysis}
-        isCreating={isCreatingAnalysis}
-        error={createAnalysisError}
-      />
 
       {/* Phase A: Analysis success feedback */}
       {createdAnalysisRun && (
