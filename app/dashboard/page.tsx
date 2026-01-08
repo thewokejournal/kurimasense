@@ -16,7 +16,7 @@ import { motion } from 'framer-motion'
 import { Map, Leaf, AlertTriangle, ChevronDown, Calendar, Clock, Search } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import CropHealthSummary from '@/components/CropHealthSummary'
-import NdviMapPanel from '@/components/NdviMapPanel'
+import NdviMapPanel, { AffectedAreaReportPanel } from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
 import { FieldTimeline } from '@/components/FieldTimeline'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
@@ -327,11 +327,11 @@ export default function DashboardPage() {
         
         {/* LEFT SIDEBAR */}
         <aside className="dashboard-left-sidebar">
-          <LeftSidebar
-            selectedFieldId={selectedFieldId}
-            fields={fields}
-            onFieldSelect={() => {/* TODO: implement field selection */}}
-          />
+        <LeftSidebar
+          selectedFieldId={selectedFieldId}
+          fields={fields}
+          onFieldSelect={() => {/* TODO: implement field selection */}}
+        />
         </aside>
 
         {/* MAIN CONTENT */}
@@ -363,12 +363,12 @@ export default function DashboardPage() {
               className="dashboard-card dashboard-form-card"
             >
               <div className="dashboard-card-header">
-                <div>
+                  <div>
                   <h3 className="dashboard-card-title">Create New Analysis Run</h3>
                   <p className="dashboard-card-description">
-                    Select a field and time window for analysis. The system will compute crop health inference for the specified period.
-                  </p>
-                </div>
+                      Select a field and time window for analysis. The system will compute crop health inference for the specified period.
+                    </p>
+                  </div>
               </div>
               <form onSubmit={handleSubmitInlineAnalysis} className="dashboard-form">
                 <div className="dashboard-form-grid">
@@ -479,7 +479,7 @@ export default function DashboardPage() {
           {!selectedAnalysisRunId && analysisRuns.length > 0 && (
             <div className="dashboard-card">
               <div className="dashboard-card-header">
-                <div>
+            <div>
                   <h3 className="dashboard-card-title">Analysis Runs</h3>
                   <p className="dashboard-card-description">Select an analysis run to view details</p>
                 </div>
@@ -524,28 +524,28 @@ export default function DashboardPage() {
                 <p className="dashboard-card-description">Recent events and timeline</p>
               </div>
             </div>
-            <FieldTimeline entries={mockTimelineEntries} />
-          </div>
+                <FieldTimeline entries={mockTimelineEntries} />
+        </div>
 
           {/* Optional Layers - Expandable Sections */}
           <div className="dashboard-optional-layers">
             {/* Context Section */}
             <div className="dashboard-card dashboard-expandable">
               <div className="dashboard-card-header">
-                <div>
+              <div>
                   <h3 className="dashboard-card-title">Context</h3>
                   <p className="dashboard-card-description">External descriptive data</p>
-                </div>
-                {!showContext && (
-                  <button
-                    onClick={handleLoadContext}
-                    disabled={isLoadingContext}
-                    className="btn-secondary btn-sm"
-                  >
-                    {isLoadingContext ? 'Loading...' : 'Load Context'}
-                  </button>
-                )}
               </div>
+                {!showContext && (
+                <button
+                  onClick={handleLoadContext}
+                  disabled={isLoadingContext}
+                    className="btn-secondary btn-sm"
+                >
+                  {isLoadingContext ? 'Loading...' : 'Load Context'}
+                </button>
+              )}
+            </div>
               {showContext && (
                 <div className="dashboard-card-content">
                   <ContextPanel context={context} isLoading={isLoadingContext} />
@@ -556,28 +556,28 @@ export default function DashboardPage() {
                   <p className="text-sm">{contextError}</p>
                 </div>
               )}
-            </div>
+        </div>
 
             {/* Provenance Section */}
             <div className="dashboard-card dashboard-expandable">
               <div className="dashboard-card-header">
-                <div>
+              <div>
                   <h3 className="dashboard-card-title">Technical Details</h3>
                   <p className="dashboard-card-description">Inference trace and provenance</p>
-                </div>
-                {!showProvenance && (
-                  <button
-                    onClick={handleShowProvenance}
-                    className="btn-secondary btn-sm"
-                  >
-                    Show Technical Details
-                  </button>
-                )}
               </div>
+                {!showProvenance && (
+                <button
+                  onClick={handleShowProvenance}
+                    className="btn-secondary btn-sm"
+                >
+                  Show Technical Details
+                </button>
+              )}
+            </div>
               {showProvenance && selectedAnalysisRunId && (() => {
-                const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
-                if (!selectedRun) return null
-                return (
+                  const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
+                  if (!selectedRun) return null
+                  return (
                   <div className="dashboard-card-content">
                     <ProvenancePanel
                       fieldId={selectedRun.fieldId}
@@ -585,44 +585,44 @@ export default function DashboardPage() {
                       windowEnd={selectedRun.windowEnd}
                     />
                   </div>
-                )
+                  )
               })()}
-            </div>
+        </div>
 
             {/* Decision Context Section */}
             <div className="dashboard-card dashboard-expandable">
               <div className="dashboard-card-header">
-                <div>
+              <div>
                   <h3 className="dashboard-card-title">Decision Context</h3>
                   <p className="dashboard-card-description">Non-actionable decision frames</p>
-                </div>
-                {!showDecisionContexts && (
-                  <button
-                    onClick={async () => {
-                      if (!selectedAnalysisRunId) return
-                      try {
-                        setIsLoadingDecisionContexts(true)
-                        setDecisionContextError(null)
-                        const contexts = await generateDecisionContexts(selectedAnalysisRunId)
-                        setDecisionContexts(contexts)
-                        setShowDecisionContexts(true)
-                      } catch (err) {
-                        console.error('Failed to generate decision contexts:', err)
-                        setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
-                      } finally {
-                        setIsLoadingDecisionContexts(false)
-                      }
-                    }}
-                    disabled={isLoadingDecisionContexts}
-                    className="btn-secondary btn-sm"
-                  >
-                    {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
-                  </button>
-                )}
               </div>
+                {!showDecisionContexts && (
+                <button
+                  onClick={async () => {
+                    if (!selectedAnalysisRunId) return
+                    try {
+                      setIsLoadingDecisionContexts(true)
+                      setDecisionContextError(null)
+                      const contexts = await generateDecisionContexts(selectedAnalysisRunId)
+                      setDecisionContexts(contexts)
+                      setShowDecisionContexts(true)
+                    } catch (err) {
+                      console.error('Failed to generate decision contexts:', err)
+                      setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
+                    } finally {
+                      setIsLoadingDecisionContexts(false)
+                    }
+                  }}
+                  disabled={isLoadingDecisionContexts}
+                    className="btn-secondary btn-sm"
+                >
+                  {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
+                </button>
+              )}
+            </div>
               {showDecisionContexts && (
                 <div className="dashboard-card-content">
-                  <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />
+                <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />
                 </div>
               )}
               {decisionContextError && (
