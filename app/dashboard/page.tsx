@@ -13,7 +13,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Map, Leaf, AlertTriangle, ChevronDown, Calendar, Clock } from 'lucide-react'
+import { Map, Leaf, AlertTriangle, ChevronDown, Calendar, Clock, Search } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import CropHealthSummary from '@/components/CropHealthSummary'
 import NdviMapPanel from '@/components/NdviMapPanel'
@@ -34,7 +34,7 @@ import AnalysisRunDetail from '@/components/AnalysisRunDetail'
 import Footer from '@/components/Footer'
 import Logo from '@/components/Logo'
 import { LeftSidebar } from '@/components/dashboard/LeftSidebar'
-import { RightSidebar } from '@/components/dashboard/RightSidebar'
+import ThemeToggle from '@/components/ThemeToggle'
 
 
 const stats = [
@@ -299,25 +299,31 @@ export default function DashboardPage() {
 
   return (
     <main className="dashboard-shell">
-      {/* Header Bar */}
+      {/* Unified Header Bar */}
       <header className="dashboard-header-bar">
         <div className="dashboard-header-left">
           <Logo />
           <nav className="dashboard-header-nav">
             <button className="nav-tab active">Dashboard</button>
-            <button className="nav-tab">Automation</button>
-            <button className="nav-tab">Comparison</button>
-            <button className="nav-tab">Smart Irrigation</button>
-            <button className="nav-tab">Plots</button>
+            <button 
+              onClick={() => setShowCreateForm(!showCreateForm)}
+              className="nav-tab"
+            >
+              Run Analysis
+            </button>
           </nav>
+        </div>
+        <div className="dashboard-header-right">
+          <div className="header-search">
+            <Search className="header-search-icon w-4 h-4" />
+            <input type="text" placeholder="Search Data..." />
           </div>
-        <div className="header-actions">
-          {/* Add user actions, theme toggle, etc. here */}
+          <ThemeToggle />
         </div>
       </header>
 
-      {/* Three-Column Layout */}
-      <div className="dashboard-three-column">
+      {/* Two-Column Layout */}
+      <div className="dashboard-two-column">
         
         {/* LEFT SIDEBAR */}
         <LeftSidebar
@@ -326,8 +332,8 @@ export default function DashboardPage() {
           onFieldSelect={() => {/* TODO: implement field selection */}}
         />
 
-        {/* CENTER AREA */}
-        <div className="center-main">
+        {/* MAIN CONTENT */}
+        <div className="main-content">
           {/* Analysis Creation Form */}
           {showCreateForm && (
             <motion.div
@@ -471,41 +477,98 @@ export default function DashboardPage() {
                 <p className="text-muted text-sm">Select an analysis run to view details</p>
               </div>
               )}
-            </div>
-        </div>
+          </div>
 
-        {/* RIGHT SIDEBAR */}
-        <RightSidebar
-          context={context}
-          isLoadingContext={isLoadingContext}
-          contextError={contextError}
-          onLoadContext={handleLoadContext}
-          showContext={showContext}
-          showProvenance={showProvenance}
-          onShowProvenance={handleShowProvenance}
-          fieldId={selectedAnalysisRunId ? analysisRuns.find(r => r.id === selectedAnalysisRunId)?.fieldId : undefined}
-          windowStart={selectedAnalysisRunId ? analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowStart : undefined}
-          windowEnd={selectedAnalysisRunId ? analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowEnd : undefined}
-          decisionContexts={decisionContexts}
-          isLoadingDecisionContexts={isLoadingDecisionContexts}
-          decisionContextError={decisionContextError}
-          onLoadDecisionContexts={async () => {
-                    if (!selectedAnalysisRunId) return
-                    try {
-                      setIsLoadingDecisionContexts(true)
-                      setDecisionContextError(null)
-                      const contexts = await generateDecisionContexts(selectedAnalysisRunId)
-                      setDecisionContexts(contexts)
-                      setShowDecisionContexts(true)
-                    } catch (err) {
-                      console.error('Failed to generate decision contexts:', err)
-                      setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
-                    } finally {
-                      setIsLoadingDecisionContexts(false)
-                    }
-                  }}
-          showDecisionContexts={showDecisionContexts}
-        />
+          {/* Optional Layers - Stacked Below Map */}
+          <div className="space-y-4">
+            {/* Context Section */}
+            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-primary">Context</h3>
+                  <p className="text-xs text-muted mt-0.5">External descriptive data</p>
+                </div>
+                {!showContext && (
+                  <button
+                    onClick={handleLoadContext}
+                    disabled={isLoadingContext}
+                    className="btn-secondary text-xs px-3 py-1.5"
+                  >
+                    {isLoadingContext ? 'Loading...' : 'Load Context'}
+                  </button>
+                )}
+              </div>
+              {showContext && <ContextPanel context={context} isLoading={isLoadingContext} />}
+              {contextError && <p className="text-xs text-red-400 mt-2">{contextError}</p>}
+            </div>
+
+            {/* Provenance Section */}
+            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-primary">Technical Details</h3>
+                  <p className="text-xs text-muted mt-0.5">Inference trace</p>
+                </div>
+                {!showProvenance && (
+                  <button
+                    onClick={handleShowProvenance}
+                    className="btn-secondary text-xs px-3 py-1.5"
+                  >
+                    Show Technical Details
+                  </button>
+                )}
+              </div>
+              {showProvenance && selectedAnalysisRunId && (() => {
+                const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
+                if (!selectedRun) return null
+                return (
+                  <ProvenancePanel
+                    fieldId={selectedRun.fieldId}
+                    windowStart={selectedRun.windowStart}
+                    windowEnd={selectedRun.windowEnd}
+                  />
+                )
+              })()}
+            </div>
+
+            {/* Decision Context Section */}
+            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-primary">Decision Context</h3>
+                  <p className="text-xs text-muted mt-0.5">Non-actionable frames</p>
+                </div>
+                {!showDecisionContexts && (
+                  <button
+                    onClick={async () => {
+                      if (!selectedAnalysisRunId) return
+                      try {
+                        setIsLoadingDecisionContexts(true)
+                        setDecisionContextError(null)
+                        const contexts = await generateDecisionContexts(selectedAnalysisRunId)
+                        setDecisionContexts(contexts)
+                        setShowDecisionContexts(true)
+                      } catch (err) {
+                        console.error('Failed to generate decision contexts:', err)
+                        setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
+                      } finally {
+                        setIsLoadingDecisionContexts(false)
+                      }
+                    }}
+                    disabled={isLoadingDecisionContexts}
+                    className="btn-secondary text-xs px-3 py-1.5"
+                  >
+                    {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
+                  </button>
+                )}
+              </div>
+              {showDecisionContexts && (
+                <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />
+              )}
+              {decisionContextError && <p className="text-xs text-red-400 mt-2">{decisionContextError}</p>}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Phase A: Analysis success feedback */}

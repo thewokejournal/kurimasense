@@ -331,37 +331,28 @@ input:focus {
 }
 
 /* =========================================================
-   Three-Column Layout Sections
+   Two-Column Layout Sections
    ========================================================= */
 
 .left-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   overflow-y: auto;
-  padding-right: 8px;
+  padding-right: 4px;
 }
 
-.center-main {
+.main-content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   overflow-y: auto;
   min-height: 0;
 }
 
-.right-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  overflow-y: auto;
-  padding-left: 8px;
-}
-
 @media (max-width: 1024px) {
   .left-sidebar,
-  .center-main,
-  .right-sidebar {
+  .main-content {
     padding: 0;
   }
 }
@@ -373,11 +364,11 @@ input:focus {
 .metric-card {
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 10px;
+  padding: 12px 14px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   transition: all 120ms cubic-bezier(.2,.8,.4,1);
 }
 
@@ -387,12 +378,12 @@ input:focus {
 }
 
 .metric-icon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--surface-soft);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
@@ -405,26 +396,29 @@ input:focus {
 }
 
 .metric-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  opacity: 0.7;
 }
 
 .metric-value {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
+  line-height: 1.2;
 }
 
 .metric-meta {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text-muted);
-  margin-top: 4px;
+  margin-top: 2px;
+  opacity: 0.6;
 }
 
 /* =========================================================
@@ -468,7 +462,6 @@ input:focus {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 16px;
-  flex: 1;
   min-height: 500px;
 }
 
@@ -476,6 +469,43 @@ input:focus {
   .center-map-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* =========================================================
+   Optional Layers (Below Map)
+   ========================================================= */
+
+.optional-layer-section {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 120ms cubic-bezier(.2,.8,.4,1);
+}
+
+.optional-layer-section:hover {
+  border-color: var(--border-medium);
+}
+
+.optional-layer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.optional-layer-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.optional-layer-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  opacity: 0.7;
 }
 
 /* Command bar (prominent control surface) */
@@ -1316,7 +1346,7 @@ input:focus {
     0 6px 18px rgba(0,0,0,0.25);
 }
 /* =========================================================
-   Dashboard Layout - Three Column Grid
+   Dashboard Layout - Two Column Grid (Clean Rebuild)
    ========================================================= */
 
 .dashboard-shell {
@@ -1329,26 +1359,30 @@ input:focus {
   flex-direction: column;
 }
 
-.dashboard-three-column {
+.dashboard-two-column {
   display: grid;
-  grid-template-columns: 320px 1fr 280px;
-  gap: 16px;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
   flex: 1;
-  padding: 16px;
+  padding: 20px;
   min-height: 0;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 @media (max-width: 1440px) {
-  .dashboard-three-column {
-    grid-template-columns: 280px 1fr 260px;
-    gap: 12px;
+  .dashboard-two-column {
+    grid-template-columns: 260px 1fr;
+    gap: 16px;
+    padding: 16px;
   }
 }
 
 @media (max-width: 1024px) {
-  .dashboard-three-column {
+  .dashboard-two-column {
     grid-template-columns: 1fr;
     gap: 16px;
+    padding: 16px;
   }
 }
 
@@ -1997,11 +2031,11 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 12px 24px;
   background: var(--surface-soft);
   border-bottom: 1px solid var(--border-subtle);
-  gap: 32px;
-  min-height: 60px;
+  gap: 24px;
+  min-height: 56px;
   flex-shrink: 0;
   width: 100%;
   box-sizing: border-box;
@@ -2012,25 +2046,33 @@ html, body {
 .dashboard-header-left {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 40px;
+  flex: 1;
 }
 
 .dashboard-header-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
+}
+
+.dashboard-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .nav-tab {
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 6px 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all 120ms cubic-bezier(.2,.8,.4,1);
   cursor: pointer;
   background: transparent;
   border: none;
+  white-space: nowrap;
 }
 
 .nav-tab:hover {
@@ -2042,6 +2084,43 @@ html, body {
   background: var(--surface-elevated);
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
+}
+
+/* Search Input in Header */
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 6px 12px;
+  min-width: 240px;
+  transition: all 120ms cubic-bezier(.2,.8,.4,1);
+}
+
+.header-search:focus-within {
+  border-color: var(--border-medium);
+  background: var(--surface-hover);
+}
+
+.header-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.header-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.header-search-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
 }
 
 .mobile-menu-button {
