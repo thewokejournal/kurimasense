@@ -123,16 +123,16 @@ p {
    ============================ */
 
 :root {
-  /* Dark Theme (Default) */
-  --bg-app: #0b1220;
-  --bg-subtle: #0f1623;
+  /* Dark Theme (Default) - Gradually darkened */
+  --bg-app: #0a0e14;
+  --bg-subtle: #0d1117;
   
-  --surface-elevated: rgba(255, 255, 255, 0.04);
-  --surface-soft: rgba(255, 255, 255, 0.025);
-  --surface-hover: rgba(255, 255, 255, 0.08);
+  --surface-elevated: rgba(255, 255, 255, 0.035);
+  --surface-soft: rgba(255, 255, 255, 0.02);
+  --surface-hover: rgba(255, 255, 255, 0.07);
   
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-medium: rgba(255, 255, 255, 0.1);
   
   --text-primary: #e5e7eb;
   --text-secondary: #9ca3af;
@@ -142,13 +142,13 @@ p {
   --accent-green-hover: #16a34a;
   
   /* Shadows for dark mode */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
   
   /* Glass effects */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-bg: rgba(255, 255, 255, 0.025);
+  --glass-border: rgba(255, 255, 255, 0.05);
 }
 
 [data-theme='light'] {
@@ -327,6 +327,154 @@ input:focus {
 
   .dashboard-section-tight {
     margin-bottom: calc(var(--section-spacing) * 0.5);
+  }
+}
+
+/* =========================================================
+   Three-Column Layout Sections
+   ========================================================= */
+
+.left-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.center-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.right-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-left: 8px;
+}
+
+@media (max-width: 1024px) {
+  .left-sidebar,
+  .center-main,
+  .right-sidebar {
+    padding: 0;
+  }
+}
+
+/* =========================================================
+   Metric Cards with Icons (Left Sidebar)
+   ========================================================= */
+
+.metric-card {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 120ms cubic-bezier(.2,.8,.4,1);
+}
+
+.metric-card:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-medium);
+}
+
+.metric-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.metric-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.metric-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-meta {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* =========================================================
+   Mini Chart Component (Neutral Monochrome)
+   ========================================================= */
+
+.mini-chart {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 4px 0;
+}
+
+.mini-chart-bar {
+  flex: 1;
+  background: var(--text-muted);
+  border-radius: 2px 2px 0 0;
+  opacity: 0.4;
+  transition: opacity 120ms ease;
+}
+
+.mini-chart-bar:hover {
+  opacity: 0.7;
+}
+
+.mini-chart-wrapper {
+  background: var(--surface-soft);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+/* =========================================================
+   Center Map Layout
+   ========================================================= */
+
+.center-map-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 16px;
+  flex: 1;
+  min-height: 500px;
+}
+
+@media (max-width: 1280px) {
+  .center-map-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -609,13 +757,9 @@ input:focus {
   color: var(--text-muted);
 }
 
-.stat-delta.positive {
-  color: #10b981;
-  opacity: 0.6;
-}
-
+.stat-delta.positive,
 .stat-delta.negative {
-  color: #f59e0b;
+  color: var(--text-muted);
   opacity: 0.6;
 }
 
@@ -663,22 +807,12 @@ input:focus {
   border-color: var(--border-medium);
 }
 
-.confidence-badge.high {
-  color: #10b981;
-  border-color: rgba(16, 185, 129, 0.15);
-  background: rgba(16, 185, 129, 0.08);
-}
-
-.confidence-badge.medium {
-  color: #f59e0b;
-  border-color: rgba(245, 158, 11, 0.15);
-  background: rgba(245, 158, 11, 0.08);
-}
-
+.confidence-badge.high,
+.confidence-badge.medium,
 .confidence-badge.low {
-  color: #ef4444;
-  border-color: rgba(239, 68, 68, 0.15);
-  background: rgba(239, 68, 68, 0.08);
+  color: var(--text-secondary);
+  border-color: var(--border-subtle);
+  background: var(--surface-soft);
 }
 
 .confidence-dot {
@@ -1048,11 +1182,29 @@ input:focus {
 }
 
 .logo-text {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
-  color: #e5e7eb;
-  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
   white-space: nowrap;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.logo-icon {
+  width: 18px;
+  height: 18px;
+  color: inherit;
 }
 
 /* ---------- Divider ---------- */
@@ -1164,16 +1316,40 @@ input:focus {
     0 6px 18px rgba(0,0,0,0.25);
 }
 /* =========================================================
-   Dashboard Layout
+   Dashboard Layout - Three Column Grid
    ========================================================= */
 
 .dashboard-shell {
   width: 100%;
   max-width: 100%;
-  padding: 32px 40px;
+  min-height: 100vh;
   background: var(--bg-app);
   box-sizing: border-box;
-  padding-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-three-column {
+  display: grid;
+  grid-template-columns: 320px 1fr 280px;
+  gap: 16px;
+  flex: 1;
+  padding: 16px;
+  min-height: 0;
+}
+
+@media (max-width: 1440px) {
+  .dashboard-three-column {
+    grid-template-columns: 280px 1fr 260px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-three-column {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 @media (max-width: 1280px) {
@@ -1821,16 +1997,51 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 14px 20px;
   background: var(--surface-soft);
   border-bottom: 1px solid var(--border-subtle);
-  gap: 20px;
-  min-height: 64px;
+  gap: 32px;
+  min-height: 60px;
   flex-shrink: 0;
   width: 100%;
   box-sizing: border-box;
   position: relative;
   z-index: 100;
+}
+
+.dashboard-header-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.dashboard-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-tab {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 8px;
+  transition: all 120ms cubic-bezier(.2,.8,.4,1);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.nav-tab:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.nav-tab.active {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
 }
 
 .mobile-menu-button {
