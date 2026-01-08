@@ -3,11 +3,29 @@
 @tailwind utilities;
 
 /* ---------- Base ---------- */
-html,
-body {
+html {
   height: 100%;
   overflow-x: hidden;
   width: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#__next {
+  height: 100%;
+}
+
+/* Prevent body scroll when dashboard three-column layout is active */
+.dashboard-shell:has(.dashboard-three-column) {
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 body {
@@ -1607,30 +1625,48 @@ input:focus {
 .dashboard-shell {
   width: 100%;
   max-width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   background: var(--bg-app);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default padding for shell when using immersive layout */
+.dashboard-shell:has(.dashboard-three-column) {
+  padding: 0 !important;
+  overflow: hidden;
 }
 
 .dashboard-three-column {
   display: grid;
-  grid-template-columns: 300px 1fr 360px;
+  grid-template-columns: 300px 1fr 380px;
   gap: 0;
   flex: 1;
   min-height: 0;
+  max-height: 100%;
   width: 100%;
   max-width: 100%;
   height: calc(100vh - 64px);
   overflow: hidden;
+  background: var(--bg-app);
+  position: relative;
 }
 
-@media (max-width: 1440px) {
+@media (max-width: 1600px) {
   .dashboard-three-column {
     grid-template-columns: 280px 1fr 340px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .dashboard-three-column {
+    grid-template-columns: 260px 1fr 300px;
   }
 }
 
@@ -1639,33 +1675,76 @@ input:focus {
     grid-template-columns: 1fr;
     height: auto;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
   }
 }
 
 .dashboard-left-sidebar {
   height: 100%;
+  max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   border-right: 1px solid var(--border-subtle);
-  background: var(--bg-subtle);
+  background: var(--surface-elevated);
+  z-index: 10;
+  box-sizing: border-box;
 }
 
 .dashboard-main-area {
   position: relative;
   height: 100%;
+  max-height: 100%;
   min-width: 0;
   background: #000;
+  flex: 1;
+  overflow: hidden;
 }
 
 .dashboard-right-sidebar {
   height: 100%;
+  max-height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   border-left: 1px solid var(--border-subtle);
-  background: var(--bg-subtle);
+  background: var(--surface-elevated);
   padding: 24px;
+  padding-bottom: 40px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+  z-index: 10;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+  box-sizing: border-box;
+  align-content: flex-start;
+}
+
+/* Ensure last child has visible bottom spacing */
+.dashboard-right-sidebar > *:last-child {
+  margin-bottom: 0;
+}
+
+.dashboard-right-sidebar > *:last-child > *:last-child {
+  padding-bottom: 24px;
+  margin-bottom: 0;
+}
+
+.dashboard-right-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dashboard-right-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dashboard-right-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+
+.dashboard-right-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--border-medium);
 }
 
 .dashboard-main-content {

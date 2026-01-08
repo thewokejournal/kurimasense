@@ -80,39 +80,39 @@ export function AffectedAreaReportPanel() {
         </span>
       </div>
 
-      <div className="space-y-4">
-        <div className="flex justify-between items-center py-2 border-b border-border-subtle">
-          <span className="text-sm text-secondary">Problem Area Vigor</span>
-          <strong className="text-sm font-semibold text-amber-400">Weak</strong>
+      <div className="space-y-3">
+        <div className="flex justify-between items-center py-3 px-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+          <span className="text-sm text-secondary font-medium">Problem Area Vigor</span>
+          <strong className="text-sm font-bold text-red-400">Weak</strong>
         </div>
 
-        <div className="flex justify-between items-center py-2 border-b border-border-subtle">
-          <span className="text-sm text-secondary">Overall Field Health</span>
-          <strong className="text-sm font-semibold text-primary">Good</strong>
+        <div className="flex justify-between items-center py-3 px-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+          <span className="text-sm text-secondary font-medium">Overall Field Health</span>
+          <strong className="text-sm font-bold text-green-400">Good</strong>
         </div>
 
-        <div className="flex justify-between items-center py-2 border-b border-border-subtle">
-          <span className="text-sm text-secondary">Severity Level</span>
-          <strong className="text-sm font-semibold text-amber-400">Moderate Stress</strong>
+        <div className="flex justify-between items-center py-3 px-4 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+          <span className="text-sm text-secondary font-medium">Severity Level</span>
+          <strong className="text-sm font-bold text-amber-400">Moderate Stress</strong>
         </div>
       </div>
 
-      <div className="mt-8">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-muted block mb-3 opacity-60">
+      <div className="mt-8 pt-6 border-t border-border-subtle">
+        <span className="text-xs font-bold uppercase tracking-widest text-muted block mb-4">
           Technical Evidence
         </span>
-        <div className="space-y-2 text-xs opacity-70">
-          <div className="flex justify-between">
-            <span>Affected Zone NDVI:</span>
-            <span className="font-mono tabular-nums">0.58</span>
+        <div className="space-y-2.5">
+          <div className="flex justify-between items-center py-2 px-3 bg-surface-soft/40 rounded border border-border-subtle">
+            <span className="text-xs text-secondary font-medium">Affected Zone NDVI:</span>
+            <span className="text-xs font-mono tabular-nums font-bold text-red-400">0.58</span>
           </div>
-          <div className="flex justify-between">
-            <span>Field Mean NDVI:</span>
-            <span className="font-mono tabular-nums">0.72</span>
+          <div className="flex justify-between items-center py-2 px-3 bg-surface-soft/40 rounded border border-border-subtle">
+            <span className="text-xs text-secondary font-medium">Field Mean NDVI:</span>
+            <span className="text-xs font-mono tabular-nums font-bold text-green-400">0.72</span>
           </div>
-          <div className="flex justify-between">
-            <span>Deviation:</span>
-            <span className="font-mono tabular-nums">-18%</span>
+          <div className="flex justify-between items-center py-2 px-3 bg-surface-soft/40 rounded border border-border-subtle">
+            <span className="text-xs text-secondary font-medium">Deviation:</span>
+            <span className="text-xs font-mono tabular-nums font-bold text-amber-400">-18%</span>
           </div>
         </div>
       </div>

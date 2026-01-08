@@ -29,14 +29,16 @@ interface ContextPanelProps {
 export default function ContextPanel({ context, isLoading }: ContextPanelProps) {
   if (isLoading) {
     return (
-      <Card className="surface-soft p-5 border-l-4" style={{ borderLeftColor: 'var(--border-subtle)' }}>
-        <div className="flex items-start gap-3">
-          <Info className="w-4 h-4 mt-0.5 opacity-50" />
+      <Card className="bg-surface-elevated p-5 border border-border-subtle rounded-lg">
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-lg bg-accent-green/10 border border-accent-green/30 flex items-center justify-center flex-shrink-0 animate-pulse">
+            <Info className="w-5 h-5 text-accent-green" />
+          </div>
           <div className="flex-1">
-            <h3 className="font-semibold tracking-tight mb-2 text-sm uppercase text-muted">
-              Context
+            <h3 className="font-semibold tracking-tight mb-2 text-base text-primary">
+              Context Data
             </h3>
-            <p className="meta-text">Loading context data...</p>
+            <p className="text-secondary text-sm">Loading context data...</p>
           </div>
         </div>
       </Card>
@@ -48,49 +50,51 @@ export default function ContextPanel({ context, isLoading }: ContextPanelProps) 
   }
 
   return (
-    <Card className="surface-soft p-5 border-l-4 border-border-subtle">
-      <div className="flex items-start gap-3">
-        <Info className="w-4 h-4 mt-0.5 opacity-50" />
-        <div className="flex-1 space-y-3">
+    <Card className="bg-surface-elevated p-5 border border-border-subtle rounded-lg">
+      <div className="flex items-start gap-4">
+        <div className="w-10 h-10 rounded-lg bg-accent-green/10 border border-accent-green/30 flex items-center justify-center flex-shrink-0">
+          <Info className="w-5 h-5 text-accent-green" />
+        </div>
+        <div className="flex-1 space-y-4">
           <div>
-            <h3 className="font-semibold tracking-tight mb-2 text-sm uppercase text-muted">
-              Context
+            <h3 className="font-semibold tracking-tight mb-2 text-base text-primary">
+              Context Data
             </h3>
-            <p className="meta-text text-xs mb-3 opacity-70">
+            <p className="text-secondary text-sm mb-4 leading-relaxed">
               Additional descriptive information. Factual data only. Does not modify, explain, or influence inference.
             </p>
           </div>
 
           {/* Data Source */}
-          <div>
-            <span className="label-text text-xs uppercase tracking-wider opacity-60">Data Source</span>
-            <p className="meta-text mt-1">{context.source}</p>
+          <div className="bg-surface-soft/50 rounded-lg p-3 border border-border-subtle">
+            <span className="text-xs uppercase tracking-wider text-muted font-semibold block mb-1.5">Data Source</span>
+            <p className="text-primary font-medium">{context.source}</p>
           </div>
 
           {/* Time Window */}
-          <div>
-            <span className="label-text text-xs uppercase tracking-wider opacity-60">Time Window</span>
-            <p className="meta-text mt-1">
+          <div className="bg-surface-soft/50 rounded-lg p-3 border border-border-subtle">
+            <span className="text-xs uppercase tracking-wider text-muted font-semibold block mb-1.5">Time Window</span>
+            <p className="text-primary font-medium">
               {new Date(context.timeWindow.start).toLocaleDateString()} — {new Date(context.timeWindow.end).toLocaleDateString()}
             </p>
           </div>
 
           {/* Freshness */}
-          <div>
-            <span className="label-text text-xs uppercase tracking-wider opacity-60">Fetched</span>
-            <p className="meta-text mt-1">
+          <div className="bg-surface-soft/50 rounded-lg p-3 border border-border-subtle">
+            <span className="text-xs uppercase tracking-wider text-muted font-semibold block mb-1.5">Fetched</span>
+            <p className="text-primary font-medium">
               {new Date(context.fetchedAt).toLocaleString()}
             </p>
           </div>
 
           {/* Context Data */}
-          <div className="pt-2 border-t" style={{ borderTopColor: 'var(--border-subtle)' }}>
-            <span className="label-text text-xs uppercase tracking-wider opacity-60 mb-2 block">Data</span>
-            <div className="space-y-2">
+          <div className="pt-4 border-t border-border-subtle">
+            <span className="text-xs uppercase tracking-wider text-muted font-semibold mb-3 block">Data Points</span>
+            <div className="space-y-2.5">
               {Object.entries(context.data).map(([key, value]) => (
-                <div key={key} className="flex justify-between items-start">
-                  <span className="meta-text text-xs opacity-70">{key}</span>
-                  <span className="meta-text text-xs font-medium">{String(value)}</span>
+                <div key={key} className="flex justify-between items-center py-2 px-3 bg-surface-soft/30 rounded border border-border-subtle hover:bg-surface-hover transition-colors">
+                  <span className="text-secondary text-sm font-medium">{key}</span>
+                  <span className="text-primary text-sm font-semibold tabular-nums">{String(value)}</span>
                 </div>
               ))}
             </div>

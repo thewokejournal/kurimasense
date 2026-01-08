@@ -31,7 +31,6 @@ import DecisionContextPanel from '@/components/DecisionContextPanel'
 import AnalysisSuccessFeedback from '@/components/AnalysisSuccessFeedback'
 import AnalysisRunList from '@/components/AnalysisRunList'
 import AnalysisRunDetail from '@/components/AnalysisRunDetail'
-import Footer from '@/components/Footer'
 import Logo from '@/components/Logo'
 import { LeftSidebar } from '@/components/dashboard/LeftSidebar'
 import ThemeToggle from '@/components/ThemeToggle'
@@ -99,6 +98,18 @@ export default function DashboardPage() {
   const [decisionContexts, setDecisionContexts] = useState<DecisionContextResponse | null>(null)
   const [isLoadingDecisionContexts, setIsLoadingDecisionContexts] = useState(false)
   const [decisionContextError, setDecisionContextError] = useState<string | null>(null)
+
+  // Prevent body scroll when dashboard is mounted
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    const originalHeight = document.body.style.height;
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.height = originalHeight;
+    };
+  }, [])
   const [showDecisionContexts, setShowDecisionContexts] = useState(false)
 
   // Phase A: Analysis creation state (inline form)
@@ -286,6 +297,26 @@ export default function DashboardPage() {
     setShowProvenance(true)
   }
 
+  // Phase 7: Load decision contexts only via explicit user action
+  async function handleLoadDecisionContexts() {
+    if (!selectedAnalysisRunId) {
+      return
+    }
+
+    try {
+      setIsLoadingDecisionContexts(true)
+      setDecisionContextError(null)
+      const decisionContextData = await generateDecisionContexts(selectedAnalysisRunId)
+      setDecisionContexts(decisionContextData)
+      setShowDecisionContexts(true)
+    } catch (err) {
+      console.error('Failed to load decision contexts:', err)
+      setDecisionContextError(err instanceof Error ? err.message : 'Failed to load decision contexts')
+    } finally {
+      setIsLoadingDecisionContexts(false)
+    }
+  }
+
   // Map inference to component props (Phase 4.3: use verbatim labels)
   const statusForUI = inference?.status === 'healthy' ? 'Healthy' : 
                       inference?.status === 'watch' ? 'Watch' :
@@ -322,317 +353,216 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* Two-Column Layout with Better Spacing */}
-      <div className="dashboard-two-column">
+      {/* Three-Column Immersive Layout */}
+      <div className="dashboard-three-column">
         
-        {/* LEFT SIDEBAR */}
-        <aside className="dashboard-left-sidebar">
-        <LeftSidebar
-          selectedFieldId={selectedFieldId}
-          fields={fields}
-          onFieldSelect={() => {/* TODO: implement field selection */}}
-        />
+        {/* LEFT SIDEBAR - Fields & Global Metrics */}
+        <aside className="dashboard-left-sidebar p-6 bg-surface-soft overflow-y-auto">
+          <LeftSidebar
+            selectedFieldId={selectedFieldId}
+            fields={fields}
+            onFieldSelect={() => {/* TODO: implement field selection */}}
+          />
+          
+          <div className="mt-8 pt-8 border-t border-border-subtle">
+            <div className="mb-4">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted opacity-60">Field Activity</h3>
+            </div>
+            <FieldTimeline entries={mockTimelineEntries} />
+          </div>
         </aside>
 
-        {/* MAIN CONTENT */}
-        <div className="dashboard-main-content">
-          {/* Hero Section - Crop Health Summary */}
+        {/* CENTER AREA - The Immersive Map */}
+        <section className="dashboard-main-area">
+          <NdviMapPanel />
+          
+          {/* Floating Health Status Overlay */}
           {selectedAnalysisRunId && inference && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="dashboard-hero-section"
-            >
+            <div className="absolute top-6 left-6 z-10 w-80">
               <CropHealthSummary
                 status={statusForUI as any}
                 trend={trendForUI as any}
                 confidence={confidenceForUI as any}
                 detectedAt={formatGeneratedAt(inference.generatedAt)}
               />
-            </motion.div>
+            </div>
           )}
 
-          {/* Analysis Creation Form */}
+          {/* Analysis Creation Form Overlay */}
           {showCreateForm && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="dashboard-card dashboard-form-card"
-            >
-              <div className="dashboard-card-header">
+            <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 w-full max-w-xl px-4">
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="dashboard-card dashboard-form-card shadow-2xl bg-surface-elevated/95 backdrop-blur-md"
+              >
+                <div className="dashboard-card-header">
                   <div>
-                  <h3 className="dashboard-card-title">Create New Analysis Run</h3>
-                  <p className="dashboard-card-description">
-                      Select a field and time window for analysis. The system will compute crop health inference for the specified period.
+                    <h3 className="dashboard-card-title">Create New Analysis Run</h3>
+                    <p className="dashboard-card-description">
+                      Select a field and time window for analysis.
                     </p>
                   </div>
-              </div>
-              <form onSubmit={handleSubmitInlineAnalysis} className="dashboard-form">
-                <div className="dashboard-form-grid">
-                  {/* Field Selection */}
-                  <div className="dashboard-form-field">
-                    <label className="dashboard-form-label">
-                      Field <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      value={createFieldId}
-                      onChange={(e) => {
-                        setCreateFieldId(e.target.value)
-                        if (createValidationError) setCreateValidationError(null)
-                      }}
-                      className="dashboard-form-input"
-                      required
-                      disabled={isCreatingAnalysis}
-                    >
-                      <option value="">Select a field...</option>
-                      {fields.map(field => (
-                        <option key={field.id} value={field.id}>
-                          {field.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Window Start */}
-                  <div className="dashboard-form-field">
-                    <label className="dashboard-form-label">
-                      Window Start <span className="text-red-500">*</span>
-                    </label>
-                    <div className="dashboard-form-input-wrapper">
-                      <Calendar className="dashboard-form-icon" />
-                      <input
-                        type="datetime-local"
-                        value={createWindowStart}
-                        onChange={(e) => {
-                          setCreateWindowStart(e.target.value)
-                          if (createValidationError) setCreateValidationError(null)
-                        }}
-                        className="dashboard-form-input dashboard-form-input-with-icon"
-                        required
-                        disabled={isCreatingAnalysis}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Window End */}
-                  <div className="dashboard-form-field">
-                    <label className="dashboard-form-label">
-                      Window End <span className="text-red-500">*</span>
-                    </label>
-                    <div className="dashboard-form-input-wrapper">
-                      <Calendar className="dashboard-form-icon" />
-                      <input
-                        type="datetime-local"
-                        value={createWindowEnd}
-                        onChange={(e) => {
-                          setCreateWindowEnd(e.target.value)
-                          if (createValidationError) setCreateValidationError(null)
-                        }}
-                        className="dashboard-form-input dashboard-form-input-with-icon"
-                        required
-                        disabled={isCreatingAnalysis}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Validation Error */}
-                  {createValidationError && (
-                    <div className="dashboard-alert dashboard-alert-error">
-                      <p className="text-sm">{createValidationError}</p>
-                    </div>
-                  )}
-
-                  {/* API Error */}
-                  {createAnalysisError && (
-                    <div className="dashboard-alert dashboard-alert-error">
-                      <p className="text-sm">{createAnalysisError}</p>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="dashboard-form-actions">
-                    <button
-                      type="submit"
-                      disabled={isCreatingAnalysis || !createFieldId || !createWindowStart || !createWindowEnd}
-                      className="btn-primary"
-                    >
-                      {isCreatingAnalysis ? 'Creating...' : 'Create Analysis'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleCancelCreateForm}
-                      disabled={isCreatingAnalysis}
-                      className="btn-secondary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
                 </div>
-              </form>
-            </motion.div>
+                <form onSubmit={handleSubmitInlineAnalysis} className="dashboard-form">
+                  <div className="dashboard-form-grid">
+                    {/* Field Selection */}
+                    <div className="dashboard-form-field">
+                      <label className="dashboard-form-label">Field</label>
+                      <select
+                        value={createFieldId}
+                        onChange={(e) => setCreateFieldId(e.target.value)}
+                        className="dashboard-form-input"
+                        required
+                        disabled={isCreatingAnalysis}
+                      >
+                        <option value="">Select a field...</option>
+                        {fields.map(field => (
+                          <option key={field.id} value={field.id}>{field.name}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="dashboard-form-field">
+                        <label className="dashboard-form-label">Start</label>
+                        <input
+                          type="datetime-local"
+                          value={createWindowStart}
+                          onChange={(e) => setCreateWindowStart(e.target.value)}
+                          className="dashboard-form-input px-4"
+                          required
+                        />
+                      </div>
+                      <div className="dashboard-form-field">
+                        <label className="dashboard-form-label">End</label>
+                        <input
+                          type="datetime-local"
+                          value={createWindowEnd}
+                          onChange={(e) => setCreateWindowEnd(e.target.value)}
+                          className="dashboard-form-input px-4"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="dashboard-form-actions">
+                      <button type="submit" className="btn-primary flex-1">Create Analysis</button>
+                      <button type="button" onClick={handleCancelCreateForm} className="btn-secondary">Cancel</button>
+                    </div>
+                  </div>
+                </form>
+              </motion.div>
+            </div>
+          )}
+        </section>
+
+        {/* RIGHT SIDEBAR - Analysis Details & Reports */}
+        <aside className="dashboard-right-sidebar">
+          {/* Affected Area Metrics Section */}
+          <div className="dashboard-card bg-surface-soft/30 border-border-subtle hover:transform-none !mb-0">
+            <AffectedAreaReportPanel />
+          </div>
+
+          {/* Analysis History Section - show when no run selected */}
+          {!selectedAnalysisRunId && analysisRuns.length > 0 && (
+            <div className="space-y-4">
+              <div className="px-1">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted opacity-60">Field Reports</h3>
+              </div>
+              <div className="dashboard-card bg-surface-soft/20 border-border-subtle p-4 hover:transform-none">
+                <AnalysisRunList
+                  analysisRuns={analysisRuns}
+                  selectedAnalysisRunId={selectedAnalysisRunId}
+                  onSelectAnalysisRun={setSelectedAnalysisRunId}
+                />
+              </div>
+            </div>
           )}
 
-          {/* Analysis Runs List - Show when no analysis selected */}
-          {!selectedAnalysisRunId && analysisRuns.length > 0 && (
-            <div className="dashboard-card">
-              <div className="dashboard-card-header">
-            <div>
-                  <h3 className="dashboard-card-title">Analysis Runs</h3>
-                  <p className="dashboard-card-description">Select an analysis run to view details</p>
-                </div>
+          {/* Selected Analysis Details */}
+          {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
+            <div className="space-y-4">
+               <div className="px-1 flex items-center justify-between">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted opacity-60">Record Details</h3>
+                <button 
+                  onClick={() => setSelectedAnalysisRunId(null)}
+                  className="text-[10px] font-bold text-accent-green uppercase hover:underline"
+                >
+                  Close
+                </button>
               </div>
-              <AnalysisRunList
-                analysisRuns={analysisRuns}
-                selectedAnalysisRunId={selectedAnalysisRunId}
-                onSelectAnalysisRun={setSelectedAnalysisRunId}
+              <AnalysisRunDetail
+                analysisRun={analysisRuns.find(r => r.id === selectedAnalysisRunId)!}
+                field={fields.find(f => f.id === selectedFieldId)}
               />
             </div>
           )}
 
-          {/* Map and Analysis Detail Grid */}
-          <div className="dashboard-grid-map">
-            {/* Map Section */}
-            <div className="dashboard-map-section">
-              <NdviMapPanel />
-            </div>
-
-            {/* Analysis Detail Section - Only show when analysis is selected */}
-            {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
-              <div className="dashboard-card dashboard-analysis-detail">
-                <div className="dashboard-card-header">
-                  <div>
-                    <h3 className="dashboard-card-title">Analysis Details</h3>
-                    <p className="dashboard-card-description">Complete analysis record</p>
-                  </div>
+          {/* Technical Details & Decision Context Layers */}
+          <div className="pt-6 border-t border-border-subtle space-y-4 mt-auto">
+            {/* Technical Details */}
+            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5 hover:border-border-medium transition-all">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-semibold text-primary mb-0.5">Technical Details</h3>
+                  <p className="text-xs text-secondary">Inference provenance and trace</p>
                 </div>
-                <AnalysisRunDetail
-                  analysisRun={analysisRuns.find(r => r.id === selectedAnalysisRunId)!}
-                  field={fields.find(f => f.id === selectedFieldId)}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Field Activity Timeline */}
-          <div className="dashboard-card">
-            <div className="dashboard-card-header">
-              <div>
-                <h3 className="dashboard-card-title">Field Activity</h3>
-                <p className="dashboard-card-description">Recent events and timeline</p>
-              </div>
-            </div>
-                <FieldTimeline entries={mockTimelineEntries} />
-        </div>
-
-          {/* Optional Layers - Expandable Sections */}
-          <div className="dashboard-optional-layers">
-            {/* Context Section */}
-            <div className="dashboard-card dashboard-expandable">
-              <div className="dashboard-card-header">
-              <div>
-                  <h3 className="dashboard-card-title">Context</h3>
-                  <p className="dashboard-card-description">External descriptive data</p>
-              </div>
-                {!showContext && (
-                <button
-                  onClick={handleLoadContext}
-                  disabled={isLoadingContext}
-                    className="btn-secondary btn-sm"
-                >
-                  {isLoadingContext ? 'Loading...' : 'Load Context'}
-                </button>
-              )}
-            </div>
-              {showContext && (
-                <div className="dashboard-card-content">
-                  <ContextPanel context={context} isLoading={isLoadingContext} />
-                </div>
-              )}
-              {contextError && (
-                <div className="dashboard-alert dashboard-alert-error mt-4">
-                  <p className="text-sm">{contextError}</p>
-                </div>
-              )}
-        </div>
-
-            {/* Provenance Section */}
-            <div className="dashboard-card dashboard-expandable">
-              <div className="dashboard-card-header">
-              <div>
-                  <h3 className="dashboard-card-title">Technical Details</h3>
-                  <p className="dashboard-card-description">Inference trace and provenance</p>
-              </div>
                 {!showProvenance && (
-                <button
-                  onClick={handleShowProvenance}
-                    className="btn-secondary btn-sm"
-                >
-                  Show Technical Details
-                </button>
-              )}
-            </div>
-              {showProvenance && selectedAnalysisRunId && (() => {
-                  const selectedRun = analysisRuns.find(run => run.id === selectedAnalysisRunId)
-                  if (!selectedRun) return null
-                  return (
-                  <div className="dashboard-card-content">
-                    <ProvenancePanel
-                      fieldId={selectedRun.fieldId}
-                      windowStart={selectedRun.windowStart}
-                      windowEnd={selectedRun.windowEnd}
-                    />
-                  </div>
-                  )
-              })()}
-        </div>
-
-            {/* Decision Context Section */}
-            <div className="dashboard-card dashboard-expandable">
-              <div className="dashboard-card-header">
-              <div>
-                  <h3 className="dashboard-card-title">Decision Context</h3>
-                  <p className="dashboard-card-description">Non-actionable decision frames</p>
+                  <button 
+                    onClick={handleShowProvenance}
+                    className="btn-secondary btn-sm text-xs px-3 py-1.5"
+                  >
+                    View
+                  </button>
+                )}
               </div>
-                {!showDecisionContexts && (
-                <button
-                  onClick={async () => {
-                    if (!selectedAnalysisRunId) return
-                    try {
-                      setIsLoadingDecisionContexts(true)
-                      setDecisionContextError(null)
-                      const contexts = await generateDecisionContexts(selectedAnalysisRunId)
-                      setDecisionContexts(contexts)
-                      setShowDecisionContexts(true)
-                    } catch (err) {
-                      console.error('Failed to generate decision contexts:', err)
-                      setDecisionContextError(err instanceof Error ? err.message : 'Failed to generate decision contexts')
-                    } finally {
-                      setIsLoadingDecisionContexts(false)
-                    }
-                  }}
-                  disabled={isLoadingDecisionContexts}
-                    className="btn-secondary btn-sm"
-                >
-                  {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
-                </button>
+              {showProvenance && selectedAnalysisRunId && (
+                <div className="mt-4">
+                  <ProvenancePanel
+                    fieldId={selectedFieldId}
+                    windowStart={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowStart || ''}
+                    windowEnd={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowEnd || ''}
+                  />
+                </div>
               )}
             </div>
+
+            {/* Decision Context */}
+            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5 hover:border-border-medium transition-all mb-0">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-semibold text-primary mb-0.5">Decision Context</h3>
+                  <p className="text-xs text-secondary">Non-actionable decision frames</p>
+                </div>
+                {!showDecisionContexts && (
+                  <button 
+                    onClick={handleLoadDecisionContexts}
+                    disabled={isLoadingDecisionContexts}
+                    className="btn-secondary btn-sm text-xs px-3 py-1.5"
+                  >
+                    {isLoadingDecisionContexts ? 'Loading...' : 'Load'}
+                  </button>
+                )}
+              </div>
               {showDecisionContexts && (
-                <div className="dashboard-card-content">
-                <DecisionContextPanel decisionContexts={decisionContexts} isLoading={isLoadingDecisionContexts} />
+                <div className="mt-4 mb-0">
+                  <DecisionContextPanel 
+                    decisionContexts={decisionContexts} 
+                    isLoading={isLoadingDecisionContexts} 
+                  />
                 </div>
               )}
               {decisionContextError && (
-                <div className="dashboard-alert dashboard-alert-error mt-4">
-                  <p className="text-sm">{decisionContextError}</p>
+                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+                  <p className="text-xs text-red-400">{decisionContextError}</p>
                 </div>
               )}
             </div>
           </div>
-        </div>
+        </aside>
       </div>
 
       {/* Phase A: Analysis success feedback */}
@@ -647,8 +577,6 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Footer to mark end of page content */}
-      <Footer />
     </main>
   )
 }

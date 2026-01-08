@@ -112,11 +112,11 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
       {/* Section Title */}
-      <div className="mb-6 pb-4" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
-        <h3 className="font-semibold tracking-tight" style={{ fontSize: '15px', opacity: 0.85 }}>
+      <div className="mb-6 pb-4 border-b border-border-subtle">
+        <h3 className="font-semibold tracking-tight text-primary" style={{ fontSize: '16px', fontWeight: 600 }}>
           Field Health Timeline
         </h3>
-        <p className="meta-text mt-1" style={{ opacity: 0.45 }}>
+        <p className="text-secondary mt-1.5 text-xs">
           Chronological health events and observations
         </p>
       </div>
@@ -178,16 +178,16 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
 
         {/* Vertical connecting line */}
         <div 
-          className="absolute left-[8px] top-4 bottom-4"
+          className="absolute left-[10px] top-4 bottom-4"
           style={{
-            width: '1px',
-            background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02))',
+            width: '2px',
+            background: 'linear-gradient(to bottom, var(--border-medium), var(--border-subtle))',
           }}
           aria-hidden="true"
         />
 
         {/* Entries */}
-        <div className="space-y-8">
+        <div className="space-y-4">
           {sortedEntries.map((entry, index) => (
             <TimelineEntryItem 
               key={entry.insightId} 
@@ -221,49 +221,49 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
-      className="relative pl-12"
+      className="relative pl-14 cursor-pointer group"
       onMouseEnter={() => onHover?.(entry.insightId)}
       onMouseLeave={() => onHover?.(null)}
       onClick={() => onSelect?.(entry.insightId)}
     >
       {/* Timeline dot */}
       <div 
-        className="absolute left-0 top-0 w-4 h-4 rounded-full flex items-center justify-center"
+        className="absolute left-0 top-4 w-5 h-5 rounded-full flex items-center justify-center z-10"
         style={{ 
-          backgroundColor: 'rgba(17, 24, 39, 0.8)',
+          backgroundColor: `${severityColor}20`,
           border: `2px solid ${severityColor}`,
-          boxShadow: `0 0 8px ${severityColor}40`,
+          boxShadow: `0 0 12px ${severityColor}60, inset 0 0 8px ${severityColor}30`,
         }}
         aria-label={`Severity: ${entry.severity}`}
       >
         <div 
-          className="w-1.5 h-1.5 rounded-full"
+          className="w-2.5 h-2.5 rounded-full"
           style={{ backgroundColor: severityColor }}
         />
       </div>
 
       {/* Content */}
-      <div>
+      <div className="bg-surface-soft/50 rounded-lg p-4 border border-border-subtle hover:bg-surface-hover hover:border-border-medium transition-all">
         {/* Date label */}
-        <div className="meta-text uppercase tracking-wider mb-2 flex items-center" style={{ opacity: 0.35, fontSize: '10px', minHeight: '16px' }}>
+        <div className="text-muted uppercase tracking-wider mb-2.5 flex items-center text-xs font-semibold" style={{ minHeight: '16px' }}>
           {formattedDate}
         </div>
 
         {/* Health event title */}
-        <div className="font-semibold tracking-tight mb-2" style={{ fontSize: '14px', lineHeight: '1.4' }}>
+        <div className="font-semibold tracking-tight mb-2.5 text-primary" style={{ fontSize: '15px', lineHeight: '1.4', fontWeight: 600 }}>
           {entry.insightType}
         </div>
         
         {/* Description */}
-        <div className="label-text mb-3" style={{ opacity: 0.55, lineHeight: '1.6' }}>
+        <div className="text-secondary mb-3.5 text-sm leading-relaxed" style={{ lineHeight: '1.6' }}>
           {getEventDescription(entry.severity, entry.insightType)}
         </div>
 
         {/* Confidence indicator */}
-        <div className="flex items-center gap-2 mt-1">
-          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: confidenceColor }} />
-          <span className="text-xs text-muted">{entry.confidence} confidence</span>
-          <span className="text-xs text-muted opacity-60">·</span>
+        <div className="flex items-center gap-2.5 mt-2 pt-2.5 border-t border-border-subtle">
+          <span className="w-2 h-2 rounded-full shadow-sm" style={{ backgroundColor: confidenceColor, boxShadow: `0 0 6px ${confidenceColor}60` }} />
+          <span className="text-xs text-secondary font-medium capitalize">{entry.confidence} confidence</span>
+          <span className="text-xs text-muted">·</span>
           <span className="text-xs text-muted">{relativeTime}</span>
         </div>
       </div>
