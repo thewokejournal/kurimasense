@@ -71,6 +71,19 @@ export default function CreateAnalysisDialog({
     setShowConfirmation(true)
   }
 
+  // Phase D: Convert datetime-local format to ISO 8601
+  // datetime-local produces: 2024-01-01T00:00
+  // Backend expects: 2024-01-01T00:00:00Z
+  const toISO8601 = (datetimeLocal: string): string => {
+    if (!datetimeLocal) return ''
+    // If already has seconds, just add Z
+    if (datetimeLocal.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)) {
+      return datetimeLocal.endsWith('Z') ? datetimeLocal : `${datetimeLocal}Z`
+    }
+    // Otherwise add :00 for seconds and Z for timezone
+    return `${datetimeLocal}:00Z`
+  }
+
   const handleConfirm = async () => {
     if (!selectedFieldId || !windowStart || !windowEnd) {
       return
@@ -84,7 +97,11 @@ export default function CreateAnalysisDialog({
       return
     }
     
-    await onCreate(selectedFieldId, windowStart, windowEnd)
+    // Phase D: Convert to ISO 8601 format before sending to backend
+    const windowStartISO = toISO8601(windowStart)
+    const windowEndISO = toISO8601(windowEnd)
+    
+    await onCreate(selectedFieldId, windowStartISO, windowEndISO)
     // Reset form on success
     setSelectedFieldId('')
     setWindowStart('')
