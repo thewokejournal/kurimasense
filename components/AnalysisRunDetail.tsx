@@ -17,6 +17,7 @@ import { Clock, Calendar, Map, Info, FileText } from 'lucide-react'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import ProvenancePanel from '@/components/ProvenancePanel'
+import DecisionFramingPanel from '@/components/DecisionFramingPanel'
 import type { AnalysisRun, Field } from '@/app/lib/api'
 import type { InferenceResponse } from '@/app/types/inference'
 
@@ -176,6 +177,9 @@ export default function AnalysisRunDetail({
           </div>
         </Card>
       )}
+
+      {/* Phase F: Decision Framing Panel (Hidden by default, user must opt in) */}
+      <DecisionFramingPanel inference={inference} />
 
       {/* Phase B: Immutability reminder */}
       <Card className="surface-soft p-4 border-l-4 border-border-subtle">
