@@ -365,8 +365,8 @@ export default function DashboardPage() {
           />
           
           <div className="mt-8 pt-8 border-t border-border-subtle">
-            <div className="mb-4">
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted opacity-60">Field Activity</h3>
+            <div className="metric-section-header">
+              <span className="meta-text uppercase tracking-wider text-xs">Field Activity</span>
             </div>
             <FieldTimeline entries={mockTimelineEntries} />
           </div>
@@ -501,8 +501,37 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Technical Details & Decision Context Layers */}
+          {/* Context, Technical Details & Decision Context Layers */}
           <div className="pt-6 border-t border-border-subtle space-y-4 mt-auto">
+            {/* Context */}
+            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5 hover:border-border-medium transition-all">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-semibold text-primary mb-0.5">Context</h3>
+                  <p className="text-xs text-secondary">External descriptive data</p>
+                </div>
+                {!showContext && (
+                  <button 
+                    onClick={handleLoadContext}
+                    disabled={isLoadingContext}
+                    className="btn-secondary btn-sm text-xs px-3 py-1.5"
+                  >
+                    {isLoadingContext ? 'Loading...' : 'Load'}
+                  </button>
+                )}
+              </div>
+              {showContext && (
+                <div className="mt-4">
+                  <ContextPanel context={context} isLoading={isLoadingContext} />
+                </div>
+              )}
+              {contextError && (
+                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+                  <p className="text-xs text-red-400">{contextError}</p>
+                </div>
+              )}
+            </div>
+
             {/* Technical Details */}
             <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5 hover:border-border-medium transition-all">
               <div className="flex items-center justify-between mb-3">

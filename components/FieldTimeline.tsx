@@ -9,74 +9,6 @@
 import { motion } from 'framer-motion'
 import { TimelineEntry } from '@/lib/timeline'
 
-// TODO: Remove hardcoded events - temporary scaffolding for Phase 4
-const events = [
-  {
-    date: '2025-04-10',
-    type: 'observation',
-    title: 'NDVI Decline Detected',
-    description: 'Vegetation index dropped compared to last week.',
-    isPredictive: false,
-  },
-  {
-    date: '2025-04-13',
-    type: 'environmental',
-    title: 'Rainfall Event',
-    description: 'Moderate rainfall recorded across the field.',
-    isPredictive: false,
-  },
-  {
-    date: '2025-04-16',
-    type: 'advisory',
-    title: 'Monitor Irrigation',
-    description: 'Dry conditions may persist.',
-    isPredictive: true,
-    confidence: 'high' as const,
-  },
-  {
-    date: '2025-04-19',
-    type: 'recommendation',
-    title: 'Predicted Stress Period',
-    description: 'Model suggests elevated crop stress likely in 3-5 days.',
-    isPredictive: true,
-    confidence: 'medium' as const,
-  },
-]
-
-// Event type color mapping for timeline markers
-const eventTypeColors: Record<string, string> = {
-  observation: 'bg-blue-400/60',
-  alert: 'bg-red-400/60',
-  recommendation: 'bg-amber-400/60',
-  anomaly: 'bg-purple-400/60',
-  environmental: 'bg-teal-400/60',
-  advisory: 'bg-orange-400/60',
-}
-
-const getEventColor = (type: string): string => {
-  return eventTypeColors[type] || 'bg-white/40'
-}
-
-// Get marker opacity based on prediction confidence
-const getMarkerOpacity = (isPredictive: boolean, confidence?: 'high' | 'medium' | 'low'): string => {
-  if (!isPredictive) return 'opacity-100'
-  
-  switch (confidence) {
-    case 'high':
-      return 'opacity-90'
-    case 'medium':
-      return 'opacity-70'
-    case 'low':
-      return 'opacity-50'
-    default:
-      return 'opacity-70'
-  }
-}
-
-// Get marker border style for predictive events
-const getMarkerBorder = (isPredictive: boolean): string => {
-  return isPredictive ? 'border border-white/30' : ''
-}
 
 interface FieldTimelineProps {
   entries: TimelineEntry[]
@@ -110,94 +42,19 @@ export function FieldTimeline({ entries, onEntryHover, onEntrySelect }: FieldTim
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="timeline-section"
     >
-      {/* Section Title */}
-      <div className="mb-6 pb-4 border-b border-border-subtle">
-        <h3 className="font-semibold tracking-tight text-primary" style={{ fontSize: '16px', fontWeight: 600 }}>
-          Field Health Timeline
-        </h3>
-        <p className="text-secondary mt-1.5 text-xs">
-          Chronological health events and observations
-        </p>
-      </div>
-
-      {/* Timeline entries */}
-      <div className="relative">
-        {/* Timeline Event Anchors */}
-        <div className="absolute inset-0 pointer-events-none">
-          {events.map((event, index) => {
-            // Calculate position percentage
-            const positionPercent = (index / (events.length - 1)) * 100
-            
-            // Determine tooltip alignment based on position
-            let tooltipPositionClass = '-translate-x-1/2' // center by default
-            if (positionPercent < 20) {
-              tooltipPositionClass = 'left-0' // align left for left-side markers
-            } else if (positionPercent > 80) {
-              tooltipPositionClass = 'right-0' // align right for right-side markers
-            }
-            
-            return (
-              <div
-                key={index}
-                className="absolute flex flex-col items-center group pointer-events-auto"
-                style={{
-                  left: `${positionPercent}%`,
-                  bottom: 0,
-                }}
-              >
-                {/* Vertical tick */}
-                <div 
-                  className={`w-px h-6 ${event.isPredictive ? 'border-l border-dashed border-white/30' : 'bg-white/20'}`}
-                  style={event.isPredictive ? { borderWidth: '1px' } : undefined}
-                />
-
-                {/* Anchor dot */}
-                <div className={`w-2 h-2 rounded-full mt-1 ${getEventColor(event.type)} ${getMarkerOpacity(event.isPredictive, event.confidence)} ${getMarkerBorder(event.isPredictive)}`} />
-
-                {/* Tooltip */}
-                <div className={`absolute bottom-10 ${tooltipPositionClass} opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-50`}>
-                  <div className="bg-[#0f172a] border border-white/10 rounded-lg px-3 py-2 text-xs max-w-[240px] shadow-sm">
-                    {event.isPredictive && (
-                      <div className="text-[11px] uppercase tracking-wider text-amber-400/80 font-semibold mb-2 pb-2 border-b border-white/10">
-                        Forecast
-                      </div>
-                    )}
-                    <div className="font-medium text-white mb-1">
-                      {event.title}
-                    </div>
-                    <div className="text-white/60 leading-snug">
-                      {event.description}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-
-        {/* Vertical connecting line */}
-        <div 
-          className="absolute left-[10px] top-4 bottom-4"
-          style={{
-            width: '2px',
-            background: 'linear-gradient(to bottom, var(--border-medium), var(--border-subtle))',
-          }}
-          aria-hidden="true"
-        />
-
-        {/* Entries */}
-        <div className="space-y-4">
-          {sortedEntries.map((entry, index) => (
-            <TimelineEntryItem 
-              key={entry.insightId} 
-              entry={entry}
-              index={index}
-              onHover={onEntryHover}
-              onSelect={onEntrySelect}
-            />
-          ))}
-        </div>
+      {/* Entries */}
+      <div className="metric-section">
+        {sortedEntries.map((entry, index) => (
+          <TimelineEntryItem 
+            key={entry.insightId} 
+            entry={entry}
+            index={index}
+            onHover={onEntryHover}
+            onSelect={onEntrySelect}
+          />
+        ))}
       </div>
     </motion.div>
   )
@@ -218,53 +75,55 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
-      className="relative pl-14 cursor-pointer group"
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, delay: index * 0.03, ease: 'easeOut' }}
+      className="metric-card timeline-entry-card cursor-pointer"
       onMouseEnter={() => onHover?.(entry.insightId)}
       onMouseLeave={() => onHover?.(null)}
       onClick={() => onSelect?.(entry.insightId)}
     >
-      {/* Timeline dot */}
+      {/* Severity Indicator Icon */}
       <div 
-        className="absolute left-0 top-4 w-5 h-5 rounded-full flex items-center justify-center z-10"
+        className="metric-icon timeline-severity-icon"
         style={{ 
-          backgroundColor: `${severityColor}20`,
-          border: `2px solid ${severityColor}`,
-          boxShadow: `0 0 12px ${severityColor}60, inset 0 0 8px ${severityColor}30`,
+          backgroundColor: `${severityColor}15`,
+          borderColor: `${severityColor}40`,
         }}
         aria-label={`Severity: ${entry.severity}`}
       >
         <div 
-          className="w-2.5 h-2.5 rounded-full"
+          className="w-3 h-3 rounded-full"
           style={{ backgroundColor: severityColor }}
         />
       </div>
 
       {/* Content */}
-      <div className="bg-surface-soft/50 rounded-lg p-4 border border-border-subtle hover:bg-surface-hover hover:border-border-medium transition-all">
-        {/* Date label */}
-        <div className="text-muted uppercase tracking-wider mb-2.5 flex items-center text-xs font-semibold" style={{ minHeight: '16px' }}>
+      <div className="metric-content">
+        {/* Date label - matches metric-label */}
+        <div className="metric-label">
           {formattedDate}
         </div>
 
-        {/* Health event title */}
-        <div className="font-semibold tracking-tight mb-2.5 text-primary" style={{ fontSize: '15px', lineHeight: '1.4', fontWeight: 600 }}>
+        {/* Health event title - matches metric-value-primary */}
+        <div className="metric-value-primary timeline-entry-title">
           {entry.insightType}
         </div>
         
-        {/* Description */}
-        <div className="text-secondary mb-3.5 text-sm leading-relaxed" style={{ lineHeight: '1.6' }}>
+        {/* Description - matches metric-meta but slightly larger */}
+        <div className="metric-meta timeline-entry-description">
           {getEventDescription(entry.severity, entry.insightType)}
         </div>
 
-        {/* Confidence indicator */}
-        <div className="flex items-center gap-2.5 mt-2 pt-2.5 border-t border-border-subtle">
-          <span className="w-2 h-2 rounded-full shadow-sm" style={{ backgroundColor: confidenceColor, boxShadow: `0 0 6px ${confidenceColor}60` }} />
-          <span className="text-xs text-secondary font-medium capitalize">{entry.confidence} confidence</span>
-          <span className="text-xs text-muted">·</span>
-          <span className="text-xs text-muted">{relativeTime}</span>
+        {/* Confidence and time metadata */}
+        <div className="flex items-center gap-2 mt-1.5 pt-1.5 border-t border-border-subtle">
+          <span 
+            className="w-1.5 h-1.5 rounded-full" 
+            style={{ backgroundColor: confidenceColor }}
+          />
+          <span className="metric-meta capitalize">{entry.confidence} confidence</span>
+          <span className="metric-meta">·</span>
+          <span className="metric-meta">{relativeTime}</span>
         </div>
       </div>
     </motion.div>
