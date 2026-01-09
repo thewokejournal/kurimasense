@@ -462,7 +462,7 @@ export default function DashboardPage() {
         {/* RIGHT SIDEBAR - Analysis Details & Reports */}
         <aside className="dashboard-right-sidebar">
           {/* Affected Area Metrics Section */}
-          <div className="dashboard-card">
+          <div className="dashboard-card" style={{ padding: 0 }}>
             <AffectedAreaReportPanel />
           </div>
 

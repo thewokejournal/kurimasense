@@ -73,7 +73,7 @@ export function AffectedAreaReportPanel() {
       </div>
 
       {/* Confidence Badges - Subtle, integrated */}
-      <div className="flex gap-2 mb-7 flex-wrap">
+      <div className="flex gap-2 mb-8 flex-wrap">
         <span className="confidence-badge high">
           <span className="confidence-dot" />
           High Confidence
@@ -83,8 +83,8 @@ export function AffectedAreaReportPanel() {
         </span>
       </div>
 
-      {/* Status Metrics - Premium card style with refined hierarchy */}
-      <div className="space-y-0 mb-7">
+      {/* Status Metrics - Spacing-driven grouping */}
+      <div className="space-y-5 mb-8">
         <div className="affected-area-status-item">
           <div className="affected-area-label">Problem Area Vigor</div>
           <div className="affected-area-value affected-area-value-warning">Weak</div>
@@ -101,12 +101,12 @@ export function AffectedAreaReportPanel() {
         </div>
       </div>
 
-      {/* Technical Evidence - Subtle separator, refined presentation */}
-      <div className="pt-7 mt-7 border-t" style={{ borderTopColor: 'var(--border-subtle)' }}>
-        <div className="metric-section-header">
+      {/* Technical Evidence - Spacing-driven grouping */}
+      <div className="pt-6 mt-6" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+        <div className="metric-section-header" style={{ marginTop: 0, marginBottom: '16px' }}>
           Technical Evidence
         </div>
-        <div className="space-y-0">
+        <div className="space-y-5">
           <div className="affected-area-evidence-item">
             <div className="affected-area-label">Affected Zone NDVI</div>
             <div className="affected-area-evidence-value affected-area-value-warning">0.58</div>
