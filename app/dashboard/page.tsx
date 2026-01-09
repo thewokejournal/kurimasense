@@ -500,93 +500,95 @@ export default function DashboardPage() {
             )}
 
           {/* Context, Technical Details & Decision Context Layers - Unified continuation */}
-          <div className="dashboard-card mt-6">
-            {/* Context */}
-            <div className="metadata-section-item">
-              <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <h3 className="affected-area-label mb-1">Context</h3>
-                  <p className="dashboard-card-description">External descriptive data</p>
+          <div className="dashboard-card mt-6" style={{ padding: 0 }}>
+            <div style={{ padding: '24px' }}>
+              {/* Context */}
+              <div className="metadata-section-item">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="metadata-section-title">Context</h3>
+                    <p className="metadata-section-description">External descriptive data</p>
               </div>
                 {!showContext && (
                 <button
                   onClick={handleLoadContext}
                   disabled={isLoadingContext}
-                    className="metadata-action-button"
+                      className="metadata-action-button"
                 >
-                    {isLoadingContext ? 'Loading...' : 'Load'}
+                      {isLoadingContext ? 'Loading...' : 'Load'}
                 </button>
               )}
             </div>
-              {showContext && (
-                <div className="mt-5">
-                  <ContextPanel context={context} isLoading={isLoadingContext} />
-                </div>
-              )}
-              {contextError && (
-                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                  <p className="text-xs text-red-400">{contextError}</p>
-                </div>
-              )}
+                {showContext && (
+                  <div className="mt-5">
+                    <ContextPanel context={context} isLoading={isLoadingContext} />
+                  </div>
+                )}
+                {contextError && (
+                  <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+                    <p className="text-xs text-red-400">{contextError}</p>
         </div>
+                )}
+              </div>
 
-            {/* Technical Details */}
-            <div className="metadata-section-item">
-              <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <h3 className="affected-area-label mb-1">Technical Details</h3>
-                  <p className="dashboard-card-description">Inference provenance and trace</p>
+              {/* Technical Details */}
+              <div className="metadata-section-item">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="metadata-section-title">Technical Details</h3>
+                    <p className="metadata-section-description">Inference provenance and trace</p>
               </div>
                 {!showProvenance && (
                 <button
                   onClick={handleShowProvenance}
-                    className="metadata-action-button"
+                      className="metadata-action-button"
                 >
-                    View
+                      View
                 </button>
               )}
             </div>
-              {showProvenance && selectedAnalysisRunId && (
-                <div className="mt-5">
+                {showProvenance && selectedAnalysisRunId && (
+                  <div className="mt-5">
                     <ProvenancePanel
-                    fieldId={selectedFieldId}
-                    windowStart={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowStart || ''}
-                    windowEnd={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowEnd || ''}
-                  />
-                </div>
-              )}
+                      fieldId={selectedFieldId}
+                      windowStart={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowStart || ''}
+                      windowEnd={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowEnd || ''}
+                    />
         </div>
+                )}
+              </div>
 
-            {/* Decision Context */}
-            <div className="metadata-section-item">
-              <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <h3 className="affected-area-label mb-1">Decision Context</h3>
-                  <p className="dashboard-card-description">Non-actionable decision frames</p>
+              {/* Decision Context */}
+              <div className="metadata-section-item">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="metadata-section-title">Decision Context</h3>
+                    <p className="metadata-section-description">Non-actionable decision frames</p>
               </div>
                 {!showDecisionContexts && (
                 <button
-                    onClick={handleLoadDecisionContexts}
+                      onClick={handleLoadDecisionContexts}
                   disabled={isLoadingDecisionContexts}
-                    className="metadata-action-button"
+                      className="metadata-action-button"
                 >
-                    {isLoadingDecisionContexts ? 'Loading...' : 'Load'}
+                      {isLoadingDecisionContexts ? 'Loading...' : 'Load'}
                 </button>
               )}
             </div>
               {showDecisionContexts && (
-                <div className="mt-5">
-                  <DecisionContextPanel 
-                    decisionContexts={decisionContexts} 
-                    isLoading={isLoadingDecisionContexts} 
-                  />
-                </div>
-              )}
-              {decisionContextError && (
-                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                  <p className="text-xs text-red-400">{decisionContextError}</p>
-                </div>
-              )}
+                  <div className="mt-5">
+                    <DecisionContextPanel 
+                      decisionContexts={decisionContexts} 
+                      isLoading={isLoadingDecisionContexts} 
+                    />
+                  </div>
+                )}
+                {decisionContextError && (
+                  <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+                    <p className="text-xs text-red-400">{decisionContextError}</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </aside>
