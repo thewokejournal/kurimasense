@@ -12,7 +12,6 @@
  * Phase B: Read-only, calm, analytical. No modifications, no actions.
  */
 
-import { Card } from '@/components/ui/card'
 import { Clock, Calendar, Map, Info, FileText } from 'lucide-react'
 import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
@@ -43,156 +42,143 @@ export default function AnalysisRunDetail({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="metric-section">
       {/* Phase B: Analysis metadata - Field, Time Window, Created At */}
-      <Card className="surface-soft p-5 border-l-4 border-border-subtle">
-        <div className="space-y-4">
-          <div>
-            <h2 className="text-lg font-semibold mb-4">Analysis Record</h2>
-            <p className="text-xs text-muted mb-4">
-              Historical analysis record. Immutable and cannot be modified.
-            </p>
+      <div className="metric-card">
+        <div className="metric-icon">
+          <Map className="w-5 h-5" />
+        </div>
+        <div className="metric-content">
+          <div className="metric-label">Field</div>
+          <div className="metric-value-primary">
+            {field?.name || 'Unknown Field'}
           </div>
-
-          {field && (
-            <div className="flex items-start gap-3">
-              <Map className="w-4 h-4 mt-0.5 opacity-50" />
-              <div>
-                <p className="text-xs text-muted mb-1">Field</p>
-                <p className="text-sm font-medium">{field.name}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="flex items-start gap-3">
-            <Calendar className="w-4 h-4 mt-0.5 opacity-50" />
-            <div>
-              <p className="text-xs text-muted mb-1">Time Window</p>
-              <p className="text-sm font-medium">
-                {windowStartDate.toLocaleDateString()} {windowStartDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} — {windowEndDate.toLocaleDateString()} {windowEndDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <Clock className="w-4 h-4 mt-0.5 opacity-50" />
-            <div>
-              <p className="text-xs text-muted mb-1">Created At</p>
-              <p className="text-sm font-medium">
-                {createdAtDate.toLocaleDateString()} {createdAtDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </p>
-            </div>
+          <div className="metric-meta">
+            Historical analysis record. Immutable and cannot be modified.
           </div>
         </div>
-      </Card>
+      </div>
+
+      <div className="metric-card">
+        <div className="metric-icon">
+          <Calendar className="w-5 h-5" />
+        </div>
+        <div className="metric-content">
+          <div className="metric-label">Time Window</div>
+          <div className="metric-value-primary">
+            {windowStartDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} {windowStartDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} — {windowEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} {windowEndDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </div>
+        </div>
+      </div>
+
+      <div className="metric-card">
+        <div className="metric-icon">
+          <Clock className="w-5 h-5" />
+        </div>
+        <div className="metric-content">
+          <div className="metric-label">Created At</div>
+          <div className="metric-value-primary">
+            {createdAtDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} {createdAtDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </div>
+        </div>
+      </div>
 
       {/* Phase B: Inference status, trend, confidence - displayed verbatim from stored data */}
-      <Card className="surface-soft p-5">
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-base font-semibold mb-1">Status</h3>
-            <p className="text-sm text-muted mb-2">The stored status value</p>
-            <p className="text-lg font-medium">
-              {capitalize(inference.status)}
-            </p>
+      <div className="metric-card">
+        <div className="metric-content">
+          <div className="metric-label">Status</div>
+          <div className="metric-value-primary">
+            {capitalize(inference.status)}
           </div>
+          <div className="metric-meta">The stored status value</div>
+        </div>
+      </div>
 
-          <div className="pt-4 border-t" style={{ borderTopColor: 'var(--border-subtle)' }}>
-            <h3 className="text-base font-semibold mb-1">Trend</h3>
-            <p className="text-sm text-muted mb-2">The stored trend value</p>
-            <p className="text-lg font-medium">
-              {capitalize(inference.trend)}
-            </p>
+      <div className="metric-card">
+        <div className="metric-content">
+          <div className="metric-label">Trend</div>
+          <div className="metric-value-primary">
+            {capitalize(inference.trend)}
           </div>
+          <div className="metric-meta">The stored trend value</div>
+        </div>
+      </div>
 
-          <div className="pt-4 border-t" style={{ borderTopColor: 'var(--border-subtle)' }}>
-            <h3 className="text-base font-semibold mb-1">Confidence</h3>
-            <p className="text-sm text-muted mb-2">The stored confidence value</p>
-            <div className="flex items-center gap-2">
-              <p className="text-lg font-medium">
-                {capitalize(inference.confidence)}
-              </p>
-              <ConfidenceBadge
-                confidence={
-                  inference.confidence === 'high' ? 0.9 :
-                  inference.confidence === 'medium' ? 0.6 : 0.3
-                }
-                source="satellite"
-              />
-            </div>
-            <p className="text-xs text-muted mt-2">
-              Generated {formatGeneratedAt(inference.generatedAt)}
-            </p>
+      <div className="metric-card">
+        <div className="metric-content">
+          <div className="metric-label">Confidence</div>
+          <div className="metric-value-primary flex items-center gap-2">
+            {capitalize(inference.confidence)}
+            <ConfidenceBadge
+              confidence={
+                inference.confidence === 'high' ? 0.9 :
+                inference.confidence === 'medium' ? 0.6 : 0.3
+              }
+              source="satellite"
+            />
+          </div>
+          <div className="metric-meta">
+            Generated {formatGeneratedAt(inference.generatedAt)}
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Phase B: Categories displayed verbatim (all categories, no filtering or reordering) */}
       {inference.categories && inference.categories.length > 0 && (
-        <Card className="surface-soft p-5">
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-base font-semibold mb-1">Categories</h3>
-              <p className="text-sm text-muted mb-4">
-                Stored category values displayed exactly as recorded
-              </p>
-            </div>
-            {inference.categories.map((cat, index) => (
-              <div
-                key={index}
-                className={index > 0 ? 'pt-4 border-t' : ''}
-                style={index > 0 ? { borderTopColor: 'var(--border-subtle)' } : {}}
-              >
-                <div className="flex items-start gap-2 mb-2">
-                  <Info className="w-4 h-4 mt-0.5 opacity-50 flex-shrink-0" />
-                  <div className="flex-1">
-                    <p className="text-sm font-medium mb-1">
-                      {cat.category.charAt(0).toUpperCase() + cat.category.slice(1)}
-                    </p>
-                    <p className="text-sm text-muted">{cat.message}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="metric-section">
+          <div className="metric-section-header mb-4">
+            <span className="meta-text uppercase tracking-wider text-xs">Categories</span>
           </div>
-        </Card>
+          {inference.categories.map((cat, index) => (
+            <div key={index} className="metric-card">
+              <div className="metric-icon">
+                <Info className="w-5 h-5" />
+              </div>
+              <div className="metric-content">
+                <div className="metric-label">
+                  {cat.category.charAt(0).toUpperCase() + cat.category.slice(1)}
+                </div>
+                <div className="metric-value-primary">
+                  {cat.message}
+                </div>
+                <div className="metric-meta">Stored category value displayed exactly as recorded</div>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
       {/* Phase B: Explanation displayed verbatim (preserving whitespace) */}
       {inference.explanation && (
-        <Card className="surface-soft p-5">
-          <div className="space-y-3">
-            <div className="flex items-start gap-2">
-              <FileText className="w-4 h-4 mt-0.5 opacity-50 flex-shrink-0" />
-              <div className="flex-1">
-                <h3 className="text-base font-semibold mb-1">Explanation</h3>
-                <p className="text-sm text-muted mb-3">
-                  Stored explanation text displayed exactly as recorded
-                </p>
-                <p className="text-sm whitespace-pre-wrap label-text">
-                  {inference.explanation}
-                </p>
-              </div>
-            </div>
+        <div className="metric-card">
+          <div className="metric-icon">
+            <FileText className="w-5 h-5" />
           </div>
-        </Card>
+          <div className="metric-content">
+            <div className="metric-label">Explanation</div>
+            <div className="metric-value-primary whitespace-pre-wrap" style={{ fontSize: '14px', lineHeight: '1.6' }}>
+              {inference.explanation}
+            </div>
+            <div className="metric-meta mt-2">Stored explanation text displayed exactly as recorded</div>
+          </div>
+        </div>
       )}
 
       {/* Phase F: Decision Framing Panel (Hidden by default, user must opt in) */}
       <DecisionFramingPanel inference={inference} />
 
       {/* Phase B: Immutability reminder */}
-      <Card className="surface-soft p-4 border-l-4 border-border-subtle">
-        <div className="flex items-start gap-2">
-          <Info className="w-4 h-4 mt-0.5 opacity-50 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-muted">
-              This analysis record is immutable and historical. It represents the system's inference
-              at the time of creation and cannot be modified, updated, or recomputed.
-            </p>
+      <div className="metric-card">
+        <div className="metric-icon">
+          <Info className="w-5 h-5" />
+        </div>
+        <div className="metric-content">
+          <div className="metric-meta">
+            This analysis record is immutable and historical. It represents the system's inference
+            at the time of creation and cannot be modified, updated, or recomputed.
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Phase C: Provenance Panel (Hidden by default, user must opt in) */}
       <ProvenancePanel

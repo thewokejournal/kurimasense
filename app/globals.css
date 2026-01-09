@@ -2218,6 +2218,26 @@ p {
   opacity: 0.75;
 }
 
+/* =========================================================
+   Affected Area Panel - Premium Card Style
+   ========================================================= */
+
+.affected-area-panel {
+  width: 100%;
+}
+
+.affected-area-metric {
+  margin-bottom: 0;
+}
+
+.analysis-run-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.analysis-run-card:hover {
+  transform: translateY(-2px);
+}
+
 * {
   text-shadow: 0 0 0 rgba(0,0,0,0);
 }

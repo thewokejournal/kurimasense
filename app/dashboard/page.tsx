@@ -462,34 +462,32 @@ export default function DashboardPage() {
         {/* RIGHT SIDEBAR - Analysis Details & Reports */}
         <aside className="dashboard-right-sidebar">
           {/* Affected Area Metrics Section */}
-          <div className="dashboard-card bg-surface-soft/30 border-border-subtle hover:transform-none !mb-0">
+          <div className="metric-card metric-card-primary">
             <AffectedAreaReportPanel />
           </div>
 
           {/* Analysis History Section - show when no run selected */}
           {!selectedAnalysisRunId && analysisRuns.length > 0 && (
             <div className="space-y-4">
-              <div className="px-1">
-                <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted opacity-60">Field Reports</h3>
+              <div className="metric-section-header">
+                <span className="meta-text uppercase tracking-wider text-xs">Field Reports</span>
               </div>
-              <div className="dashboard-card bg-surface-soft/20 border-border-subtle p-4 hover:transform-none">
-                <AnalysisRunList
-                  analysisRuns={analysisRuns}
-                  selectedAnalysisRunId={selectedAnalysisRunId}
-                  onSelectAnalysisRun={setSelectedAnalysisRunId}
-                />
-              </div>
+              <AnalysisRunList
+                analysisRuns={analysisRuns}
+                selectedAnalysisRunId={selectedAnalysisRunId}
+                onSelectAnalysisRun={setSelectedAnalysisRunId}
+              />
             </div>
           )}
 
           {/* Selected Analysis Details */}
           {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
             <div className="space-y-4">
-               <div className="px-1 flex items-center justify-between">
-                <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted opacity-60">Record Details</h3>
+              <div className="metric-section-header flex items-center justify-between">
+                <span className="meta-text uppercase tracking-wider text-xs">Record Details</span>
                 <button 
                   onClick={() => setSelectedAnalysisRunId(null)}
-                  className="text-[10px] font-bold text-accent-green uppercase hover:underline"
+                  className="text-[10px] font-semibold text-accent-green uppercase hover:opacity-80 transition-opacity"
                 >
                   Close
                 </button>

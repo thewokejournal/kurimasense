@@ -11,8 +11,7 @@
  * Phase B: Read-only, calm, analytical. No comparisons, no privilege for latest.
  */
 
-import { Card } from '@/components/ui/card'
-import { Clock, Calendar } from 'lucide-react'
+import { Calendar } from 'lucide-react'
 import type { AnalysisRun } from '@/app/lib/api'
 
 interface AnalysisRunListProps {
@@ -35,16 +34,18 @@ export default function AnalysisRunList({
 
   if (orderedRuns.length === 0) {
     return (
-      <Card className="surface-soft p-6">
-        <p className="text-sm text-muted text-center">
-          No analysis runs available for this field.
-        </p>
-      </Card>
+      <div className="metric-card">
+        <div className="metric-content">
+          <p className="metric-meta text-center">
+            No analysis runs available for this field.
+          </p>
+        </div>
+      </div>
     )
   }
 
   return (
-    <div className="space-y-2">
+    <div className="metric-section">
       {orderedRuns.map((run) => {
         const createdAtDate = new Date(run.createdAt)
         const windowStartDate = new Date(run.windowStart)
@@ -52,46 +53,31 @@ export default function AnalysisRunList({
         const isSelected = run.id === selectedAnalysisRunId
 
         return (
-          <Card
+          <div
             key={run.id}
-            className={`surface-soft p-4 cursor-pointer transition-colors ${
-              isSelected
-                ? 'border-l-4 border-blue-500'
-                : 'hover:bg-background-secondary'
+            className={`metric-card analysis-run-card cursor-pointer ${
+              isSelected ? 'metric-card-primary' : ''
             }`}
             onClick={() => onSelectAnalysisRun(run.id)}
           >
-            <div className="space-y-3">
-              {/* Phase B: Clear display of time window */}
-              <div className="flex items-start gap-3">
-                <Calendar className="w-4 h-4 mt-0.5 opacity-50 flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs text-muted mb-1">Time Window</p>
-                  <p className="text-sm font-medium">
-                    {windowStartDate.toLocaleDateString()} {windowStartDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} — {windowEndDate.toLocaleDateString()} {windowEndDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
+            <div className="metric-icon">
+              <Calendar className="w-5 h-5" />
+            </div>
+            <div className="metric-content">
+              <div className="metric-label">Time Window</div>
+              <div className="metric-value-primary">
+                {windowStartDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} {windowStartDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} — {windowEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} {windowEndDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
-
-              {/* Phase B: Clear display of when analysis was created */}
-              <div className="flex items-start gap-3">
-                <Clock className="w-4 h-4 mt-0.5 opacity-50 flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs text-muted mb-1">Created At</p>
-                  <p className="text-sm font-medium">
-                    {createdAtDate.toLocaleDateString()} {createdAtDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
+              <div className="metric-meta">
+                Created {createdAtDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} {createdAtDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
-
-              {/* Phase B: Visual indicator for selected run (subtle, not emphasis) */}
               {isSelected && (
-                <div className="text-xs text-muted pt-2 border-t" style={{ borderTopColor: 'var(--border-subtle)' }}>
+                <div className="metric-meta mt-1.5 pt-1.5 border-t border-border-subtle">
                   Selected for inspection
                 </div>
               )}
             </div>
-          </Card>
+          </div>
         )
       })}
     </div>
