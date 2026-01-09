@@ -11,11 +11,11 @@ export default function Logo() {
   return (
     <div className="flex items-center">
       <Image
-        src="/kurimasense-dash-logo.png"
+        src="/kurimasense-icon.png"
         alt="KurimaSense"
-        width={180}
-        height={50}
-        className="h-8 w-auto"
+        width={40}
+        height={40}
+        className="h-8 w-8"
         priority
       />
     </div>
