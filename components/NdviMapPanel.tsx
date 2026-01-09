@@ -61,20 +61,19 @@ export default function NdviMapPanel() {
 
 /**
  * Extracted Sidebar Panel for Affected Area Report
+ * Premium design: Analytical, calm, refined
  */
 export function AffectedAreaReportPanel() {
   return (
     <div className="affected-area-panel">
-      {/* Header */}
-      <div className="metric-section-header mb-4">
-        <div className="flex items-center justify-between">
-          <span className="meta-text uppercase tracking-wider text-xs">Affected Area Report</span>
-          <span className="metric-meta">Apr 21</span>
-        </div>
+      {/* Header - Refined typography */}
+      <div className="mb-6">
+        <h3 className="dashboard-card-title mb-1.5">Affected Area Report</h3>
+        <p className="dashboard-card-description">Showing problem zone • Apr 21</p>
       </div>
 
-      {/* Confidence Badges */}
-      <div className="flex gap-2 mb-5 flex-wrap">
+      {/* Confidence Badges - Subtle, integrated */}
+      <div className="flex gap-2 mb-7 flex-wrap">
         <span className="confidence-badge high">
           <span className="confidence-dot" />
           High Confidence
@@ -84,62 +83,41 @@ export function AffectedAreaReportPanel() {
         </span>
       </div>
 
-      {/* Status Metrics */}
-      <div className="metric-section mb-6">
-        <div className="metric-card affected-area-metric">
-          <div className="metric-icon" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: 'rgba(239, 68, 68, 0.4)' }}>
-            <div className="w-3 h-3 rounded-full bg-red-400" />
-          </div>
-          <div className="metric-content">
-            <div className="metric-label">Problem Area Vigor</div>
-            <div className="metric-value-primary text-red-400">Weak</div>
-          </div>
+      {/* Status Metrics - Premium card style with refined hierarchy */}
+      <div className="space-y-0 mb-7">
+        <div className="affected-area-status-item">
+          <div className="affected-area-label">Problem Area Vigor</div>
+          <div className="affected-area-value affected-area-value-warning">Weak</div>
         </div>
 
-        <div className="metric-card affected-area-metric">
-          <div className="metric-icon" style={{ backgroundColor: 'rgba(34, 197, 94, 0.15)', borderColor: 'rgba(34, 197, 94, 0.4)' }}>
-            <div className="w-3 h-3 rounded-full bg-green-400" />
-          </div>
-          <div className="metric-content">
-            <div className="metric-label">Overall Field Health</div>
-            <div className="metric-value-primary text-green-400">Good</div>
-          </div>
+        <div className="affected-area-status-item">
+          <div className="affected-area-label">Overall Field Health</div>
+          <div className="affected-area-value affected-area-value-success">Good</div>
         </div>
 
-        <div className="metric-card affected-area-metric">
-          <div className="metric-icon" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)', borderColor: 'rgba(245, 158, 11, 0.4)' }}>
-            <div className="w-3 h-3 rounded-full bg-amber-400" />
-          </div>
-          <div className="metric-content">
-            <div className="metric-label">Severity Level</div>
-            <div className="metric-value-primary text-amber-400">Moderate Stress</div>
-          </div>
+        <div className="affected-area-status-item">
+          <div className="affected-area-label">Severity Level</div>
+          <div className="affected-area-value affected-area-value-caution">Moderate Stress</div>
         </div>
       </div>
 
-      {/* Technical Evidence */}
-      <div className="pt-6 border-t border-border-subtle">
-        <div className="metric-section-header mb-4">
+      {/* Technical Evidence - Subtle separator, refined presentation */}
+      <div className="pt-7 mt-7 border-t" style={{ borderTopColor: 'var(--border-subtle)' }}>
+        <div className="metric-section-header mb-5">
           <span className="meta-text uppercase tracking-wider text-xs">Technical Evidence</span>
         </div>
-        <div className="metric-section">
-          <div className="metric-card">
-            <div className="metric-content">
-              <div className="metric-label">Affected Zone NDVI</div>
-              <div className="metric-value text-red-400">0.58</div>
-            </div>
+        <div className="space-y-0">
+          <div className="affected-area-evidence-item">
+            <div className="affected-area-label">Affected Zone NDVI</div>
+            <div className="affected-area-evidence-value affected-area-value-warning">0.58</div>
           </div>
-          <div className="metric-card">
-            <div className="metric-content">
-              <div className="metric-label">Field Mean NDVI</div>
-              <div className="metric-value text-green-400">0.72</div>
-            </div>
+          <div className="affected-area-evidence-item">
+            <div className="affected-area-label">Field Mean NDVI</div>
+            <div className="affected-area-evidence-value affected-area-value-success">0.72</div>
           </div>
-          <div className="metric-card">
-            <div className="metric-content">
-              <div className="metric-label">Deviation</div>
-              <div className="metric-value text-amber-400">-18%</div>
-            </div>
+          <div className="affected-area-evidence-item">
+            <div className="affected-area-label">Deviation</div>
+            <div className="affected-area-evidence-value affected-area-value-caution">-18%</div>
           </div>
         </div>
       </div>

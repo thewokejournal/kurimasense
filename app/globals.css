@@ -1778,7 +1778,7 @@ input:focus {
   box-shadow: var(--shadow-md);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .dashboard-card::before {
@@ -2219,11 +2219,191 @@ p {
 }
 
 /* =========================================================
-   Affected Area Panel - Premium Card Style
+   Affected Area Panel - Premium Analytical Design
    ========================================================= */
 
 .affected-area-panel {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.affected-area-panel .dashboard-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.affected-area-panel .dashboard-card-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* Status Items - Refined, breathing layout */
+.affected-area-status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.affected-area-status-item:last-of-type {
+  border-bottom: none;
+}
+
+.affected-area-status-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-subtle);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.affected-area-status-item:hover {
+  padding-left: 6px;
+}
+
+.affected-area-status-item:hover::before {
+  opacity: 0.3;
+}
+
+/* Labels - Quiet, secondary */
+.affected-area-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  opacity: 0.75;
+  line-height: 1.4;
+}
+
+/* Values - Dominant but restrained */
+.affected-area-value {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+.affected-area-value-warning {
+  color: #f87171;
+  opacity: 0.95;
+}
+
+.affected-area-value-success {
+  color: #4ade80;
+  opacity: 0.95;
+}
+
+.affected-area-value-caution {
+  color: #fbbf24;
+  opacity: 0.95;
+}
+
+/* Technical Evidence Items - Subtle, analytical */
+.affected-area-evidence-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.affected-area-evidence-item:last-of-type {
+  border-bottom: none;
+}
+
+.affected-area-evidence-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-subtle);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.affected-area-evidence-item:hover {
+  padding-left: 4px;
+}
+
+.affected-area-evidence-item:hover::before {
+  opacity: 0.25;
+}
+
+.affected-area-evidence-value {
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Metadata Section - Unified continuation of Affected Area panel */
+.metadata-section-item {
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.metadata-section-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.metadata-action-button {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  background: transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.metadata-action-button:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+  background: var(--surface-soft);
+}
+
+.metadata-action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Metadata Content - Unified content area styling */
+.metadata-content {
+  width: 100%;
+}
+
+.metadata-data-item {
+  display: flex;
+  flex-direction: column;
 }
 
 .affected-area-metric {

@@ -358,12 +358,12 @@ export default function DashboardPage() {
         
         {/* LEFT SIDEBAR - Fields & Global Metrics */}
         <aside className="dashboard-left-sidebar p-6 bg-surface-soft overflow-y-auto">
-          <LeftSidebar
-            selectedFieldId={selectedFieldId}
-            fields={fields}
-            onFieldSelect={() => {/* TODO: implement field selection */}}
-          />
-          
+        <LeftSidebar
+          selectedFieldId={selectedFieldId}
+          fields={fields}
+          onFieldSelect={() => {/* TODO: implement field selection */}}
+        />
+
           <div className="mt-8 pt-8 border-t border-border-subtle">
             <div className="metric-section-header">
               <span className="meta-text uppercase tracking-wider text-xs">Field Activity</span>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
           {/* Analysis Creation Form Overlay */}
           {showCreateForm && (
             <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 w-full max-w-xl px-4">
-              <motion.div
+            <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -408,53 +408,53 @@ export default function DashboardPage() {
                 </div>
                 <form onSubmit={handleSubmitInlineAnalysis} className="dashboard-form">
                   <div className="dashboard-form-grid">
-                    {/* Field Selection */}
+                  {/* Field Selection */}
                     <div className="dashboard-form-field">
                       <label className="dashboard-form-label">Field</label>
-                      <select
-                        value={createFieldId}
+                    <select
+                      value={createFieldId}
                         onChange={(e) => setCreateFieldId(e.target.value)}
                         className="dashboard-form-input"
-                        required
-                        disabled={isCreatingAnalysis}
-                      >
-                        <option value="">Select a field...</option>
-                        {fields.map(field => (
+                      required
+                      disabled={isCreatingAnalysis}
+                    >
+                      <option value="">Select a field...</option>
+                      {fields.map(field => (
                           <option key={field.id} value={field.id}>{field.name}</option>
-                        ))}
-                      </select>
-                    </div>
+                      ))}
+                    </select>
+                  </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="dashboard-form-field">
                         <label className="dashboard-form-label">Start</label>
-                        <input
-                          type="datetime-local"
-                          value={createWindowStart}
+                      <input
+                        type="datetime-local"
+                        value={createWindowStart}
                           onChange={(e) => setCreateWindowStart(e.target.value)}
                           className="dashboard-form-input px-4"
-                          required
-                        />
-                      </div>
+                        required
+                      />
+                    </div>
                       <div className="dashboard-form-field">
                         <label className="dashboard-form-label">End</label>
-                        <input
-                          type="datetime-local"
-                          value={createWindowEnd}
+                      <input
+                        type="datetime-local"
+                        value={createWindowEnd}
                           onChange={(e) => setCreateWindowEnd(e.target.value)}
                           className="dashboard-form-input px-4"
-                          required
-                        />
-                      </div>
+                        required
+                      />
                     </div>
+                  </div>
 
                     <div className="dashboard-form-actions">
                       <button type="submit" className="btn-primary flex-1">Create Analysis</button>
                       <button type="button" onClick={handleCancelCreateForm} className="btn-secondary">Cancel</button>
-                    </div>
                   </div>
-                </form>
-              </motion.div>
+                </div>
+              </form>
+            </motion.div>
             </div>
           )}
         </section>
@@ -462,7 +462,7 @@ export default function DashboardPage() {
         {/* RIGHT SIDEBAR - Analysis Details & Reports */}
         <aside className="dashboard-right-sidebar">
           {/* Affected Area Metrics Section */}
-          <div className="metric-card metric-card-primary">
+          <div className="dashboard-card">
             <AffectedAreaReportPanel />
           </div>
 
@@ -481,7 +481,7 @@ export default function DashboardPage() {
           )}
 
           {/* Selected Analysis Details */}
-          {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
+            {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
             <div className="space-y-4">
               <div className="metric-section-header flex items-center justify-between">
                 <span className="meta-text uppercase tracking-wider text-xs">Record Details</span>
@@ -491,35 +491,35 @@ export default function DashboardPage() {
                 >
                   Close
                 </button>
-              </div>
-              <AnalysisRunDetail
-                analysisRun={analysisRuns.find(r => r.id === selectedAnalysisRunId)!}
-                field={fields.find(f => f.id === selectedFieldId)}
-              />
-            </div>
-          )}
-
-          {/* Context, Technical Details & Decision Context Layers */}
-          <div className="pt-6 border-t border-border-subtle space-y-4 mt-auto">
-            {/* Context */}
-            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5 hover:border-border-medium transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h3 className="text-sm font-semibold text-primary mb-0.5">Context</h3>
-                  <p className="text-xs text-secondary">External descriptive data</p>
                 </div>
+                <AnalysisRunDetail
+                  analysisRun={analysisRuns.find(r => r.id === selectedAnalysisRunId)!}
+                  field={fields.find(f => f.id === selectedFieldId)}
+                />
+              </div>
+            )}
+
+          {/* Context, Technical Details & Decision Context Layers - Unified continuation */}
+          <div className="dashboard-card mt-6">
+            {/* Context */}
+            <div className="metadata-section-item">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <h3 className="affected-area-label mb-1">Context</h3>
+                  <p className="dashboard-card-description">External descriptive data</p>
+              </div>
                 {!showContext && (
-                  <button 
-                    onClick={handleLoadContext}
-                    disabled={isLoadingContext}
-                    className="btn-secondary btn-sm text-xs px-3 py-1.5"
-                  >
+                <button
+                  onClick={handleLoadContext}
+                  disabled={isLoadingContext}
+                    className="metadata-action-button"
+                >
                     {isLoadingContext ? 'Loading...' : 'Load'}
-                  </button>
+                </button>
                 )}
               </div>
               {showContext && (
-                <div className="mt-4">
+                <div className="mt-5">
                   <ContextPanel context={context} isLoading={isLoadingContext} />
                 </div>
               )}
@@ -528,26 +528,26 @@ export default function DashboardPage() {
                   <p className="text-xs text-red-400">{contextError}</p>
                 </div>
               )}
-            </div>
+        </div>
 
             {/* Technical Details */}
-            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5 hover:border-border-medium transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h3 className="text-sm font-semibold text-primary mb-0.5">Technical Details</h3>
-                  <p className="text-xs text-secondary">Inference provenance and trace</p>
-                </div>
+            <div className="metadata-section-item">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <h3 className="affected-area-label mb-1">Technical Details</h3>
+                  <p className="dashboard-card-description">Inference provenance and trace</p>
+              </div>
                 {!showProvenance && (
-                  <button 
-                    onClick={handleShowProvenance}
-                    className="btn-secondary btn-sm text-xs px-3 py-1.5"
-                  >
+                <button
+                  onClick={handleShowProvenance}
+                    className="metadata-action-button"
+                >
                     View
-                  </button>
+                </button>
                 )}
               </div>
               {showProvenance && selectedAnalysisRunId && (
-                <div className="mt-4">
+                <div className="mt-5">
                   <ProvenancePanel
                     fieldId={selectedFieldId}
                     windowStart={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowStart || ''}
@@ -555,27 +555,27 @@ export default function DashboardPage() {
                   />
                 </div>
               )}
-            </div>
+        </div>
 
             {/* Decision Context */}
-            <div className="bg-surface-elevated border border-border-subtle rounded-lg p-5 hover:border-border-medium transition-all mb-0">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h3 className="text-sm font-semibold text-primary mb-0.5">Decision Context</h3>
-                  <p className="text-xs text-secondary">Non-actionable decision frames</p>
-                </div>
-                {!showDecisionContexts && (
-                  <button 
-                    onClick={handleLoadDecisionContexts}
-                    disabled={isLoadingDecisionContexts}
-                    className="btn-secondary btn-sm text-xs px-3 py-1.5"
-                  >
-                    {isLoadingDecisionContexts ? 'Loading...' : 'Load'}
-                  </button>
-                )}
+            <div className="metadata-section-item">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <h3 className="affected-area-label mb-1">Decision Context</h3>
+                  <p className="dashboard-card-description">Non-actionable decision frames</p>
               </div>
+                {!showDecisionContexts && (
+                <button
+                    onClick={handleLoadDecisionContexts}
+                  disabled={isLoadingDecisionContexts}
+                    className="metadata-action-button"
+                >
+                    {isLoadingDecisionContexts ? 'Loading...' : 'Load'}
+                </button>
+              )}
+            </div>
               {showDecisionContexts && (
-                <div className="mt-4 mb-0">
+                <div className="mt-5">
                   <DecisionContextPanel 
                     decisionContexts={decisionContexts} 
                     isLoading={isLoadingDecisionContexts} 
