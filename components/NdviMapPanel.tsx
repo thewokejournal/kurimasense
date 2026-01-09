@@ -103,8 +103,8 @@ export function AffectedAreaReportPanel() {
 
       {/* Technical Evidence - Subtle separator, refined presentation */}
       <div className="pt-7 mt-7 border-t" style={{ borderTopColor: 'var(--border-subtle)' }}>
-        <div className="metric-section-header mb-5">
-          <span className="meta-text uppercase tracking-wider text-xs">Technical Evidence</span>
+        <div className="metric-section-header">
+          Technical Evidence
         </div>
         <div className="space-y-0">
           <div className="affected-area-evidence-item">

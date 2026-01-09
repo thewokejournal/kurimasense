@@ -29,8 +29,8 @@ body {
 }
 
 body {
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: 1.5;
   letter-spacing: -0.01em;
   background: var(--bg-app);
   color: var(--text-primary);
@@ -83,7 +83,7 @@ h2 {
 
 h3 {
   font-size: 16px;
-  font-weight: 650;
+  font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--text-primary);
   margin-bottom: 10px;
@@ -98,8 +98,8 @@ p {
 }
 :root {
   /* Typographic scale (three tiers only): meta, body, metric */
-  --type-meta-size: 11px; /* small metadata */
-  --type-body-size: 14px; /* body text (was label-size) */
+  --type-meta-size: 12px; /* small metadata - increased for readability */
+  --type-body-size: 15px; /* body text - increased for readability */
   /* Metric sizes: visually dominant, strong scale */
   --type-metric-size: clamp(36px, 5vw + 10px, 56px);
   --type-meta-color: var(--text-muted);
@@ -108,14 +108,14 @@ p {
   --type-meta-weight: 500;
   --type-body-weight: 500;
   --type-metric-weight: 850; /* visually dominant */
-  --type-meta-line-height: 1.1;
-  --type-body-line-height: 1.55;
+  --type-meta-line-height: 1.2;
+  --type-body-line-height: 1.6;
   --type-metric-line-height: 0.95;
   --role-spacing: 8px; /* breathing room between roles */
   /* Typographic tonality (opacity for hierarchy) */
   --tone-primary: 1; /* headings and values */
-  --tone-secondary: 0.95; /* labels and body text - improved readability */
-  --tone-tertiary: 0.78; /* metadata and captions - subtle but readable */
+  --tone-secondary: 1; /* labels and body text - full opacity for better readability */
+  --tone-tertiary: 0.85; /* metadata and captions - improved readability */
 }
 
 /* ============================
@@ -152,9 +152,9 @@ p {
   --border-subtle: rgba(255, 255, 255, 0.05);
   --border-medium: rgba(255, 255, 255, 0.1);
   
-  --text-primary: #e5e7eb;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --text-primary: #f0f4f8;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
   
   --accent-green: #22c55e;
   --accent-green-hover: #16a34a;
@@ -182,8 +182,8 @@ p {
   --border-medium: #d1d5db;
   
   --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
   
   --accent-green: #059669;
   --accent-green-hover: #047857;
@@ -324,7 +324,7 @@ input:focus {
 .btn-secondary.btn-sm {
   padding: 8px 16px;
   min-height: 36px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {
@@ -337,7 +337,7 @@ input:focus {
 
 .meta-text {
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .label-text {
@@ -374,8 +374,9 @@ input:focus {
 
 /* Section heading utility for dashboard sections */
 .section-heading {
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   margin-bottom: 14px;
   color: var(--text-primary);
   opacity: var(--tone-primary);
@@ -445,9 +446,26 @@ input:focus {
 }
 
 .metric-section-header {
-  padding: 0 4px 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 24px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.metric-section-header:first-child {
+  margin-top: 0;
+}
+
+.metric-section-header span {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
 }
 
 /* =========================================================
@@ -458,7 +476,7 @@ input:focus {
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  padding: 16px;
+  padding: 20px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -467,27 +485,11 @@ input:focus {
   overflow: hidden;
 }
 
-.metric-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
 .metric-card:hover {
   background: var(--surface-hover);
-  border-color: var(--border-medium);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.metric-card:hover::before {
-  opacity: 1;
+  border-color: var(--border-subtle);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .metric-card-primary {
@@ -509,23 +511,22 @@ input:focus {
   justify-content: center;
   border-radius: 10px;
   background: var(--surface-soft);
-  border: 1px solid var(--border-subtle);
+  border: none;
   color: var(--text-secondary);
+  opacity: 0.6;
   flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .metric-card:hover .metric-icon {
-  background: var(--surface-elevated);
-  border-color: var(--border-medium);
-  color: var(--text-primary);
-  transform: scale(1.05);
+  opacity: 0.75;
 }
 
 .metric-icon-primary {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.08));
-  border-color: rgba(34, 197, 94, 0.3);
+  background: var(--surface-soft);
+  border: none;
   color: var(--accent-green);
+  opacity: 0.7;
 }
 
 .metric-content {
@@ -537,17 +538,18 @@ input:focus {
 }
 
 .metric-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  opacity: 0.8;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  opacity: 0.85;
+  margin-bottom: 2px;
 }
 
 .metric-value {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 23px;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
@@ -563,9 +565,9 @@ input:focus {
 }
 
 .metric-meta {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text-muted);
-  opacity: 0.7;
+  opacity: 0.85;
   line-height: 1.4;
 }
 
@@ -653,10 +655,10 @@ input:focus {
 }
 
 .optional-layer-subtitle {
-  font-size: 11px;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: var(--text-secondary);
   margin-top: 2px;
-  opacity: 0.7;
+  opacity: 1;
 }
 
 /* Command bar (prominent control surface) */
@@ -1026,16 +1028,16 @@ input:focus {
   font-weight: 750;
   letter-spacing: -0.03em;
   line-height: 1.0;
-  color: var(--text-secondary);
-  opacity: 0.95;
+  color: var(--text-primary);
+  opacity: 1;
 }
 
 /* Contextual delta (small change indicator) */
 .stat-delta {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  opacity: 0.5;
+  opacity: 0.85;
   display: inline-flex;
   align-items: center;
   gap: 3px;
@@ -1046,17 +1048,17 @@ input:focus {
 .stat-delta.positive,
 .stat-delta.negative {
   color: var(--text-muted);
-  opacity: 0.6;
+  opacity: 0.9;
 }
 
 /* Quiet data source label */
 .stat-label {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
-  opacity: 0.55;
+  opacity: 0.85;
   margin-top: auto;
 }
 
@@ -1065,10 +1067,10 @@ input:focus {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
-  opacity: 0.65;
+  opacity: 0.85;
   letter-spacing: 0.01em;
   margin-top: 6px;
 }
@@ -1822,7 +1824,7 @@ input:focus {
 }
 
 .dashboard-card-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--text-primary);
@@ -1831,10 +1833,10 @@ input:focus {
 }
 
 .dashboard-card-description {
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  opacity: 0.8;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  opacity: 1;
 }
 
 .dashboard-card-content {
@@ -2138,9 +2140,10 @@ select.dashboard-form-input {
 }
 
 .insight-card p {
-  font-size: 14px;
-  color: #e6eef8;
-  line-height: 1.45;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  opacity: 1;
 }
 /* =========================================================
    Typography System
@@ -2169,8 +2172,8 @@ h2 {
 /* Body */
 
 p {
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 /* Numbers */
@@ -2212,10 +2215,10 @@ p {
 }
 
 .timeline-entry-description {
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.6;
   margin-top: 2px;
-  opacity: 0.75;
+  opacity: 0.9;
 }
 
 /* =========================================================
@@ -2239,10 +2242,10 @@ p {
 }
 
 .affected-area-panel .dashboard-card-description {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-secondary);
-  line-height: 1.5;
-  opacity: 0.85;
+  line-height: 1.6;
+  opacity: 1;
 }
 
 /* Status Items - Refined, breathing layout */
@@ -2282,12 +2285,12 @@ p {
 
 /* Labels - Quiet, secondary */
 .affected-area-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-muted);
-  opacity: 0.75;
+  opacity: 0.9;
   line-height: 1.4;
 }
 
@@ -2302,17 +2305,17 @@ p {
 
 .affected-area-value-warning {
   color: #f87171;
-  opacity: 0.95;
+  opacity: 1;
 }
 
 .affected-area-value-success {
   color: #4ade80;
-  opacity: 0.95;
+  opacity: 1;
 }
 
 .affected-area-value-caution {
   color: #fbbf24;
-  opacity: 0.95;
+  opacity: 1;
 }
 
 /* Technical Evidence Items - Subtle, analytical */
@@ -2351,9 +2354,10 @@ p {
 }
 
 .affected-area-evidence-value {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  opacity: 1;
 }
 
 /* Metadata Section - Unified continuation of Affected Area panel */
@@ -2370,7 +2374,7 @@ p {
 }
 
 .metadata-action-button {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;

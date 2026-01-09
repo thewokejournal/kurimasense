@@ -37,7 +37,7 @@ export function LeftSidebar({ selectedFieldId, fields, onFieldSelect }: LeftSide
       {/* Metrics Section */}
       <div className="metric-section">
         <div className="metric-section-header">
-          <span className="meta-text uppercase tracking-wider text-xs">Field Metrics</span>
+          Field Metrics
         </div>
 
         {/* Canopy Health */}

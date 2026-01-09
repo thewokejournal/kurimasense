@@ -366,7 +366,7 @@ export default function DashboardPage() {
 
           <div className="mt-8 pt-8 border-t border-border-subtle">
             <div className="metric-section-header">
-              <span className="meta-text uppercase tracking-wider text-xs">Field Activity</span>
+              Field Activity
             </div>
             <FieldTimeline entries={mockTimelineEntries} />
           </div>
@@ -470,7 +470,7 @@ export default function DashboardPage() {
           {!selectedAnalysisRunId && analysisRuns.length > 0 && (
             <div className="space-y-4">
               <div className="metric-section-header">
-                <span className="meta-text uppercase tracking-wider text-xs">Field Reports</span>
+                Field Reports
               </div>
               <AnalysisRunList
                 analysisRuns={analysisRuns}
@@ -484,10 +484,10 @@ export default function DashboardPage() {
             {selectedAnalysisRunId && analysisRuns.find(r => r.id === selectedAnalysisRunId) && (
             <div className="space-y-4">
               <div className="metric-section-header flex items-center justify-between">
-                <span className="meta-text uppercase tracking-wider text-xs">Record Details</span>
+                <span>Record Details</span>
                 <button 
                   onClick={() => setSelectedAnalysisRunId(null)}
-                  className="text-[10px] font-semibold text-accent-green uppercase hover:opacity-80 transition-opacity"
+                  className="text-xs font-semibold text-accent-green hover:opacity-80 transition-opacity"
                 >
                   Close
                 </button>
@@ -516,8 +516,8 @@ export default function DashboardPage() {
                 >
                     {isLoadingContext ? 'Loading...' : 'Load'}
                 </button>
-                )}
-              </div>
+              )}
+            </div>
               {showContext && (
                 <div className="mt-5">
                   <ContextPanel context={context} isLoading={isLoadingContext} />
@@ -544,11 +544,11 @@ export default function DashboardPage() {
                 >
                     View
                 </button>
-                )}
-              </div>
+              )}
+            </div>
               {showProvenance && selectedAnalysisRunId && (
                 <div className="mt-5">
-                  <ProvenancePanel
+                    <ProvenancePanel
                     fieldId={selectedFieldId}
                     windowStart={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowStart || ''}
                     windowEnd={analysisRuns.find(r => r.id === selectedAnalysisRunId)?.windowEnd || ''}

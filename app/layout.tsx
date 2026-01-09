@@ -11,6 +11,11 @@ const inter = Inter({
 export const metadata = {
   title: 'KurimaSense',
   description: 'Satellite-powered farming intelligence',
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 }
 
 export default function RootLayout({
