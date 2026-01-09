@@ -105,24 +105,24 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
           {formattedDate}
         </div>
 
-        {/* Health event title - matches metric-value-primary */}
-        <div className="metric-value-primary timeline-entry-title">
+        {/* Health event title - 16px semibold */}
+        <div className="timeline-entry-title">
           {entry.insightType}
         </div>
         
-        {/* Description - matches metric-meta but slightly larger */}
-        <div className="metric-meta timeline-entry-description">
+        {/* Description - 14px regular with increased line-height */}
+        <div className="timeline-entry-description">
           {getEventDescription(entry.severity, entry.insightType)}
         </div>
 
-        {/* Confidence and time metadata */}
-        <div className="flex items-center gap-2 mt-1.5 pt-1.5 border-t border-border-subtle">
+        {/* Confidence and time metadata - subtle separator */}
+        <div className="flex items-center gap-2 mt-3 pt-3" style={{ borderTop: '1px solid var(--border-subtle)' }}>
           <span 
-            className="w-1.5 h-1.5 rounded-full" 
+            className="w-1.5 h-1.5 rounded-full opacity-70" 
             style={{ backgroundColor: confidenceColor }}
           />
           <span className="metric-meta capitalize">{entry.confidence} confidence</span>
-          <span className="metric-meta">·</span>
+          <span className="metric-meta opacity-50">·</span>
           <span className="metric-meta">{relativeTime}</span>
         </div>
       </div>
