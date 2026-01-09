@@ -2316,6 +2316,12 @@ p {
   overflow-wrap: break-word;
 }
 
+/* Light mode: Enhanced contrast for labels */
+[data-theme='light'] .affected-area-label {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
 /* Values - Dominant but restrained, muted semantic colors */
 .affected-area-value {
   font-size: 16px;
