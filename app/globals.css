@@ -170,17 +170,21 @@ p {
 }
 
 [data-theme='light'] {
-  /* Light Theme - Airy & Professional with Enhanced Contrast */
-  --bg-app: #fafbfc;
-  --bg-subtle: #f4f5f7;
+  /* Light Theme - Clear Visual Layering */
+  /* App background: soft off-white/light gray (not pure white) */
+  --bg-app: #f5f6f8;
+  --bg-subtle: #f0f1f3;
   
+  /* Primary cards: pure white for clear separation from background */
   --surface-elevated: #ffffff;
-  --surface-soft: #f6f8fa;
-  --surface-hover: #eef1f4;
   
-  /* Strengthened borders for better visibility */
-  --border-subtle: #d1d5db;
-  --border-medium: #9ca3af;
+  /* Secondary surfaces: slightly darker neutral for grouped areas */
+  --surface-soft: #f0f2f5;
+  --surface-hover: #e8eaf0;
+  
+  /* Borders for subtle separation */
+  --border-subtle: #e1e4e8;
+  --border-medium: #d1d5db;
   
   /* Increased contrast for better readability */
   --text-primary: #0f172a;
