@@ -493,13 +493,13 @@ input:focus {
   margin-bottom: calc(var(--section-spacing) * 0.75);
 }
 
-/* Light mode: Increased vertical rhythm for more air */
+/* Light mode: Match dark mode section spacing for parity */
 [data-theme='light'] .dashboard-section {
-  margin-bottom: var(--section-spacing-light); /* 44px instead of 36px */
+  margin-bottom: var(--section-spacing); /* Match dark mode: 36px for exact parity */
 }
 
 [data-theme='light'] .dashboard-section-tight {
-  margin-bottom: calc(var(--section-spacing-light) * 0.75); /* ~33px */
+  margin-bottom: calc(var(--section-spacing) * 0.75); /* Match dark mode for parity */
 }
 
 @media (max-width: 768px) {
@@ -625,7 +625,7 @@ input:focus {
 /* Light mode: Remove borders from metric cards - shadows provide separation */
 [data-theme='light'] .metric-card {
   border: none; /* Shadows and spacing provide clear separation */
-  padding: 20px 24px; /* Increased padding: vertical 20px, horizontal 24px */
+  padding: 20px; /* Match dark mode padding exactly for parity */
 }
 
 [data-theme='light'] .metric-card:hover {
@@ -1094,9 +1094,9 @@ input:focus {
   will-change: transform, box-shadow;
 }
 
-/* Light mode: Ensure cards have minimum 24px padding */
+/* Light mode: Match dark mode padding for parity */
 [data-theme='light'] .card {
-  padding: var(--card-padding-light); /* 24px minimum */
+  padding: var(--card-padding); /* Match dark mode: 20px for exact parity */
 }
 
 /* Subtle hover / focus elevation for cards and panels */
@@ -1111,11 +1111,11 @@ input:focus {
   box-shadow: var(--shadow-lg);
 }
 
-/* Light mode: Ensure all cards have soft elevation shadows and minimum 24px padding */
+/* Light mode: Match dark mode structure exactly - only shadows differ */
 [data-theme='light'] .card {
-  box-shadow: var(--shadow-md);
-  border: none; /* Shadows provide clear separation */
-  padding: var(--card-padding-light); /* 24px minimum for more air */
+  box-shadow: var(--shadow-md); /* Shadow differs, not structure */
+  border: none; /* Shadows provide clear separation instead of border */
+  padding: var(--card-padding); /* Match dark mode: 20px for exact parity */
 }
 
 [data-theme='light'] .card:hover {
@@ -1128,7 +1128,7 @@ input:focus {
 [data-theme='light'] .ndvi-panel {
   box-shadow: var(--shadow-sm);
   border: none; /* Shadows provide clear separation */
-  padding: var(--card-padding-light); /* 24px minimum padding */
+  /* Padding matches dark mode base values for parity */
 }
 
 [data-theme='light'] .stat-card:hover,
@@ -2027,10 +2027,10 @@ input:focus {
 /* Light mode: Unified right-column panels - cohesive, premium styling */
 [data-theme='light'] .dashboard-card {
   background: var(--surface-elevated); /* Pure white for all panels */
-  border-radius: 16px; /* Consistent radius across all panels */
-  box-shadow: var(--shadow-md); /* Consistent elevation */
-  border: none; /* Shadows provide separation */
-  padding: 24px; /* Consistent internal spacing - minimum requirement */
+  border-radius: 16px; /* Match dark mode exactly for parity */
+  box-shadow: var(--shadow-md); /* Only shadow differs, not structure */
+  border: none; /* Shadows provide separation instead of border */
+  padding: 24px; /* Match dark mode exactly for parity */
 }
 
 .dashboard-card-header {
@@ -2499,11 +2499,11 @@ p {
   min-width: 0;
 }
 
-/* Light mode: Improved spacing for status items */
+/* Light mode: Match dark mode structure - only visual treatment differs */
 [data-theme='light'] .affected-area-status-item {
-  gap: 20px; /* Increased gap for better visual separation */
-  padding: 14px 0; /* Increased vertical padding (was 12px) */
-  margin-bottom: 12px; /* Increased spacing between items (was 8px) */
+  gap: 16px; /* Match dark mode base for parity */
+  padding: 0; /* Match dark mode base for parity */
+  margin-bottom: 0; /* Match dark mode base for parity */
 }
 
 /* Labels - Quiet, secondary/tertiary */
@@ -2572,11 +2572,11 @@ p {
   min-width: 0;
 }
 
-/* Light mode: Improved spacing for evidence items */
+/* Light mode: Match dark mode structure - only visual treatment differs */
 [data-theme='light'] .affected-area-evidence-item {
-  gap: 20px; /* Increased gap for better visual separation */
-  padding: 14px 0; /* Increased vertical padding (was 12px) */
-  margin-bottom: 12px; /* Increased spacing between items (was 8px) */
+  gap: 16px; /* Match dark mode base for parity */
+  padding: 0; /* Match dark mode base for parity */
+  margin-bottom: 0; /* Match dark mode base for parity */
 }
 
 .affected-area-evidence-value {
