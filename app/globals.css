@@ -378,6 +378,34 @@ input:focus {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Light mode: Enhanced button visibility and affordance */
+[data-theme='light'] .btn-secondary {
+  background: var(--surface-soft); /* Subtle background for distinction */
+  color: var(--text-secondary); /* Readable but not overpowering */
+  border: 1px solid rgba(209, 213, 219, 0.6); /* Visible but subtle border */
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04); /* Subtle elevation */
+}
+
+[data-theme='light'] .btn-secondary:hover {
+  background: var(--surface-hover); /* Clear hover state */
+  border-color: rgba(209, 213, 219, 0.8); /* Slightly more visible on hover */
+  color: var(--text-primary); /* Higher contrast on hover */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* Subtle elevation increase */
+  transform: translateY(-1px);
+}
+
+[data-theme='light'] .btn-secondary:focus {
+  outline: none;
+  border-color: rgba(5, 150, 105, 0.4); /* Subtle focus ring */
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1); /* Subtle focus indicator */
+}
+
+[data-theme='light'] .btn-secondary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
 .btn-secondary:active {
   transform: translateY(0) scale(0.98);
 }
@@ -2624,6 +2652,44 @@ p {
 
 .metadata-action-button:disabled {
   opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Light mode: Enhanced tertiary button visibility and affordance */
+[data-theme='light'] .metadata-action-button {
+  background: var(--surface-soft); /* Subtle background for distinction from text */
+  color: var(--text-muted); /* Readable but secondary */
+  border: 1px solid rgba(209, 213, 219, 0.5); /* Visible border */
+  opacity: 1; /* Full opacity for discoverability */
+  font-weight: 500;
+  padding: 6px 12px; /* Slightly more padding for better touch target */
+  border-radius: 6px; /* Slightly more rounded */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); /* Subtle elevation */
+}
+
+[data-theme='light'] .metadata-action-button:hover:not(:disabled) {
+  background: var(--surface-hover); /* Clear hover feedback */
+  border-color: rgba(209, 213, 219, 0.7); /* More visible border */
+  color: var(--text-secondary); /* Higher contrast on hover */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06); /* Subtle elevation increase */
+  transform: translateY(-1px); /* Subtle lift */
+}
+
+[data-theme='light'] .metadata-action-button:focus {
+  outline: none;
+  border-color: rgba(5, 150, 105, 0.4); /* Subtle focus ring */
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.08); /* Subtle focus indicator */
+  background: var(--surface-hover);
+}
+
+[data-theme='light'] .metadata-action-button:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme='light'] .metadata-action-button:disabled {
+  opacity: 0.5;
+  background: var(--surface-soft);
   cursor: not-allowed;
 }
 
