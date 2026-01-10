@@ -1111,13 +1111,16 @@ input:focus {
   box-shadow: var(--shadow-lg);
 }
 
-/* Light mode: Ensure all cards have soft elevation shadows */
+/* Light mode: Ensure all cards have soft elevation shadows and minimum 24px padding */
 [data-theme='light'] .card {
   box-shadow: var(--shadow-md);
+  border: none; /* Shadows provide clear separation */
+  padding: var(--card-padding-light); /* 24px minimum for more air */
 }
 
 [data-theme='light'] .card:hover {
   box-shadow: var(--shadow-hover);
+  border: none;
 }
 
 [data-theme='light'] .stat-card,
@@ -1125,6 +1128,7 @@ input:focus {
 [data-theme='light'] .ndvi-panel {
   box-shadow: var(--shadow-sm);
   border: none; /* Shadows provide clear separation */
+  padding: var(--card-padding-light); /* 24px minimum padding */
 }
 
 [data-theme='light'] .stat-card:hover,
