@@ -1972,10 +1972,13 @@ input:focus {
   }
 }
 
-/* Light mode: Strengthened card borders and shadows */
+/* Light mode: Unified right-column panels - cohesive, premium styling */
 [data-theme='light'] .dashboard-card {
-  border-color: var(--border-medium);
-  box-shadow: var(--shadow-md);
+  background: var(--surface-elevated); /* Pure white for all panels */
+  border-radius: 16px; /* Consistent radius across all panels */
+  box-shadow: var(--shadow-md); /* Consistent elevation */
+  border: none; /* Shadows provide separation */
+  padding: 24px; /* Consistent internal spacing */
 }
 
 .dashboard-card-header {
@@ -2406,9 +2409,15 @@ p {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding: 24px;
+  padding: 0; /* Parent dashboard-card provides padding */
   box-sizing: border-box;
   overflow: hidden;
+}
+
+/* Light mode: Ensure affected area panel matches unified styling */
+[data-theme='light'] .affected-area-panel {
+  background: var(--surface-elevated);
+  border-radius: 16px;
 }
 
 .affected-area-panel .dashboard-card-title {
@@ -2438,6 +2447,13 @@ p {
   min-width: 0;
 }
 
+/* Light mode: Improved spacing for status items */
+[data-theme='light'] .affected-area-status-item {
+  gap: 20px; /* Increased gap for better visual separation */
+  padding: 12px 0; /* Vertical padding instead of borders */
+  margin-bottom: 8px; /* Spacing between items */
+}
+
 /* Labels - Quiet, secondary/tertiary */
 .affected-area-label {
   font-size: 13px;
@@ -2451,10 +2467,12 @@ p {
   overflow-wrap: break-word;
 }
 
-/* Light mode: Enhanced contrast for labels */
+/* Light mode: Enhanced readability for labels */
 [data-theme='light'] .affected-area-label {
-  color: var(--text-secondary);
-  opacity: 1;
+  color: var(--text-muted);
+  opacity: 0.95; /* High contrast for readability */
+  font-weight: 500;
+  margin-bottom: 6px; /* Visual anchoring to values */
 }
 
 /* Values - Dominant but restrained, muted semantic colors */
@@ -2468,6 +2486,12 @@ p {
   min-width: 0;
   overflow-wrap: break-word;
   word-break: break-word;
+}
+
+/* Light mode: Visually anchored values with high contrast */
+[data-theme='light'] .affected-area-value {
+  color: var(--text-primary); /* Highest contrast for visual anchoring */
+  font-weight: 650; /* Slightly bolder for prominence */
 }
 
 .affected-area-value-warning {
@@ -2496,6 +2520,13 @@ p {
   min-width: 0;
 }
 
+/* Light mode: Improved spacing for evidence items */
+[data-theme='light'] .affected-area-evidence-item {
+  gap: 20px; /* Increased gap for better visual separation */
+  padding: 12px 0; /* Vertical padding instead of borders */
+  margin-bottom: 8px; /* Spacing between items */
+}
+
 .affected-area-evidence-value {
   font-size: 15px;
   font-weight: 600;
@@ -2520,9 +2551,16 @@ p {
   margin-bottom: 0;
 }
 
-/* Light mode: Reduced opacity dividers between sections */
+/* Light mode: Improved spacing instead of relying on outlines */
 [data-theme='light'] .metadata-section-item {
-  border-bottom-color: rgba(209, 213, 219, 0.4); /* Reduced opacity for lighter feel */
+  border-bottom: none; /* Remove dividers - spacing provides separation */
+  padding-bottom: 32px; /* Increased spacing between sections */
+  margin-bottom: 32px; /* Increased spacing for premium feel */
+}
+
+[data-theme='light'] .metadata-section-item:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .metadata-section-title {
@@ -2539,6 +2577,19 @@ p {
   color: var(--text-secondary);
   line-height: 1.5;
   opacity: 1;
+}
+
+/* Light mode: Enhanced readability for section titles and descriptions */
+[data-theme='light'] .metadata-section-title {
+  color: #0a0f1a; /* Highest contrast for prominence */
+  font-weight: 600;
+  margin-bottom: 6px; /* Improved spacing for visual anchoring */
+}
+
+[data-theme='light'] .metadata-section-description {
+  color: var(--text-muted);
+  opacity: 0.9; /* Readable but secondary */
+  margin-bottom: 0;
 }
 
 .metadata-action-button {
