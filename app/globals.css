@@ -194,10 +194,14 @@ p {
   --accent-green: #059669;
   --accent-green-hover: #047857;
   
-  /* Strengthened shadows for better depth perception */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 12px 20px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Soft elevation shadows for cards and panels - light mode only */
+  /* Subtle, diffused shadows with max 2 layers for depth */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 0, 0, 0.1);
+  
+  /* Hover state shadows for interactive elevation */
+  --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.12);
   
   /* Glass effects for light mode */
   --glass-bg: rgba(255, 255, 255, 0.9);
@@ -216,6 +220,20 @@ p {
 .surface-soft {
   background: var(--surface-soft);
   border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Light mode: Add soft shadows to all card and panel surfaces */
+[data-theme='light'] .surface-soft {
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='light'] .metric-card {
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='light'] .metric-card:hover {
+  box-shadow: var(--shadow-hover);
 }
 
 /* Typography defaults */
@@ -975,6 +993,41 @@ input:focus {
   transform: translateY(var(--card-translate-y));
   border-color: var(--border-medium);
   box-shadow: var(--shadow-lg);
+}
+
+/* Light mode: Ensure all cards have soft elevation shadows */
+[data-theme='light'] .card {
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme='light'] .card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+[data-theme='light'] .stat-card,
+[data-theme='light'] .insight-card,
+[data-theme='light'] .ndvi-panel {
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='light'] .stat-card:hover,
+[data-theme='light'] .insight-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Light mode: Add shadows to all panel surfaces */
+[data-theme='light'] .bg-surface-elevated,
+[data-theme='light'] [class*="bg-surface-elevated"] {
+  box-shadow: var(--shadow-sm);
+}
+
+/* Light mode: Optional layer sections get subtle shadows */
+[data-theme='light'] .optional-layer-section {
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='light'] .optional-layer-section:hover {
+  box-shadow: var(--shadow-md);
 }
 
 /* Slightly more restrained transform for the map surface to avoid layout shift */
