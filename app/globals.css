@@ -629,8 +629,8 @@ input:focus {
 
 /* Light mode: Enhanced contrast for metric labels */
 [data-theme='light'] .metric-label {
-  color: var(--text-secondary);
-  opacity: 1;
+  color: var(--text-muted);
+  opacity: 0.9;
 }
 
 .metric-value {
