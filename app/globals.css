@@ -186,10 +186,15 @@ p {
   --border-subtle: #e1e4e8;
   --border-medium: #d1d5db;
   
-  /* Increased contrast for better readability */
-  --text-primary: #0f172a;
-  --text-secondary: #1e293b;
-  --text-muted: #475569;
+  /* High contrast typography for readability in bright environments */
+  /* Primary text: highest contrast for data values and important content */
+  --text-primary: #0a0f1a;
+  
+  /* Secondary text: increased contrast for body text readability */
+  --text-secondary: #0f172a;
+  
+  /* Muted text: sufficient contrast for metadata (eliminates gray-on-gray) */
+  --text-muted: #334155;
   
   --accent-green: #059669;
   --accent-green-hover: #047857;
@@ -206,6 +211,39 @@ p {
   /* Glass effects for light mode */
   --glass-bg: rgba(255, 255, 255, 0.9);
   --glass-border: rgba(0, 0, 0, 0.12);
+}
+
+/* Light mode: Enhanced typography contrast overrides */
+[data-theme='light'] h1,
+[data-theme='light'] h2,
+[data-theme='light'] h3 {
+  color: #0a0f1a;
+  opacity: 1;
+}
+
+[data-theme='light'] .section-heading {
+  color: #0a0f1a;
+  font-weight: 700;
+  opacity: 1;
+}
+
+[data-theme='light'] .metric-value,
+[data-theme='light'] .value-text,
+[data-theme='light'] [class*="metric-value"],
+[data-theme='light'] [class*="value-text"] {
+  color: #0a0f1a;
+  opacity: 1;
+}
+
+[data-theme='light'] p,
+[data-theme='light'] .label-text,
+[data-theme='light'] [class*="body-text"] {
+  color: var(--text-secondary);
+}
+
+[data-theme='light'] .meta-text,
+[data-theme='light'] [class*="meta"] {
+  color: var(--text-muted);
 }
 
 /* Core surface */
@@ -406,11 +444,7 @@ input:focus {
   opacity: var(--tone-primary);
 }
 
-/* Light mode: Ensure full contrast for section headings */
-[data-theme='light'] .section-heading {
-  color: var(--text-primary);
-  opacity: 1;
-}
+/* Light mode: Ensure full contrast for section headings (already handled above) */
 
 /* Dashboard section spacing */
 .dashboard-section {
