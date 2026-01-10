@@ -570,14 +570,14 @@ input:focus {
 
 /* Light mode: Strengthened section headers with unmistakable boundaries */
 [data-theme='light'] .metric-section-header {
-  color: #0a0f1a; /* Highest contrast for maximum prominence */
-  font-weight: 600; /* Semibold maintained */
-  font-size: 16px; /* Slightly larger for better visibility */
-  margin-top: 32px; /* Increased spacing above */
-  margin-bottom: 20px; /* Increased spacing below */
-  padding-bottom: 16px; /* Increased padding for divider area */
-  border-bottom: 1px solid rgba(209, 213, 219, 0.4); /* Reduced opacity divider */
-  letter-spacing: -0.015em;
+  color: #0a0f1a; /* Highest contrast for maximum prominence - color differs */
+  font-weight: 600; /* Match dark mode */
+  font-size: 15px; /* Match dark mode base for parity */
+  margin-top: 24px; /* Match dark mode base for parity */
+  margin-bottom: 14px; /* Match dark mode base for parity */
+  padding-bottom: 12px; /* Match dark mode base for parity */
+  border-bottom: 1px solid rgba(209, 213, 219, 0.4); /* Border opacity differs, not structure */
+  letter-spacing: -0.01em; /* Match dark mode */
 }
 
 .metric-section-header:first-child {
