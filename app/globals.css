@@ -182,9 +182,9 @@ p {
   --surface-soft: #f0f2f5;
   --surface-hover: #e8eaf0;
   
-  /* Borders for subtle separation */
-  --border-subtle: #e1e4e8;
-  --border-medium: #d1d5db;
+  /* Borders - reduced opacity where needed, removed where elevation provides separation */
+  --border-subtle: rgba(225, 228, 232, 0.4); /* Reduced opacity for lighter borders */
+  --border-medium: rgba(209, 213, 219, 0.5); /* Slightly more visible but still subtle */
   
   /* High contrast typography for readability in bright environments */
   /* Primary text: highest contrast for data values and important content */
@@ -252,6 +252,11 @@ p {
   border-radius: 18px;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-subtle);
+}
+
+/* Light mode: Remove borders where shadows provide separation */
+[data-theme='light'] .surface {
+  border: none; /* Shadows provide clear separation */
 }
 
 /* Subtle elevation */
@@ -529,7 +534,7 @@ input:focus {
   margin-top: 32px; /* Increased spacing above */
   margin-bottom: 20px; /* Increased spacing below */
   padding-bottom: 16px; /* Increased padding for divider area */
-  border-bottom: 1.5px solid #d1d5db; /* Stronger, more visible divider */
+  border-bottom: 1px solid rgba(209, 213, 219, 0.4); /* Reduced opacity divider */
   letter-spacing: -0.015em;
 }
 
@@ -575,14 +580,14 @@ input:focus {
   box-shadow: var(--shadow-sm);
 }
 
-/* Light mode: Strengthened metric card borders */
+/* Light mode: Remove borders from metric cards - shadows provide separation */
 [data-theme='light'] .metric-card {
-  border-color: var(--border-medium);
+  border: none; /* Shadows and spacing provide clear separation */
 }
 
 [data-theme='light'] .metric-card:hover {
-  border-color: var(--border-medium);
-  box-shadow: var(--shadow-md);
+  border: none;
+  box-shadow: var(--shadow-hover);
 }
 
 .metric-card-primary {
@@ -701,6 +706,11 @@ input:focus {
   border-radius: 8px;
   padding: 12px;
   margin-top: 8px;
+}
+
+/* Light mode: Remove borders from mini-chart wrapper */
+[data-theme='light'] .mini-chart-wrapper {
+  border: none; /* Avoid boxed styling inside cards */
 }
 
 /* =========================================================
@@ -991,6 +1001,17 @@ input:focus {
   box-shadow: var(--shadow-sm);
 }
 
+/* Light mode: Remove borders from metadata items inside cards */
+[data-theme='light'] .health-metadata-item {
+  border: none; /* Avoid boxed-row styling inside cards */
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='light'] .health-metadata-item:hover {
+  border: none;
+  box-shadow: var(--shadow-md);
+}
+
 .health-metadata-label {
   font-size: 11px;
   font-weight: 600;
@@ -1055,11 +1076,13 @@ input:focus {
 [data-theme='light'] .insight-card,
 [data-theme='light'] .ndvi-panel {
   box-shadow: var(--shadow-sm);
+  border: none; /* Shadows provide clear separation */
 }
 
 [data-theme='light'] .stat-card:hover,
 [data-theme='light'] .insight-card:hover {
   box-shadow: var(--shadow-md);
+  border: none;
 }
 
 /* Light mode: Add shadows to all panel surfaces */
