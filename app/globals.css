@@ -2609,11 +2609,11 @@ p {
   margin-bottom: 0;
 }
 
-/* Light mode: Improved spacing instead of relying on outlines */
+/* Light mode: Match dark mode spacing exactly - only border treatment differs */
 [data-theme='light'] .metadata-section-item {
-  border-bottom: none; /* Remove dividers - spacing provides separation */
-  padding-bottom: 36px; /* Increased spacing between sections (was 32px) */
-  margin-bottom: 36px; /* Increased spacing for premium feel (was 32px) */
+  border-bottom: none; /* Shadows/spacing provide separation instead of border */
+  padding-bottom: 24px; /* Match dark mode exactly for parity */
+  margin-bottom: 24px; /* Match dark mode exactly for parity */
 }
 
 [data-theme='light'] .metadata-section-item:last-child {
