@@ -211,6 +211,11 @@ p {
   /* Glass effects for light mode */
   --glass-bg: rgba(255, 255, 255, 0.9);
   --glass-border: rgba(0, 0, 0, 0.12);
+  
+  /* Enhanced spacing for light mode - more air and reduced visual fatigue */
+  --card-padding-light: 24px; /* Minimum 24px for all cards */
+  --section-spacing-light: 44px; /* Increased vertical rhythm */
+  --element-gap-light: 24px; /* Increased gaps between elements */
 }
 
 /* Light mode: Enhanced typography contrast overrides */
@@ -488,6 +493,15 @@ input:focus {
   margin-bottom: calc(var(--section-spacing) * 0.75);
 }
 
+/* Light mode: Increased vertical rhythm for more air */
+[data-theme='light'] .dashboard-section {
+  margin-bottom: var(--section-spacing-light); /* 44px instead of 36px */
+}
+
+[data-theme='light'] .dashboard-section-tight {
+  margin-bottom: calc(var(--section-spacing-light) * 0.75); /* ~33px */
+}
+
 @media (max-width: 768px) {
   .dashboard-section {
     margin-bottom: calc(var(--section-spacing) * 0.6);
@@ -611,6 +625,7 @@ input:focus {
 /* Light mode: Remove borders from metric cards - shadows provide separation */
 [data-theme='light'] .metric-card {
   border: none; /* Shadows and spacing provide clear separation */
+  padding: 20px 24px; /* Increased padding: vertical 20px, horizontal 24px */
 }
 
 [data-theme='light'] .metric-card:hover {
@@ -2006,7 +2021,7 @@ input:focus {
   border-radius: 16px; /* Consistent radius across all panels */
   box-shadow: var(--shadow-md); /* Consistent elevation */
   border: none; /* Shadows provide separation */
-  padding: 24px; /* Consistent internal spacing */
+  padding: 24px; /* Consistent internal spacing - minimum requirement */
 }
 
 .dashboard-card-header {
@@ -2478,8 +2493,8 @@ p {
 /* Light mode: Improved spacing for status items */
 [data-theme='light'] .affected-area-status-item {
   gap: 20px; /* Increased gap for better visual separation */
-  padding: 12px 0; /* Vertical padding instead of borders */
-  margin-bottom: 8px; /* Spacing between items */
+  padding: 14px 0; /* Increased vertical padding (was 12px) */
+  margin-bottom: 12px; /* Increased spacing between items (was 8px) */
 }
 
 /* Labels - Quiet, secondary/tertiary */
@@ -2551,8 +2566,8 @@ p {
 /* Light mode: Improved spacing for evidence items */
 [data-theme='light'] .affected-area-evidence-item {
   gap: 20px; /* Increased gap for better visual separation */
-  padding: 12px 0; /* Vertical padding instead of borders */
-  margin-bottom: 8px; /* Spacing between items */
+  padding: 14px 0; /* Increased vertical padding (was 12px) */
+  margin-bottom: 12px; /* Increased spacing between items (was 8px) */
 }
 
 .affected-area-evidence-value {
@@ -2588,8 +2603,8 @@ p {
 /* Light mode: Improved spacing instead of relying on outlines */
 [data-theme='light'] .metadata-section-item {
   border-bottom: none; /* Remove dividers - spacing provides separation */
-  padding-bottom: 32px; /* Increased spacing between sections */
-  margin-bottom: 32px; /* Increased spacing for premium feel */
+  padding-bottom: 36px; /* Increased spacing between sections (was 32px) */
+  margin-bottom: 36px; /* Increased spacing for premium feel (was 32px) */
 }
 
 [data-theme='light'] .metadata-section-item:last-child {
