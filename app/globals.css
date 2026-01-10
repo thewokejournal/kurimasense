@@ -544,6 +544,13 @@ input:focus {
   letter-spacing: -0.01em;
 }
 
+/* Light mode: Ensure spans within headers also use high contrast */
+[data-theme='light'] .metric-section-header span {
+  color: #0a0f1a;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 /* =========================================================
    Metric Cards with Icons (Left Sidebar) - Enhanced
    ========================================================= */
