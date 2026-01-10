@@ -2520,9 +2520,9 @@ p {
   margin-bottom: 0;
 }
 
-/* Light mode: Strengthened dividers for better visibility */
+/* Light mode: Reduced opacity dividers between sections */
 [data-theme='light'] .metadata-section-item {
-  border-bottom-color: var(--border-medium);
+  border-bottom-color: rgba(209, 213, 219, 0.4); /* Reduced opacity for lighter feel */
 }
 
 .metadata-section-title {
