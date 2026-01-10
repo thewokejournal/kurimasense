@@ -2538,6 +2538,12 @@ p {
   word-break: break-word;
 }
 
+/* Light mode: Visually anchored evidence values */
+[data-theme='light'] .affected-area-evidence-value {
+  color: var(--text-primary); /* Highest contrast for visual anchoring */
+  font-weight: 650; /* Slightly bolder for prominence */
+}
+
 /* Metadata Section - Unified continuation of Affected Area panel */
 .metadata-section-item {
   padding-bottom: 24px;
