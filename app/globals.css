@@ -1094,6 +1094,11 @@ input:focus {
   will-change: transform, box-shadow;
 }
 
+/* Light mode: Ensure cards have minimum 24px padding */
+[data-theme='light'] .card {
+  padding: var(--card-padding-light); /* 24px minimum */
+}
+
 /* Subtle hover / focus elevation for cards and panels */
 .card:hover,
 .card:focus-visible,
