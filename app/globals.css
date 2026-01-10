@@ -1094,10 +1094,12 @@ input:focus {
 /* Light mode: Optional layer sections get subtle shadows */
 [data-theme='light'] .optional-layer-section {
   box-shadow: var(--shadow-sm);
+  border: none; /* Shadows provide clear separation */
 }
 
 [data-theme='light'] .optional-layer-section:hover {
   box-shadow: var(--shadow-md);
+  border: none;
 }
 
 /* Slightly more restrained transform for the map surface to avoid layout shift */
