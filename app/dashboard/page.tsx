@@ -56,11 +56,6 @@ export default function DashboardPage() {
   // Phase C: Provenance state (loaded only via explicit user action, view-time only)
   // ProvenancePanel now handles loading internally, so we just track visibility
   const [showProvenance, setShowProvenance] = useState(false)
-  
-  // Phase 7: Decision context state (user-invoked only, non-actionable)
-  const [decisionContexts, setDecisionContexts] = useState<DecisionContextResponse | null>(null)
-  const [isLoadingDecisionContexts, setIsLoadingDecisionContexts] = useState(false)
-  const [decisionContextError, setDecisionContextError] = useState<string | null>(null)
 
   // Prevent body scroll when dashboard is mounted
   useEffect(() => {
@@ -73,7 +68,6 @@ export default function DashboardPage() {
       document.body.style.height = originalHeight;
     };
   }, [])
-  const [showDecisionContexts, setShowDecisionContexts] = useState(false)
 
   // Phase A: Analysis creation state (inline form)
   const [fields, setFields] = useState<Field[]>([])
