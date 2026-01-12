@@ -1286,41 +1286,6 @@ input:focus {
   margin-top: 6px;
 }
 
-.confidence-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: var(--surface-soft);
-  border: 1px solid var(--border-subtle);
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  transition: all 100ms cubic-bezier(.2,.8,.4,1);
-}
-
-.confidence-badge:hover {
-  background: var(--surface-hover);
-  border-color: var(--border-medium);
-}
-
-.confidence-badge.high,
-.confidence-badge.medium,
-.confidence-badge.low {
-  color: var(--text-secondary);
-  border-color: var(--border-subtle);
-  background: var(--surface-soft);
-}
-
-.confidence-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.8;
-}
 
 /* Insight Card - Enhanced */
 .insight-card {

@@ -70,7 +70,6 @@ interface TimelineEntryItemProps {
 function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryItemProps) {
   const relativeTime = getRelativeTime(entry.timestamp)
   const severityColor = getSeverityColor(entry.severity)
-  const confidenceColor = getConfidenceColor(entry.confidence)
   const formattedDate = formatDate(entry.timestamp)
 
   return (
@@ -117,10 +116,6 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
 
         {/* Confidence and time metadata - subtle separator */}
         <div className="flex items-center gap-2 mt-3 pt-3" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-          <span 
-            className="w-1.5 h-1.5 rounded-full opacity-70" 
-            style={{ backgroundColor: confidenceColor }}
-          />
           <span className="metric-meta capitalize">{entry.confidence} confidence</span>
           <span className="metric-meta opacity-50">·</span>
           <span className="metric-meta">{relativeTime}</span>
@@ -214,18 +209,3 @@ function getSeverityColor(severity: string): string {
   }
 }
 
-/**
- * Get color for confidence level
- */
-function getConfidenceColor(confidence: string): string {
-  switch (confidence.toLowerCase()) {
-    case 'high':
-      return '#10b981'
-    case 'medium':
-      return '#f59e0b'
-    case 'low':
-      return '#ef4444'
-    default:
-      return '#6b7280'
-  }
-}

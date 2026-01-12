@@ -72,15 +72,9 @@ export function AffectedAreaReportPanel() {
         <p className="dashboard-card-description">Showing problem zone • Apr 21</p>
       </div>
 
-      {/* Confidence Badges - Subtle, integrated */}
-      <div className="flex gap-2 mb-8 flex-wrap">
-        <span className="confidence-badge high">
-          <span className="confidence-dot" />
-          High Confidence
-        </span>
-        <span className="confidence-badge opacity-60">
-          8% Cloud Cover
-        </span>
+      {/* Confidence - Plain text only */}
+      <div className="mb-8">
+        <span className="text-sm text-muted">High Confidence</span>
       </div>
 
       {/* Status Metrics - Spacing-driven grouping */}

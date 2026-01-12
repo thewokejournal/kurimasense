@@ -187,12 +187,3 @@ export function formatGeneratedAt(generatedAt: string): string {
 export function formatInferenceTime(generatedAt: string): string {
   return formatGeneratedAt(generatedAt)
 }
-
-/**
- * Reverse mapping: confidence score to level
- */
-export function scoreToConfidence(score: number): 'high' | 'medium' | 'low' {
-  if (score >= 70) return 'high'
-  if (score >= 40) return 'medium'
-  return 'low'
-}

@@ -146,11 +146,8 @@ export default function FieldsTable() {
                     <span>{field.trend}</span>
                   </div>
                 </td>
-                <td className="px-6 py-5">
-                  <span className={`confidence-badge ${field.confidence.toLowerCase()}`}>
-                    <span className="confidence-dot" />
-                    {field.confidence}
-                  </span>
+                <td className="px-6 py-5 text-slate-900">
+                  {field.confidence}
                 </td>
                 <td className="px-6 py-5 text-slate-500">
                   {field.detectedAt}
