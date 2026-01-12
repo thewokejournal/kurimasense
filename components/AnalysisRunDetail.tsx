@@ -13,7 +13,6 @@
  */
 
 import { Clock, Calendar, Map, Info, FileText } from 'lucide-react'
-import { ConfidenceBadge } from '@/components/ConfidenceBadge'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import ProvenancePanel from '@/components/ProvenancePanel'
 import DecisionFramingPanel from '@/components/DecisionFramingPanel'
@@ -107,15 +106,8 @@ export default function AnalysisRunDetail({
       <div className="metric-card">
         <div className="metric-content">
           <div className="metric-label">Confidence</div>
-          <div className="metric-value-primary flex items-center gap-2">
+          <div className="metric-value-primary">
             {capitalize(inference.confidence)}
-            <ConfidenceBadge
-              confidence={
-                inference.confidence === 'high' ? 0.9 :
-                inference.confidence === 'medium' ? 0.6 : 0.3
-              }
-              source="satellite"
-            />
           </div>
           <div className="metric-meta">
             Generated {formatGeneratedAt(inference.generatedAt)}
