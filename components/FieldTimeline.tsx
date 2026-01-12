@@ -69,7 +69,6 @@ interface TimelineEntryItemProps {
 
 function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryItemProps) {
   const relativeTime = getRelativeTime(entry.timestamp)
-  const severityColor = getSeverityColor(entry.severity)
   const formattedDate = formatDate(entry.timestamp)
 
   return (
@@ -85,15 +84,11 @@ function TimelineEntryItem({ entry, index, onHover, onSelect }: TimelineEntryIte
       {/* Severity Indicator Icon */}
       <div 
         className="metric-icon timeline-severity-icon"
-        style={{ 
-          backgroundColor: `${severityColor}15`,
-          borderColor: `${severityColor}40`,
-        }}
         aria-label={`Severity: ${entry.severity}`}
       >
         <div 
           className="w-3 h-3 rounded-full"
-          style={{ backgroundColor: severityColor }}
+          style={{ backgroundColor: 'var(--text-muted)' }}
         />
       </div>
 
@@ -189,23 +184,4 @@ function getEventDescription(severity: string, insightType: string): string {
   return 'Field conditions within expected range.'
 }
 
-/**
- * Get color for severity level
- */
-function getSeverityColor(severity: string): string {
-  switch (severity.toLowerCase()) {
-    case 'critical':
-      return '#ef4444'
-    case 'high':
-      return '#f97316'
-    case 'medium':
-      return '#f59e0b'
-    case 'low':
-      return '#3b82f6'
-    case 'info':
-      return '#10b981'
-    default:
-      return '#6b7280'
-  }
-}
 

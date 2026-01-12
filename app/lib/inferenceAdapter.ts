@@ -35,17 +35,14 @@ export const TREND_CONFIG = {
   improving: {
     label: 'Improving',
     icon: '↗',
-    color: 'green',
   },
   stable: {
     label: 'Stable',
     icon: '→',
-    color: 'blue',
   },
   declining: {
     label: 'Declining',
     icon: '↘',
-    color: 'red',
   },
 } as const
 

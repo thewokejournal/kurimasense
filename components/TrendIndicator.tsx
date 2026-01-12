@@ -14,26 +14,23 @@ export function TrendIndicator({ direction, stability }: TrendIndicatorProps) {
   // Clamp stability between 0 and 1
   const stabilityScore = Math.max(0, Math.min(1, stability))
 
-  // Get arrow icon and base color
+  // Get arrow icon and label
   const getArrowConfig = () => {
     switch (direction) {
       case 'improving':
         return {
           icon: '↗',
           label: 'Field health improving',
-          baseColor: 'text-green-600',
         }
       case 'declining':
         return {
           icon: '↘',
           label: 'Field health declining',
-          baseColor: 'text-red-600',
         }
       case 'stable':
         return {
           icon: '→',
           label: 'Field health stable',
-          baseColor: 'text-gray-600',
         }
     }
   }
@@ -46,7 +43,7 @@ export function TrendIndicator({ direction, stability }: TrendIndicatorProps) {
 
   return (
     <span
-      className={`inline-block text-sm ${config.baseColor}`}
+      className="inline-block text-sm text-slate-600"
       style={{ opacity }}
       aria-label={`${config.label} (${Math.round(stabilityScore * 100)}% stability)`}
       role="img"

@@ -57,31 +57,6 @@ const getTrendIcon = (trend: Trend) => {
   }
 }
 
-const getTrendColor = (trend: Trend) => {
-  switch (trend) {
-    case 'Improving':
-      return '#10b981'
-    case 'Declining':
-      return '#ef4444'
-    case 'Stable':
-      return 'var(--text-muted)'
-  }
-}
-
-const getHealthColor = (health: HealthStatus) => {
-  switch (health) {
-    case 'Critical':
-      return '#ef4444'
-    case 'Stressed':
-      return '#f97316'
-    case 'Under Observation':
-      return '#f59e0b'
-    case 'Stable':
-      return '#3b82f6'
-    case 'Healthy':
-      return '#10b981'
-  }
-}
 
 export default function FieldsTable() {
   return (
@@ -106,8 +81,6 @@ export default function FieldsTable() {
         <tbody>
           {fields.map((field, index) => {
             const TrendIcon = getTrendIcon(field.trend)
-            const trendColor = getTrendColor(field.trend)
-            const healthColor = getHealthColor(field.health)
 
             return (
               <motion.tr
@@ -121,7 +94,7 @@ export default function FieldsTable() {
                 <td className="px-6 py-5">
                   {field.requiresAttention && (
                     <div className="priority-indicator">
-                      <AlertCircle className="w-4 h-4" style={{ color: healthColor }} />
+                      <AlertCircle className="w-4 h-4 text-slate-600" />
                     </div>
                   )}
                 </td>
@@ -129,19 +102,12 @@ export default function FieldsTable() {
                   {field.name}
                 </td>
                 <td className="px-6 py-5">
-                  <span
-                    className="health-status-badge"
-                    style={{ 
-                      color: healthColor,
-                      borderColor: `${healthColor}30`,
-                      backgroundColor: `${healthColor}15`
-                    }}
-                  >
+                  <span className="health-status-badge text-slate-900">
                     {field.health}
                   </span>
                 </td>
                 <td className="px-6 py-5">
-                  <div className="trend-indicator" style={{ color: trendColor }}>
+                  <div className="trend-indicator text-slate-900">
                     <TrendIcon className="w-4 h-4" />
                     <span>{field.trend}</span>
                   </div>

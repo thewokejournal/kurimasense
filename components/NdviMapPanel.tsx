@@ -34,7 +34,7 @@ export default function NdviMapPanel() {
           className="diagnostic-overlay"
         >
           <div className="diagnostic-header">
-            <AlertTriangle className="w-4 h-4" style={{ color: '#f59e0b' }} />
+            <AlertTriangle className="w-4 h-4" style={{ color: 'var(--text-secondary)' }} />
             <span className="diagnostic-title">Southeast Quadrant</span>
           </div>
           <p className="diagnostic-explanation">

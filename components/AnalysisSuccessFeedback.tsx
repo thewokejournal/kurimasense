@@ -31,9 +31,9 @@ export default function AnalysisSuccessFeedback({
   const windowEndDate = new Date(analysisRun.windowEnd)
 
   return (
-    <Card className="surface-soft p-6 border-l-4 border-green-500">
+    <Card className="surface-soft p-6 border-l-4" style={{ borderLeftColor: 'var(--border-medium)' }}>
       <div className="flex items-start gap-3 mb-4">
-        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+        <CheckCircle className="w-5 h-5 mt-0.5" style={{ color: 'var(--text-secondary)' }} />
         <div className="flex-1">
           <h3 className="font-semibold text-base mb-1">Analysis Created Successfully</h3>
           <p className="text-sm text-muted mb-4">
