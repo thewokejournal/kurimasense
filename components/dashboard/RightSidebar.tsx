@@ -9,8 +9,7 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import ContextPanel from '@/components/ContextPanel'
 import ProvenancePanel from '@/components/ProvenancePanel'
-import DecisionContextPanel from '@/components/DecisionContextPanel'
-import type { ContextData, DecisionContextResponse } from '@/app/lib/api'
+import type { ContextData } from '@/app/lib/api'
 
 interface RightSidebarProps {
   // Context
@@ -27,12 +26,6 @@ interface RightSidebarProps {
   windowStart?: string
   windowEnd?: string
 
-  // Decision Context
-  decisionContexts: DecisionContextResponse | null
-  isLoadingDecisionContexts: boolean
-  decisionContextError: string | null
-  onLoadDecisionContexts: () => void
-  showDecisionContexts: boolean
 }
 
 export function RightSidebar({
@@ -46,16 +39,10 @@ export function RightSidebar({
   fieldId,
   windowStart,
   windowEnd,
-  decisionContexts,
-  isLoadingDecisionContexts,
-  decisionContextError,
-  onLoadDecisionContexts,
-  showDecisionContexts,
 }: RightSidebarProps) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     context: false,
     provenance: false,
-    decision: false,
   })
 
   const toggleSection = (section: string) => {
@@ -147,45 +134,6 @@ export function RightSidebar({
         )}
       </div>
 
-      {/* Decision Context Layer */}
-      <div className="bg-surface-elevated border border-border-subtle rounded-lg overflow-hidden">
-        <button
-          onClick={() => toggleSection('decision')}
-          className="w-full flex items-center justify-between p-4 hover:bg-surface-hover transition-colors"
-        >
-          <div>
-            <div className="text-sm font-semibold text-primary">Decision Context</div>
-            <div className="text-xs text-muted mt-0.5">Non-actionable frames</div>
-          </div>
-          {expandedSections.decision ? (
-            <ChevronUp className="w-4 h-4 text-muted" />
-          ) : (
-            <ChevronDown className="w-4 h-4 text-muted" />
-          )}
-        </button>
-        
-        {expandedSections.decision && (
-          <div className="border-t border-border-subtle p-4">
-            {!showDecisionContexts ? (
-              <button
-                onClick={onLoadDecisionContexts}
-                disabled={isLoadingDecisionContexts}
-                className="btn-secondary text-sm w-full"
-              >
-                {isLoadingDecisionContexts ? 'Loading...' : 'Show Decision Contexts'}
-              </button>
-            ) : (
-              <DecisionContextPanel 
-                decisionContexts={decisionContexts} 
-                isLoading={isLoadingDecisionContexts} 
-              />
-            )}
-            {decisionContextError && (
-              <p className="text-xs text-red-400 mt-2">{decisionContextError}</p>
-            )}
-          </div>
-        )}
-      </div>
     </div>
   )
 }
