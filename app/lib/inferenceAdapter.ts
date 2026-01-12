@@ -96,32 +96,6 @@ export const CATEGORY_CONFIG = {
 // ============================================
 
 /**
- * Map InferenceResponse to CropHealthSummary props
- */
-export interface CropHealthSummaryProps {
-  score: number
-  status: string
-  trend: string
-}
-
-export function toCropHealthSummaryProps(
-  inference: InferenceResponse
-): CropHealthSummaryProps {
-  // Map confidence to numeric score
-  const confidenceScoreMap = {
-    high: 90,
-    medium: 60,
-    low: 30,
-  }
-
-  return {
-    score: confidenceScoreMap[inference.confidence],
-    status: inference.status,
-    trend: inference.trend,
-  }
-}
-
-/**
  * Map InferenceResponse to FieldHealthCard props
  */
 export interface FieldHealthCardProps {

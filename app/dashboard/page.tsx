@@ -15,7 +15,6 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Map, Leaf, AlertTriangle, ChevronDown, Calendar, Clock, Search } from 'lucide-react'
 import { Card } from '@/components/ui/card'
-import CropHealthSummary from '@/components/CropHealthSummary'
 import NdviMapPanel, { AffectedAreaReportPanel } from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
 import { FieldTimeline } from '@/components/FieldTimeline'
@@ -316,17 +315,6 @@ export default function DashboardPage() {
     }
   }
 
-  // Map inference to component props (Phase 4.3: use verbatim labels)
-  const statusForUI = inference?.status === 'healthy' ? 'Healthy' : 
-                      inference?.status === 'watch' ? 'Watch' :
-                      inference?.status === 'stressed' ? 'Stressed' : 'Stable'
-  
-  const trendForUI = inference?.trend === 'improving' ? 'Improving' :
-                     inference?.trend === 'declining' ? 'Declining' : 'Stable'
-  
-  const confidenceForUI = inference?.confidence === 'high' ? 'High' :
-                          inference?.confidence === 'medium' ? 'Medium' : 'Low'
-
   return (
     <main className="dashboard-shell">
       {/* Modern Header Bar */}
@@ -374,18 +362,6 @@ export default function DashboardPage() {
         {/* CENTER AREA - The Immersive Map */}
         <section className="dashboard-main-area">
           <NdviMapPanel />
-          
-          {/* Floating Health Status Overlay */}
-          {selectedAnalysisRunId && inference && (
-            <div className="absolute top-6 left-6 z-10 w-80">
-              <CropHealthSummary
-                status={statusForUI as any}
-                trend={trendForUI as any}
-                confidence={confidenceForUI as any}
-                detectedAt={formatGeneratedAt(inference.generatedAt)}
-              />
-            </div>
-          )}
 
           {/* Analysis Creation Form Overlay */}
           {showCreateForm && (
