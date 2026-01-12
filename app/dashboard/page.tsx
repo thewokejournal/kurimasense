@@ -17,15 +17,12 @@ import { Map, Leaf, AlertTriangle, ChevronDown, Calendar, Clock, Search } from '
 import { Card } from '@/components/ui/card'
 import NdviMapPanel, { AffectedAreaReportPanel } from '@/components/NdviMapPanel'
 import FieldsTable from '@/components/FieldsTable'
-import { FieldTimeline } from '@/components/FieldTimeline'
-import type { TimelineEntry } from '@/lib/timeline'
-import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, generateDecisionContexts, createAnalysisRun, fetchAllFields, type AnalysisRun, type ContextData, type DecisionContextResponse, type Field } from '@/app/lib/api'
+import { fetchAnalysisRunsByField, fetchAnalysisRunById, fetchContext, createAnalysisRun, fetchAllFields, type AnalysisRun, type ContextData, type Field } from '@/app/lib/api'
 import { formatGeneratedAt } from '@/app/lib/inferenceAdapter'
 import type { InferenceResponse } from '@/app/types/inference'
 import ContextPanel from '@/components/ContextPanel'
 import ProvenancePanel from '@/components/ProvenancePanel'
 import InterpretationAssistant from '@/components/InterpretationAssistant'
-import DecisionContextPanel from '@/components/DecisionContextPanel'
 import AnalysisSuccessFeedback from '@/components/AnalysisSuccessFeedback'
 import AnalysisRunList from '@/components/AnalysisRunList'
 import AnalysisRunDetail from '@/components/AnalysisRunDetail'
@@ -295,25 +292,6 @@ export default function DashboardPage() {
     setShowProvenance(true)
   }
 
-  // Phase 7: Load decision contexts only via explicit user action
-  async function handleLoadDecisionContexts() {
-    if (!selectedAnalysisRunId) {
-      return
-    }
-
-    try {
-      setIsLoadingDecisionContexts(true)
-      setDecisionContextError(null)
-      const decisionContextData = await generateDecisionContexts(selectedAnalysisRunId)
-      setDecisionContexts(decisionContextData)
-      setShowDecisionContexts(true)
-    } catch (err) {
-      console.error('Failed to load decision contexts:', err)
-      setDecisionContextError(err instanceof Error ? err.message : 'Failed to load decision contexts')
-    } finally {
-      setIsLoadingDecisionContexts(false)
-    }
-  }
 
   return (
     <main className="dashboard-shell">
@@ -351,12 +329,6 @@ export default function DashboardPage() {
           onFieldSelect={() => {/* TODO: implement field selection */}}
         />
 
-          <div className="mt-8 pt-8 border-t border-border-subtle">
-            <div className="metric-section-header">
-              Field Activity
-            </div>
-            <FieldTimeline entries={mockTimelineEntries} />
-          </div>
         </aside>
 
         {/* CENTER AREA - The Immersive Map */}
@@ -533,37 +505,6 @@ export default function DashboardPage() {
                 )}
               </div>
 
-              {/* Decision Context */}
-              <div className="metadata-section-item">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="metadata-section-title">Decision Context</h3>
-                    <p className="metadata-section-description">Non-actionable decision frames</p>
-              </div>
-                {!showDecisionContexts && (
-                <button
-                      onClick={handleLoadDecisionContexts}
-                  disabled={isLoadingDecisionContexts}
-                      className="metadata-action-button"
-                >
-                      {isLoadingDecisionContexts ? 'Loading...' : 'Load'}
-                </button>
-              )}
-            </div>
-              {showDecisionContexts && (
-                  <div className="mt-5">
-                    <DecisionContextPanel 
-                      decisionContexts={decisionContexts} 
-                      isLoading={isLoadingDecisionContexts} 
-                    />
-                  </div>
-                )}
-                {decisionContextError && (
-                  <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                    <p className="text-xs text-red-400">{decisionContextError}</p>
-                  </div>
-                )}
-              </div>
             </div>
           </div>
         </aside>

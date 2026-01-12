@@ -89,30 +89,6 @@ export const CATEGORY_CONFIG = {
 } as const
 
 // ============================================
-// COMPONENT PROP MAPPERS
-// ============================================
-
-/**
- * Map InferenceResponse to FieldHealthCard props
- */
-export interface FieldHealthCardProps {
-  name: string
-  health: string
-  stress: string
-}
-
-export function toFieldHealthCardProps(
-  inference: InferenceResponse,
-  fieldName: string
-): FieldHealthCardProps {
-  return {
-    name: fieldName,
-    health: inference.status,
-    stress: inference.confidence,
-  }
-}
-
-// ============================================
 // HELPER FUNCTIONS
 // ============================================
 
