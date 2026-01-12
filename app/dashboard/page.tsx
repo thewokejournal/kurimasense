@@ -37,38 +37,6 @@ const stats = [
   { label: 'Field Advisories', value: '2', delta: '−1 resolved', timeContext: 'Last 48 hours', icon: AlertTriangle },
 ]
 
-// Mock timeline data for demonstration
-const mockTimelineEntries: TimelineEntry[] = [
-  {
-    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
-    insightId: 'insight-1',
-    insightType: 'NDVI approaching upper limit',
-    severity: 'medium',
-    confidence: 'high',
-  },
-  {
-    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Yesterday
-    insightId: 'insight-2',
-    insightType: 'Temperature elevated',
-    severity: 'high',
-    confidence: 'medium',
-  },
-  {
-    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
-    insightId: 'insight-3',
-    insightType: 'Soil moisture optimal',
-    severity: 'low',
-    confidence: 'high',
-  },
-  {
-    timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week ago
-    insightId: 'insight-4',
-    insightType: 'All signals within normal range',
-    severity: 'info',
-    confidence: 'high',
-  },
-]
-
 export default function DashboardPage() {
   // Field selection (hardcoded for now, matching existing UI)
   const selectedFieldId = 'test-field-1'
