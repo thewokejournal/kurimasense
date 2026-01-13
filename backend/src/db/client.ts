@@ -175,6 +175,94 @@ export function deleteField(id: string) {
 }
 
 /**
+ * Season Persistence Functions
+ */
+
+/**
+ * Create a new season
+ */
+export function insertSeason(id: string, name: string, startDate: string, endDate: string) {
+  const stmt = db.prepare(`
+    INSERT INTO seasons (id, name, start_date, end_date, created_at)
+    VALUES (?, ?, ?, ?, datetime('now'))
+  `)
+  const result = stmt.run(id, name, startDate, endDate)
+  return { id }
+}
+
+/**
+ * Get a season by ID
+ */
+export function getSeasonById(id: string) {
+  const stmt = db.prepare('SELECT * FROM seasons WHERE id = ?')
+  const row = stmt.get(id) as any
+  if (!row) return null
+  return {
+    id: row.id,
+    name: row.name,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    createdAt: row.created_at
+  }
+}
+
+/**
+ * Get all seasons
+ */
+export function getAllSeasons() {
+  const stmt = db.prepare('SELECT * FROM seasons ORDER BY start_date DESC')
+  const rows = stmt.all() as any[]
+  return rows.map(row => ({
+    id: row.id,
+    name: row.name,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    createdAt: row.created_at
+  }))
+}
+
+/**
+ * Update a season
+ */
+export function updateSeason(id: string, name?: string, startDate?: string, endDate?: string) {
+  const updates: string[] = []
+  const values: any[] = []
+  
+  if (name !== undefined) {
+    updates.push('name = ?')
+    values.push(name)
+  }
+  
+  if (startDate !== undefined) {
+    updates.push('start_date = ?')
+    values.push(startDate)
+  }
+  
+  if (endDate !== undefined) {
+    updates.push('end_date = ?')
+    values.push(endDate)
+  }
+  
+  if (updates.length === 0) {
+    return { id, updated: false }
+  }
+  
+  values.push(id)
+  const stmt = db.prepare(`UPDATE seasons SET ${updates.join(', ')} WHERE id = ?`)
+  const result = stmt.run(...values)
+  return { id, updated: result.changes > 0 }
+}
+
+/**
+ * Delete a season
+ */
+export function deleteSeason(id: string) {
+  const stmt = db.prepare('DELETE FROM seasons WHERE id = ?')
+  const result = stmt.run(id)
+  return { id, deleted: result.changes > 0 }
+}
+
+/**
  * AnalysisRun Persistence Functions
  */
 

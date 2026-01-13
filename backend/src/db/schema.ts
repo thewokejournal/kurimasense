@@ -49,9 +49,20 @@ export const ANALYSIS_RUNS_TABLE = `
   )
 `
 
+export const SEASONS_TABLE = `
+  CREATE TABLE IF NOT EXISTS seasons (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    start_date TEXT NOT NULL,
+    end_date TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`
+
 export function initializeSchema(db: any): void {
   db.exec(VEGETATION_SIGNALS_TABLE)
   db.exec(WEATHER_SIGNALS_TABLE)
   db.exec(FIELDS_TABLE)
   db.exec(ANALYSIS_RUNS_TABLE)
+  db.exec(SEASONS_TABLE)
 }
